@@ -65,7 +65,7 @@ function Order() {
             <div className="mt-7">
               <p className="text-2xl font-bold">Chose Your Seet</p>
               <div className="px-4 overflow-auto w-full">
-                <p className="max-md:ml-80 md:text-center text-sm font-semibold text-secondary my-7">
+                <p className="ml-80 xl:ml-0 xl:text-center text-sm font-semibold text-secondary my-7">
                   Screen
                 </p>
                 <table className="text-sm font-semibold">
@@ -468,8 +468,8 @@ function Order() {
               </div>
             </div>
           </div>
-          <div className="w-full lg:w-2/6">
-            <div className="bg-light rounded-md drop-shadow-xl">
+          <div className="w-full lg:w-2/6 flex flex-col items-stretch">
+            <div className="bg-light rounded-md drop-shadow-xl mb-8">
               <div className="flex flex-col items-center justify-center gap-y-2 py-8 px-5">
                 <img src={getImageUrl("CineOne", "svg")} alt="cinema" />
                 <p className="text-2xl tex-dark font-semibold">
@@ -500,14 +500,17 @@ function Order() {
                   <p className="text-[#000] text-[18px] font-semibold">
                     Total Payment
                   </p>
-                  <p className="text-primary text-2xl font-semibold">$30</p>
+                  <p className="text-primary text-2xl font-bold">$30</p>
                 </div>
               </div>
             </div>
-            <div className="mt-6">
-              <div className="py-4 px-6 text-center font-semibold text-[#F7F7FC] bg-primary rounded-md drop-shadow-xl">
+            <div className="w-full flex">
+              <Link
+                to="/payment"
+                className="w-full py-4 px-6 text-center font-semibold text-[#F7F7FC] bg-primary rounded-md drop-shadow-xl"
+              >
                 Checkout Now
-              </div>
+              </Link>
             </div>
           </div>
         </section>
