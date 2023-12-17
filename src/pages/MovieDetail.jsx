@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
 import "../styles/main.css";
 import Navbar from "../components/Navbar";
@@ -175,9 +176,12 @@ function MovieDetail() {
             </p>
           </div>
           <div>
-            <button className="text-sm text-light bg-primary py-5 px-16 justify-self: center rounded-md focus:ring-2">
+            <Link
+              to="/order"
+              className="text-sm text-light bg-primary py-5 px-16 justify-self: center rounded-md focus:ring-2"
+            >
               Book Now
-            </button>
+            </Link>
           </div>
         </div>
       </section>

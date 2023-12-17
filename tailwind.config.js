@@ -13,6 +13,7 @@ export default {
         success: "#008000",
         dark: "#14142B",
         light: "#FFF",
+        danger: "#D00707",
       },
     },
   },
