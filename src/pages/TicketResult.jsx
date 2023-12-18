@@ -83,17 +83,17 @@ function TicketResult() {
               <div className="p-4 bg-[#ECEDF2] rounded-full"></div>
             </div>
           </div>
-          <div className="flex flex-col gap-y-2">
+          <div className="flex flex-col gap-y-2 items-center">
             <button
               to="/order"
-              className="font-bold text-primary bg-none border border-primary py-4 px-24 rounded-md focus:ring-2 flex justify-center gap-x-4 w-[357px]"
+              className="font-bold text-primary bg-none border border-primary py-4 px-24 rounded-md focus:ring-2 flex justify-center gap-x-4 w-[80%]"
             >
               <img src={getImageUrl("download", "png")} alt="icon" />
               Download
             </button>
             <button
               to="/order"
-              className="font-bold text-light bg-primary border border-primary py-4 px-24 rounded-md focus:ring-2 w-[357px]"
+              className="font-bold text-light bg-primary border border-primary py-4 px-24 rounded-md focus:ring-2 w-[80%]"
             >
               Done
             </button>
