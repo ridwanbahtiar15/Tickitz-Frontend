@@ -72,7 +72,7 @@ function Order() {
                   <tr className="flex items-center py-1">
                     <td className="px-2 w-8">A</td>
                     <td className="px-1">
-                      <div className="w-[26px] h-[26px] bg-[#D6D8E7] rounded"></div>
+                      <div className={`w-[26px] h-[26px] bg-[#D6D8E7] rounded`}></div>
                     </td>
                     <td className="px-1">
                       <div className="w-[26px] h-[26px] bg-[#D6D8E7] rounded"></div>
