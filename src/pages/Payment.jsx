@@ -15,7 +15,7 @@ function Payment() {
       <Navbar isClick={() => setIsDropdownShow(true)} />
       <section className="bg-[#A0A3BD33] py-10">
         <section className="flex justify-center items-center w-full font-mulish">
-          <div className="flex gap-x-2 md:gap-x-6">
+          <div className="flex flex-col items-center gap-y-2 sm:flex-row md:gap-x-6">
             <div className="flex flex-col gap-y-3 justify-center items-center">
               <div className="bg-success p-1 md:p-3 rounded-full">
                 <img src={getImageUrl("check-small", "svg")} alt="icon" />
@@ -24,14 +24,14 @@ function Payment() {
                 Dates And Time
               </p>
             </div>
-            <div className="w-[70px] h-0 border border-dashed border-[#A0A3BD] mt-10"></div>
+            <div className="w-0 h-10 sm:w-[70px] sm:h-0 border border-dashed border-[#A0A3BD] sm:mt-10"></div>
             <div className="flex flex-col gap-y-3 justify-center items-center">
               <div className="bg-success p-1 md:p-3 rounded-full">
                 <img src={getImageUrl("check-small", "svg")} alt="icon" />
               </div>
               <p className="text-secondary text-xs md:text-sm">Seat</p>
             </div>
-            <div className="w-[70px] h-0 border border-dashed border-[#A0A3BD] mt-10"></div>
+            <div className="w-0 h-10 sm:w-[70px] sm:h-0 border border-dashed border-[#A0A3BD] sm:mt-10"></div>
             <div className="flex flex-col gap-y-3 justify-center items-center">
               <div className="bg-primary p-3 w-8 h-8 md:w-[47px] md:h-[47px] flex items-center justify-center rounded-full">
                 <p className="text-light">3</p>
@@ -43,26 +43,34 @@ function Payment() {
         <section className="px-5 md:px-11 xl:px-[319px] font-mulish mt-10">
           <div className="bg-light py-11 px-6 rounded-md">
             <div>
-              <p className="text-2xl text-dark font-bold mb-6">Payment Info</p>
+              <p className="text-xl md:text-2xl text-dark font-bold mb-6">
+                Payment Info
+              </p>
               <div className="flex flex-col gap-y-2">
                 <div className="flex flex-col gap-y-3">
                   <p className="text-sm text-[#8692A6]">DATE & TIME</p>
-                  <p className="text-black">Tuesday, 07 July 2020 at 02:00pm</p>
+                  <p className="text-sm md:text-base text-black">
+                    Tuesday, 07 July 2020 at 02:00pm
+                  </p>
                   <div className="border border-[#E6E6E6]"></div>
                 </div>
                 <div className="flex flex-col gap-y-3">
                   <p className="text-sm text-[#8692A6]">MOVIE & TITLE</p>
-                  <p className="text-black">Spider-Man: Homecoming</p>
+                  <p className="text-sm md:text-base text-black">
+                    Spider-Man: Homecoming
+                  </p>
                   <div className="border border-[#E6E6E6]"></div>
                 </div>
                 <div className="flex flex-col gap-y-3">
                   <p className="text-sm text-[#8692A6]">CINEMA NAME</p>
-                  <p className="text-black">CineOne21 Cinema</p>
+                  <p className="text-sm md:text-base text-black">
+                    CineOne21 Cinema
+                  </p>
                   <div className="border border-[#E6E6E6]"></div>
                 </div>
                 <div className="flex flex-col gap-y-3">
                   <p className="text-sm text-[#8692A6]">NUMBER OF TICKETS</p>
-                  <p className="text-black">3 pieces</p>
+                  <p className="text-sm md:text-base text-black">3 pieces</p>
                   <div className="border border-[#E6E6E6]"></div>
                 </div>
                 <div className="flex flex-col gap-y-3">
@@ -73,32 +81,36 @@ function Payment() {
               </div>
             </div>
             <div>
-              <p className="text-2xl text-dark font-bold mb-6 mt-10">
+              <p className="text-xl md:text-2xl text-dark font-bold mb-6 mt-10">
                 Personal Information
               </p>
               <div className="flex flex-col gap-y-4">
                 <div className="flex flex-col gap-y-3">
-                  <p className="text-[#696F79]">Full Name</p>
-                  <div className="p-4 px-8 border rounded-sm">
+                  <p className="text-sm md:text-base text-[#696F79]">
+                    Full Name
+                  </p>
+                  <div className="text-sm md:text-base p-4 px-8 border rounded-sm">
                     Jonas El Rodriguez
                   </div>
                 </div>
                 <div className="flex flex-col gap-y-3">
-                  <p className="text-[#696F79]">Email</p>
-                  <div className="p-4 px-8 border rounded-sm">
+                  <p className="text-sm md:text-base text-[#696F79]">Email</p>
+                  <div className="text-sm md:text-base p-4 px-8 border rounded-sm">
                     jonasrodri123@gmail.com
                   </div>
                 </div>
                 <div className="flex flex-col gap-y-3">
-                  <p className="text-[#696F79]">Phone Number</p>
-                  <div className="p-4 px-8 border rounded-sm">
+                  <p className="text-sm md:text-base text-[#696F79]">
+                    Phone Number
+                  </p>
+                  <div className="text-sm md:text-base p-4 px-8 border rounded-sm">
                     +6281445687121
                   </div>
                 </div>
               </div>
             </div>
             <div>
-              <p className="text-2xl text-dark font-bold mb-6 mt-10">
+              <p className="text-xl md:text-2xl text-dark font-bold mb-6 mt-10">
                 Payment Method
               </p>
               <div className="grid md:grid-cols-4 gap-4 justify-items-stretch">

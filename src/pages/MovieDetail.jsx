@@ -9,6 +9,21 @@ import DropdownMobile from "../components/DropdownMobile";
 
 function MovieDetail() {
   const [isDropdownShown, setIsDropdownShow] = useState(false);
+  const [isDate, setIsDate] = useState(false);
+  const [date, setDate] = useState({
+    name: "21/07/20",
+    id: null,
+  });
+  const [isTime, setIsTime] = useState(false);
+  const [time, setTime] = useState({
+    name: "08:30 AM",
+    id: null,
+  });
+  const [isLocation, setIsLocation] = useState(false);
+  const [location, setLocation] = useState({
+    name: "Purwokerto",
+    id: null,
+  });
   return (
     <>
       <Navbar isClick={() => setIsDropdownShow(true)} />
@@ -67,11 +82,14 @@ function MovieDetail() {
             Book Tickets
           </p>
           <div className="flex flex-col gap-y-4 md:flex-row md:items-end md:gap-x-4 lg:gap-x-[30px]">
-            <div className="flex flex-col gap-y-4 md:w-1/4">
+            <div className="flex flex-col gap-y-4 md:w-1/4 relative">
               <p className="md:text-[20px] font-semibold text-black">
                 Chose Date
               </p>
-              <div className="flex justify-between items-center p-4 px-6 bg-[#EFF0F6] rounded-md cursor-pointer w-full">
+              <div
+                className="flex justify-between items-center p-4 px-6 bg-[#EFF0F6] rounded-md cursor-pointer w-full"
+                onClick={() => setIsDate((state) => !state)}
+              >
                 <div className="flex gap-x-4">
                   <img
                     src={getImageUrl("calendar", "svg")}
@@ -79,59 +97,129 @@ function MovieDetail() {
                     className=""
                   />
                   <p className="text-xs lg:text-base text-secondary font-semibold">
-                    21/07/20
+                    {date.name}
                   </p>
                 </div>
-                <img
-                  src={getImageUrl("Forward", "svg")}
-                  alt="icon"
-                  className=""
-                />
+                <img src={getImageUrl("Forward", "svg")} alt="icon" />
               </div>
+              {isDate && (
+                <div className="flex justify-between items-center p-4 px-6 bg-[#EFF0F6] rounded-md cursor-pointer w-full absolute top-28 drop-shadow-xl">
+                  <div className="flex flex-col gap-y-5">
+                    <div
+                      className="flex gap-x-4"
+                      onClick={() => {
+                        setDate({ name: "22/07/23", id: 1 });
+                        setIsDate((state) => !state);
+                      }}
+                    >
+                      <p className="text-xs lg:text-base text-secondary font-semibold">
+                        22/07/23
+                      </p>
+                    </div>
+                    <div
+                      className="flex gap-x-4"
+                      onClick={() => {
+                        setDate({ name: "24/07/23", id: 1 });
+                        setIsDate((state) => !state);
+                      }}
+                    >
+                      <p className="text-xs lg:text-base text-secondary font-semibold">
+                        24/07/23
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              )}
             </div>
-            <div className="flex flex-col gap-y-4 md:w-1/4">
+            <div className="flex flex-col gap-y-4 md:w-1/4 relative">
               <p className="md:text-[20px] font-semibold text-black">
                 Chose Time
               </p>
-              <div className="flex justify-between items-center p-4 px-6 bg-[#EFF0F6] rounded-md cursor-pointer w-full">
+              <div
+                className="flex justify-between items-center p-4 px-6 bg-[#EFF0F6] rounded-md cursor-pointer w-full"
+                onClick={() => setIsTime((state) => !state)}
+              >
                 <div className="flex gap-x-4">
-                  <img
-                    src={getImageUrl("time", "svg")}
-                    alt="icon"
-                    className=""
-                  />
+                  <img src={getImageUrl("time", "svg")} alt="icon" />
                   <p className="text-xs lg:text-base text-secondary font-semibold">
-                    08 : 30 AM
+                    {time.name}
                   </p>
                 </div>
-                <img
-                  src={getImageUrl("Forward", "svg")}
-                  alt="icon"
-                  className=""
-                />
+                <img src={getImageUrl("Forward", "svg")} alt="icon" />
               </div>
+              {isTime && (
+                <div className="flex justify-between items-center p-4 px-6 bg-[#EFF0F6] rounded-md cursor-pointer w-full absolute top-28 drop-shadow-xl">
+                  <div className="flex flex-col gap-y-5">
+                    <div
+                      className="flex gap-x-4"
+                      onClick={() => {
+                        setTime({ name: "15:30 PM", id: 1 });
+                        setIsTime((state) => !state);
+                      }}
+                    >
+                      <p className="text-xs lg:text-base text-secondary font-semibold">
+                        15:30 PM
+                      </p>
+                    </div>
+                    <div
+                      className="flex gap-x-4"
+                      onClick={() => {
+                        setTime({ name: "19:30 PM", id: 1 });
+                        setIsTime((state) => !state);
+                      }}
+                    >
+                      <p className="text-xs lg:text-base text-secondary font-semibold">
+                        19:30 PM
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              )}
             </div>
-            <div className="flex flex-col gap-y-4 md:w-1/4">
+            <div className="flex flex-col gap-y-4 md:w-1/4 relative">
               <p className="md:text-[20px] font-semibold text-black">
                 Chose Location
               </p>
-              <div className="flex justify-between items-center p-4 px-6 bg-[#EFF0F6] rounded-md cursor-pointer w-full">
+              <div
+                className="flex justify-between items-center p-4 px-6 bg-[#EFF0F6] rounded-md cursor-pointer w-full"
+                onClick={() => setIsLocation((state) => !state)}
+              >
                 <div className="flex gap-x-4">
-                  <img
-                    src={getImageUrl("location", "svg")}
-                    alt="icon"
-                    className=""
-                  />
+                  <img src={getImageUrl("location", "svg")} alt="icon" />
                   <p className="text-xs lg:text-base text-secondary font-semibold">
-                    Purwokerto
+                    {location.name}
                   </p>
                 </div>
-                <img
-                  src={getImageUrl("Forward", "svg")}
-                  alt="icon"
-                  className=""
-                />
+                <img src={getImageUrl("Forward", "svg")} alt="icon" />
               </div>
+              {isLocation && (
+                <div className="flex justify-between items-center p-4 px-6 bg-[#EFF0F6] rounded-md cursor-pointer w-full absolute top-28 drop-shadow-xl">
+                  <div className="flex flex-col gap-y-5">
+                    <div
+                      className="flex gap-x-4"
+                      onClick={() => {
+                        setLocation({ name: "Bekasi", id: 1 });
+                        setIsLocation((state) => !state);
+                      }}
+                    >
+                      <p className="text-xs lg:text-base text-secondary font-semibold">
+                        Bekasi
+                      </p>
+                    </div>
+                    <div
+                      className="flex gap-x-4"
+                      onClick={() => {
+                        setLocation({ name: "Jakarta", id: 1 });
+                        setIsLocation((state) => !state);
+                      }}
+                    >
+                      <p className="text-xs lg:text-base text-secondary font-semibold">
+                        Jakarta
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              )}
             </div>
             <div className="md:w-[16%]">
               <div className="text-sm text-light bg-primary rounded-md p-4 text-center cursor-pointer">
