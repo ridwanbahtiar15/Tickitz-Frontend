@@ -5,9 +5,11 @@ import MovieDetail from "./pages/MovieDetail";
 import Order from "./pages/Order";
 import Payment from "./pages/Payment";
 import TicketResult from "./pages/TicketResult";
-import AddMovie from "./pages/AddMovie";
+import Profile from "./pages/Profile";
+import OrderHistory from "./pages/OrderHistory";
+// import AddMovie from "./pages/AddMovie";
 import Login from "./pages/Login";
-import Register from "./pages/Register";
+// import Register from "./pages/Register";
 
 const router = createBrowserRouter([
   {
@@ -17,10 +19,6 @@ const router = createBrowserRouter([
   {
     path: "/login",
     element: <Login />,
-  },
-  {
-    path: "/register",
-    element: <Register />,
   },
   {
     path: "/movie/:id",
@@ -39,8 +37,12 @@ const router = createBrowserRouter([
     element: <TicketResult />,
   },
   {
-    path: "/addmovie",
-    element: <AddMovie />,
+    path: "/profile",
+    element: <Profile />,
+  },
+  {
+    path: "/orderhistory",
+    element: <OrderHistory />,
   },
 ]);
 

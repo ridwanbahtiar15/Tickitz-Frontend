@@ -15,11 +15,18 @@ export default {
         light: "#FFF",
         danger: "#D00707",
         backgorund_gray: "#A0A3BD33",
-        input_bg : "#FCFDFE",
+        input_bg: "#FCFDFE",
         input_border: "#DEDEDE",
-        purple_border : "#5F2EEA"
+        purple_border: "#5F2EEA",
+      },
+      dropShadow: {
+        range: "0px 17px 17px 17px 0px rgba(17, 17, 17, 0.16) inset",
       },
     },
   },
-  plugins: [],
+  // eslint-disable-next-line no-undef
+  plugins: [require("daisyui")],
+  daisyui: {
+    themes: ["light", "dark", "cupcake"],
+  },
 };
