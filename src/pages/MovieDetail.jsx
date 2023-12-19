@@ -1,5 +1,8 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import { getMovieDetail } from "../utils/https/movieDetail";
+import {useNavigate, useParams} from "react-router-dom"
+import { useSelector, useDispatch } from "react-redux";
 
 import "../styles/main.css";
 import Navbar from "../components/Navbar";
@@ -7,23 +10,48 @@ import Footer from "../components/Footer";
 import getImageUrl from "../utils/imageGetter";
 import DropdownMobile from "../components/DropdownMobile";
 
+import { addOrder } from "../redux/slices/order";
+
+
 function MovieDetail() {
+  let { id } = useParams();
+  const dispatch = useDispatch();
+  const token = useSelector(state => state.user.userInfo.token)
+  const [idSchedule, setIdSchedule] = useState(0)
+
+
   const [isDropdownShown, setIsDropdownShow] = useState(false);
+  const [dataMovie, setDataMovie] = useState([])
+  const [dataSchedule, setDataSchedule] = useState([]);
+  const [cinemaPage, setCinemaPage] = useState(0)
+
   const [isDate, setIsDate] = useState(false);
-  const [date, setDate] = useState({
-    name: "21/07/20",
-    id: null,
-  });
+  const [dateMovie, setDate] = useState("Set Date");
   const [isTime, setIsTime] = useState(false);
-  const [time, setTime] = useState({
-    name: "08:30 AM",
-    id: null,
-  });
+  const [time, setTime] = useState();
+
   const [isLocation, setIsLocation] = useState(false);
   const [location, setLocation] = useState({
     name: "Purwokerto",
     id: null,
   });
+  useEffect(() => {
+    const getMovieDetailUrl = import.meta.env.VITE_BACKEND_HOST + "/movie/movie/" + id
+    getMovieDetail(getMovieDetailUrl, token)
+    .then((res) => {
+      setDataMovie(res.data.data.movie)
+      setDataSchedule(res.data.data.schedule)
+      // console.log(res)
+    })
+    .catch((err) => {
+      console.log(err)
+    })
+  }, [])
+
+  const setSchedule = (id) => {
+    dispatch(addOrder(id))
+    setIdSchedule(id)
+  }
   return (
     <>
       <Navbar isClick={() => setIsDropdownShow(true)} />
@@ -32,9 +60,9 @@ function MovieDetail() {
       </header>
       <section className="px-5 md:px-11 xl:px-[130px] font-mulish lg:-top-40 lg:relative flex flex-col gap-y-7 mt-10">
         <div className="flex flex-col gap-y-4 md:flex-row md:gap-x-5">
-          <img src={getImageUrl("movie4", "png")} alt="movie" />
+          {dataMovie && dataMovie[0] ? <img src={dataMovie[0].movie_photo} alt="movie" /> : <img src={getImageUrl("movie4", "png")} alt="movie" />}
           <div className="flex flex-col gap-y-4 justify-center lg:justify-end">
-            <p className="text-[2rem] text-dark font-bold">Spiderman</p>
+            <p className="text-[2rem] text-dark font-bold">{dataMovie && dataMovie[0] && dataMovie[0].movie_name}</p>
             <div className="flex flex-row gap-x-2">
               <p className="text-[#A0A3BD] px-5 py-2 bg-[#A0A3BD1A] rounded-[20px]">
                 Action
@@ -46,20 +74,20 @@ function MovieDetail() {
             <div className="grid grid-cols-3 gap-4">
               <div className="flex flex-col gap-y-2">
                 <p className="text-sm text-[#8692A6]">Release Date</p>
-                <p className="text-[#121212]">June 28, 2017</p>
+                <p className="text-[#ac7979]">{dataMovie && dataMovie[0] && dataMovie[0].release_date}</p>
               </div>
               <div className="flex flex-col gap-y-2 col-span-2">
                 <p className="text-sm text-[#8692A6]">Directed By</p>
-                <p className="text-[#121212]">Jon Watss</p>
+                <p className="text-[#121212]">{dataMovie && dataMovie[0] && dataMovie[0].director}</p>
               </div>
               <div className="flex flex-col gap-y-2">
                 <p className="text-sm text-[#8692A6]">Duration</p>
-                <p className="text-[#121212]">2 hours 13 minutes </p>
+                <p className="text-[#121212]">{dataMovie && dataMovie[0] && dataMovie[0].duration}</p>
               </div>
               <div className="flex flex-col gap-y-2 col-span-2">
                 <p className="text-sm text-[#8692A6]">Casts</p>
                 <p className="text-[#121212]">
-                  Tom Holland, Michael Keaton, Robert Downey Jr
+                {dataMovie && dataMovie[0] && dataMovie[0].cast}
                 </p>
               </div>
             </div>
@@ -68,13 +96,7 @@ function MovieDetail() {
         <div>
           <p className="text-[20px] font-semibold text-[#000]">Synopsis</p>
           <p className="text-[#A0A3BD] leading-8 lg:w-2/3">
-            Thrilled by his experience with the Avengers, Peter returns home,
-            where he lives with his Aunt May, under the watchful eye of his new
-            mentor Tony Stark, Peter tries to fall back into his normal daily
-            routine - distracted by thoughts of proving himself to be more than
-            just your friendly neighborhood Spider-Man - but when the Vulture
-            emerges as a new villain, everything that Peter holds most important
-            will be threatened.
+            {dataMovie && dataMovie[0] && dataMovie[0].sinopsis}
           </p>
         </div>
         <div>
@@ -97,7 +119,7 @@ function MovieDetail() {
                     className=""
                   />
                   <p className="text-xs lg:text-base text-secondary font-semibold">
-                    {date.name}
+                    {dateMovie}
                   </p>
                 </div>
                 <img src={getImageUrl("Forward", "svg")} alt="icon" />
@@ -105,7 +127,7 @@ function MovieDetail() {
               {isDate && (
                 <div className="flex justify-between items-center p-4 px-6 bg-[#EFF0F6] rounded-md cursor-pointer w-full absolute top-28 drop-shadow-xl">
                   <div className="flex flex-col gap-y-5">
-                    <div
+                    {/* <div
                       className="flex gap-x-4"
                       onClick={() => {
                         setDate({ name: "22/07/23", id: 1 });
@@ -126,7 +148,18 @@ function MovieDetail() {
                       <p className="text-xs lg:text-base text-secondary font-semibold">
                         24/07/23
                       </p>
-                    </div>
+                    </div> */}
+                    {dataSchedule && dataSchedule.map((date, index) => (
+                      <div className="flex gap-x-4" key={index}
+                      onClick={() => {
+                        setDate(date.date);
+                        setIsDate((state) => !state);
+                            }}>
+                        <p className="text-xs lg:text-base text-secondary font-semibold">
+                          {date.date}
+                        </p>
+                      </div>
+                    ))}
                   </div>
                 </div>
               )}
@@ -142,7 +175,7 @@ function MovieDetail() {
                 <div className="flex gap-x-4">
                   <img src={getImageUrl("time", "svg")} alt="icon" />
                   <p className="text-xs lg:text-base text-secondary font-semibold">
-                    {time.name}
+                    {time}
                   </p>
                 </div>
                 <img src={getImageUrl("Forward", "svg")} alt="icon" />
@@ -150,7 +183,7 @@ function MovieDetail() {
               {isTime && (
                 <div className="flex justify-between items-center p-4 px-6 bg-[#EFF0F6] rounded-md cursor-pointer w-full absolute top-28 drop-shadow-xl">
                   <div className="flex flex-col gap-y-5">
-                    <div
+                    {/* <div
                       className="flex gap-x-4"
                       onClick={() => {
                         setTime({ name: "15:30 PM", id: 1 });
@@ -171,7 +204,27 @@ function MovieDetail() {
                       <p className="text-xs lg:text-base text-secondary font-semibold">
                         19:30 PM
                       </p>
-                    </div>
+                    </div> */}
+                    {dataSchedule && dataSchedule.map((date, index) => {
+                      if (date.date === dateMovie) {
+                        return (
+                          <div
+                            className="flex gap-x-4"
+                            key={index}
+                            onClick={() => {
+                              setTime(date.time);
+                              setIsTime((state) => !state);
+                            }}
+                          >
+                            <p className="text-xs lg:text-base text-secondary font-semibold">
+                              {date.time}
+                            </p>
+                          </div>
+                        );
+                      } else {
+                        return null;
+                      }
+                    })}
                   </div>
                 </div>
               )}
@@ -236,7 +289,7 @@ function MovieDetail() {
             <p className="text-[18px] text-[#8692A6] font-bold">39 Result</p>
           </div>
           <div className="flex flex-col gap-y-4 md:flex-row md:gap-x-4 w-full">
-            <div className="p-7 border-2 border-[#DEDEDE] rounded-md md:w-1/4 flex justify-center items-center">
+            {/* <div className="p-7 border-2 border-[#DEDEDE] rounded-md md:w-1/4 flex justify-center items-center">
               <img src={getImageUrl("ebv.id", "svg")} alt="cinema" />
             </div>
             <div className="p-7 bg-primary border-2 border-primary rounded-md md:w-1/4 flex justify-center items-center">
@@ -247,7 +300,41 @@ function MovieDetail() {
             </div>
             <div className="p-7 border-2 border-[#DEDEDE] rounded-md md:w-1/4 flex justify-center items-center">
               <img src={getImageUrl("ebv.id", "svg")} alt="cinema" />
-            </div>
+            </div> */}
+            {dateMovie && time && (
+              <>
+                {dataSchedule.slice(cinemaPage, 4).map((date, index) => {
+                  if (date.date === dateMovie && date.time === time) {
+                    return (
+                      <div
+                        key={index}
+                        onClick={() => {setSchedule(date.ID)}}
+                        className={`p-7 ${idSchedule === date.ID ? "bg-primary" : "bg-gray-400" }  border-2 border-[#DEDEDE] rounded-md md:w-1/4 flex justify-center items-center`}
+                      >
+                        {date.cinema === "ebu.id" && 
+                        <img src={getImageUrl("ebv.id", "svg")} alt="cinema" />
+                        }
+                        {date.cinema === "hiflix" && 
+                        <img src={getImageUrl("hiflix3", "svg")} alt="cinema" />
+                        }
+                        {date.cinema === "XX1" && 
+                        <img src={getImageUrl("hiflix3", "svg")} alt="cinema" />
+                        }
+                        {date.cinema === "Cineplex" && 
+                        <img src={getImageUrl("CineOne", "svg")} alt="cinema" />
+                        }
+                        {date.cinema === "CineOne21" && 
+                        <img src={getImageUrl("CineOne", "svg")} alt="cinema" />
+                        }
+                        {/* <img src={date.cinema === "ebu.id" && getImageUrl("ebv.id", "svg") || date.cinema === "hiflix" || "XX1" && getImageUrl("hiflix3", "svg") || date.cinema === "Cineplex" || "CineOne21" && getImageUrl("CineOne", "svg")} alt="cinema" /> */}
+                      </div>
+                    );
+                  } else {
+                    return null;
+                  }
+                })}
+              </>
+            )}
           </div>
           <div className="flex gap-x-2 justify-center font-nunito font-medium">
             <p className="text-light bg-primary border border-primary rounded-lg w-[40px] h-[40px] flex justify-center items-center drop-shadow-xl">

@@ -50,7 +50,7 @@ function Login() {
   };
   return (
     <>
-      <main className="w-full h-full bg-[url('https://res.cloudinary.com/dhxdnljzm/image/upload/v1702915021/background_wqv5hp.png')] bg-cover bg-center bg-no-repeat">
+      <main className="w-full h-screen bg-[url('https://res.cloudinary.com/dhxdnljzm/image/upload/v1702915021/background_wqv5hp.png')] bg-cover bg-center bg-no-repeat">
         <div className="w-full h-full bg-[#00000099] flex items-center justify-center px-4 py-5">
           <div id="White_box" className="font-mulish pb-10">
             <div className="flex justify-center">
