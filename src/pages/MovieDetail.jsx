@@ -10,12 +10,13 @@ import Footer from "../components/Footer";
 import getImageUrl from "../utils/imageGetter";
 import DropdownMobile from "../components/DropdownMobile";
 
-import { addOrder } from "../redux/slices/order";
+import { addOrder,cleanOrder } from "../redux/slices/order";
 
 
 function MovieDetail() {
   let { id } = useParams();
   const dispatch = useDispatch();
+  const navigate = useNavigate()
   const token = useSelector(state => state.user.userInfo.token)
   const [idSchedule, setIdSchedule] = useState(0)
 
@@ -28,7 +29,7 @@ function MovieDetail() {
   const [isDate, setIsDate] = useState(false);
   const [dateMovie, setDate] = useState("Set Date");
   const [isTime, setIsTime] = useState(false);
-  const [time, setTime] = useState();
+  const [time, setTime] = useState("Set time");
 
   const [isLocation, setIsLocation] = useState(false);
   const [location, setLocation] = useState({
@@ -36,6 +37,7 @@ function MovieDetail() {
     id: null,
   });
   useEffect(() => {
+    dispatch(cleanOrder())
     const getMovieDetailUrl = import.meta.env.VITE_BACKEND_HOST + "/movie/movie/" + id
     getMovieDetail(getMovieDetailUrl, token)
     .then((res) => {
@@ -51,6 +53,16 @@ function MovieDetail() {
   const setSchedule = (id) => {
     dispatch(addOrder(id))
     setIdSchedule(id)
+  }
+  
+  const scheduleInfo = useSelector(state => state.order.scheduleInfo)
+  const [wrongMsg, setWrongMsg] = useState(false)
+  const bookNow = () => {
+    setWrongMsg(false)
+    if (scheduleInfo === 0) {
+      return setWrongMsg(true)
+    }
+    navigate("/order")
   }
   return (
     <>
@@ -351,12 +363,13 @@ function MovieDetail() {
             </p>
           </div>
           <div>
-            <Link
-              to="/order"
+            {wrongMsg && <p className="text-red-500 mb-8 flex justify-center">Must select cinema</p>}
+            <div
+              onClick={bookNow}
               className="text-sm text-light bg-primary py-5 px-16 justify-self: center rounded-md focus:ring-2"
             >
               Book Now
-            </Link>
+            </div>
           </div>
         </div>
       </section>
