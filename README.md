@@ -1,6 +1,6 @@
 # Tickitz Frontend
 
-A project coffe shop, build with using React JS & TailwindCSS
+A project Movie Ticket, build with using React JS & TailwindCSS
 
 ---
 
