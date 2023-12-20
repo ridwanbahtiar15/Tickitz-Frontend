@@ -2,6 +2,15 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
     scheduleInfo: 0,
+    orderInfo: {
+        schedules: "",
+        seats: "",
+        total_ticket: 0,
+        total_purchase: 0,
+        payment: "",
+        paid: false
+    },
+    chooseSeat: []
 };
 
 const orderSlice = createSlice({
@@ -10,16 +19,44 @@ const orderSlice = createSlice({
     reducers: {
         addOrder(state, {payload}) {
             return {
+                ...state,
                 scheduleInfo: payload,
             };
         },
         cleanOrder(state) {
             return {
-                scheduleInfo
+                scheduleInfo: 0,
+                orderInfo: {
+                    schedules: "",
+                    seats: "",
+                    total_ticket: 0,
+                    total_purchase: 0,
+                    payment: ""
+                },
+                chooseSeat: []
             }
-        }
+        },
+        addOrderTransaction(state, {payload}) {
+            return {
+                ...state,
+                orderInfo: {
+                    schedules: payload.schedules,
+                    seats: payload.seats,
+                    total_ticket: payload.total_ticket,
+                    total_purchase: payload.total_purchase,
+                    payment: payload.payment,
+                    paid: false
+                }
+            };
+        },
+        addSeat(state, {payload}) {
+            return {
+                ...state,
+                chooseSeat: [...state.chooseSeat, payload],
+            };
+        },
     },
 });
 
-export const { addOrder, cleanOrder } = orderSlice.actions;
+export const { addOrder, cleanOrder, addOrderTransaction, addSeat } = orderSlice.actions;
 export default orderSlice.reducer;

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 
 import "../styles/main.css";
@@ -8,8 +8,39 @@ import getImageUrl from "../utils/imageGetter";
 import DropdownMobile from "../components/DropdownMobile";
 import ItemSeat from "../components/ItemSeat";
 
+import { getScheduleDetail } from "../utils/https/order";
+import { useSelector } from "react-redux";
+
 function Order() {
   const [isDropdownShown, setIsDropdownShow] = useState(false);
+  const orderRedux = useSelector(state => state.order)
+  const scheduleId = orderRedux.scheduleInfo
+  const seat = orderRedux.chooseSeat
+
+  const token = useSelector(state => state.user.userInfo.token)
+  const [dataSchedule, setDataSchedule] = useState({})
+  useEffect(() => {
+    getScheduleDetail(scheduleId, token)
+    .then((res) => {
+      setDataSchedule(res.data.data[0])
+      console.log(res)
+    })
+    .catch((err) => {
+      console.log(err)
+    })
+  }, [])
+  const dataOrder = {
+    schedules: scheduleId,
+    seats: seat.join(','),
+    total_ticket: 10000,
+    total_purchase: 10000,
+    payment: "Gopay"
+  }
+  const dataSeats = "A1, A2"
+  let seatsArray
+  if (dataSeats) {
+    seatsArray = dataSeats.replace(/\s/g, '').split(',');
+  }
   return (
     <>
       <Navbar isClick={() => setIsDropdownShow(true)} />
@@ -44,10 +75,10 @@ function Order() {
           <div className="w-full lg:w-4/6 bg-light py-8 px-5 rounded-md">
             <div className="py-3 px-6 border border-[#DEDEDE] flex flex-col gap-y-4 md:flex-row md:gap-x-6 justify-between rounded-sm">
               <div className="flex flex-col gap-y-4 md:flex-row md:gap-x-4">
-                <img src={getImageUrl("spiderman", "png")} alt="movie" />
+                <img src={dataSchedule && dataSchedule.movie_photo} alt="movie" />
                 <div className="flex flex-col gap-y-3">
                   <p className="text-2xl text-[#121212] font-semibold">
-                    Spider-Man: Homecoming
+                  {dataSchedule && dataSchedule.movie_name}
                   </p>
                   <div className="flex flex-row gap-x-2">
                     <p className="text-[#A0A3BD] px-5 py-2 bg-[#A0A3BD1A] rounded-[20px]">
@@ -57,7 +88,7 @@ function Order() {
                       Adventure
                     </p>
                   </div>
-                  <p className="text-[#121212]">Regular - 13:00 PM</p>
+                  <p className="text-[#121212]">Regular - {dataSchedule && dataSchedule.time}</p>
                 </div>
               </div>
               <Link
@@ -71,7 +102,7 @@ function Order() {
               <p className="text-2xl font-bold">Chose Your Seet</p>
               <div className="px-4 overflow-auto w-full">
                 <div className="mb-20"></div>
-                <ItemSeat />
+                <ItemSeat seats={seatsArray}/>
                 <p className="mt-6 text-[#000] text-[18px] font-semibold">
                   Seating Key
                 </p>
@@ -105,23 +136,38 @@ function Order() {
           <div className="w-full lg:w-2/6 flex flex-col items-stretch">
             <div className="bg-light rounded-md drop-shadow-xl mb-8">
               <div className="flex flex-col items-center justify-center gap-y-2 py-8 px-5">
-                <img src={getImageUrl("CineOne", "svg")} alt="cinema" />
+                {/* <img src={getImageUrl("CineOne", "svg")} alt="cinema" /> */}
+                {dataSchedule.cinema === "ebu.id" && 
+                  <img src={getImageUrl("ebv.id", "svg")} alt="cinema" />
+                  }
+                  {dataSchedule.cinema === "hiflix" && 
+                  <img src={getImageUrl("hiflix3", "svg")} alt="cinema" />
+                  }
+                  {dataSchedule.cinema === "XX1" && 
+                  <img src={getImageUrl("hiflix3", "svg")} alt="cinema" />
+                  }
+                  {dataSchedule.cinema === "Cineplex" && 
+                  <img src={getImageUrl("CineOne", "svg")} alt="cinema" />
+                  }
+                  {dataSchedule.cinema === "CineOne21" && 
+                  <img src={getImageUrl("CineOne", "svg")} alt="cinema" />
+                  }
                 <p className="text-2xl tex-dark font-semibold">
-                  CineOne21 Cinema
+                {dataSchedule && dataSchedule.cinema}
                 </p>
               </div>
               <div className="text-sm flex flex-col gap-y-4 py-4 px-5">
                 <div className="flex justify-between">
                   <p className="text-[#6B6B6B]">Movie Selected</p>
-                  <p className="font-semibold">Spider-Man: Homecoming</p>
+                  <p className="font-semibold">{dataSchedule && dataSchedule.movie_name}</p>
                 </div>
                 <div className="flex justify-between">
                   <p className="text-[#6B6B6B]">Tuesday, 07 July 2020</p>
-                  <p className="font-semibold">S13:00pm</p>
+                  <p className="font-semibold">{dataSchedule && dataSchedule.time}</p>
                 </div>
                 <div className="flex justify-between">
                   <p className="text-[#6B6B6B]">One ticket price</p>
-                  <p className="font-semibold">$10</p>
+                  <p className="font-semibold">IDR {dataSchedule && dataSchedule.price}</p>
                 </div>
                 <div className="flex justify-between">
                   <p className="text-[#6B6B6B]">Seat choosed</p>
