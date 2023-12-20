@@ -1,6 +1,7 @@
+/* eslint-disable no-unused-vars */
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { loginUser, logOutUser } from "../../utils/https/login";
-// import { registerUser } from "../../utils/https/register";
+import { registerUser } from "../../utils/https/register";
 
 const initialState = {
   isUserAvailable: false,
@@ -52,21 +53,21 @@ const logoutThunk = createAsyncThunk(
   }
 );
 
-// const registerThunk = createAsyncThunk(
-//   "users/register",
-//   async (body, { rejectWithValue }) => {
-//     try {
-//       const { data } = await registerUser(body);
-//       return data.data;
-//     } catch (err) {
-//       const errObj = {
-//         status: err.response.status,
-//         message: err.response.data.msg,
-//       };
-//       return rejectWithValue(errObj);
-//     }
-//   }
-// );
+const registerThunk = createAsyncThunk(
+  "users/register",
+  async (body, { rejectWithValue }) => {
+    try {
+      const { data } = await registerUser(body);
+      return data.data;
+    } catch (err) {
+      const errObj = {
+        status: err.response.status,
+        message: err.response.data.msg,
+      };
+      return rejectWithValue(errObj);
+    }
+  }
+);
 
 const userSlice = createSlice({
   name: "user",
@@ -102,6 +103,67 @@ const userSlice = createSlice({
           isFulfilled: true,
           userInfo: payload,
         };
+      })
+      .addCase(logoutThunk.pending, (prevState) => {
+        return {
+          ...prevState,
+          isPending: true,
+          isRejected: false,
+          isFulfilled: false,
+          err: null,
+        };
+      })
+      .addCase(logoutThunk.rejected, (prevState, { payload }) => {
+        return {
+          ...prevState,
+          isPending: false,
+          isRejected: true,
+          err: {
+            ...prevState.err,
+            logout: payload,
+          },
+        };
+      })
+      .addCase(logoutThunk.fulfilled, (prevState, { payload }) => {
+        return {
+          ...prevState,
+          isUserAvailable: false,
+          isPending: false,
+          isFulfilled: true,
+          token: null,
+          userInfo: null,
+        };
+      })
+      .addCase(registerThunk.pending, (prevState) => {
+        return {
+          ...prevState,
+          isPending: true,
+          isRejected: false,
+          isFulfilled: false,
+          err: {
+            ...prevState.err,
+            register: null,
+          },
+        };
+      })
+      .addCase(registerThunk.rejected, (prevState, { payload }) => {
+        return {
+          ...prevState,
+          isPending: false,
+          isRejected: true,
+          err: {
+            ...prevState.err,
+            register: payload,
+          },
+        };
+      })
+      .addCase(registerThunk.fulfilled, (prevState, { payload }) => {
+        return {
+          ...prevState,
+          isPending: false,
+          isFulfilled: true,
+          userInfo: payload,
+        };
       });
   },
 });
@@ -110,6 +172,7 @@ export const userAction = {
   ...userSlice.actions,
   loginThunk,
   logoutThunk,
+  registerThunk,
 };
 
 export default userSlice.reducer;

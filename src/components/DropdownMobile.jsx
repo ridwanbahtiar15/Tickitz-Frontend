@@ -1,8 +1,28 @@
 /* eslint-disable react/prop-types */
 import getImageUrl from "../utils/imageGetter";
 import { Link } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { userAction } from "../redux/slices/user";
 
 function DropdownMobile(props) {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const userAvailable = useSelector((state) => state.user.isUserAvailable);
+  const user = useSelector((state) => state.user);
+  const token = user.userInfo.token;
+
+  const onLogOutHandler = () => {
+    const { logoutThunk } = userAction;
+    dispatch(
+      logoutThunk({
+        token,
+        cb: () => {
+          navigate("/login");
+        },
+      })
+    );
+  };
   return (
     <div id="dropdownMobile" className="w-screen font-mulish lg:hidden">
       <div
@@ -30,12 +50,26 @@ function DropdownMobile(props) {
           <li className="p-3 text-dark hover:bg-primary hover:text-light hover:font-medium rounded-md md:text-lg">
             <Link to="/login">Movie</Link>
           </li>
-          <li className="p-3 text-dark hover:bg-primary hover:text-light hover:font-medium rounded-md md:text-lg">
-            <Link to="/login">SignIn</Link>
-          </li>
-          <li className="p-3 text-dark hover:bg-primary hover:text-light hover:font-medium rounded-md md:text-lg">
-            <Link to="/login">SignUp</Link>
-          </li>
+          {!userAvailable && (
+            <li className="p-3 text-dark hover:bg-primary hover:text-light hover:font-medium rounded-md md:text-lg">
+              <Link to="/login">SignIn</Link>
+            </li>
+          )}
+          {!userAvailable && (
+            <li className="p-3 text-dark hover:bg-primary hover:text-light hover:font-medium rounded-md md:text-lg">
+              <Link to="/login">SignUp</Link>
+            </li>
+          )}
+          {userAvailable && (
+            <li className="p-3 text-dark hover:bg-primary hover:text-light hover:font-medium rounded-md md:text-lg">
+              <Link to="/profile">Profile</Link>
+            </li>
+          )}
+          {userAvailable && (
+            <li className="p-3 text-dark hover:bg-primary hover:text-light hover:font-medium rounded-md md:text-lg">
+              <button onClick={onLogOutHandler}>Logout</button>
+            </li>
+          )}
         </ul>
       </div>
     </div>

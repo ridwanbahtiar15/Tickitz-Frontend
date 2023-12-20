@@ -16,7 +16,7 @@ function Home() {
   const [genre, setGenre] = useState("");
   const [movie, setDataMovie] = useState([]);
   const token = useSelector((state) => state.user.userInfo.token);
-  const [searchParams, setSearchParams] = useSearchParams({});
+  const [, setSearchParams] = useSearchParams({});
   const getMovieUrl = import.meta.env.VITE_BACKEND_HOST + "/movie";
   useEffect(() => {
     getAllMovie(token, getMovieUrl)

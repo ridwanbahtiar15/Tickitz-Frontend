@@ -184,7 +184,11 @@ function Profile() {
                 </p>
               </Link>
             </div>
-            <form onSubmit={submitHandler} encType="multipart/form-data">
+            <form
+              onSubmit={submitHandler}
+              encType="multipart/form-data"
+              className="flex flex-col gap-y-7"
+            >
               <div className="bg-light rounded-3xl h-full px-6 md:px-12 py-10">
                 <p className="text-dark mb-4">Details Information</p>
                 <div className="w-full h-[1px] bg-[#DEDEDE] mb-8"></div>

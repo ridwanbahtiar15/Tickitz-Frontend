@@ -7,14 +7,18 @@ import Payment from "./pages/Payment";
 import TicketResult from "./pages/TicketResult";
 import Profile from "./pages/Profile";
 import OrderHistory from "./pages/OrderHistory";
-// import AddMovie from "./pages/AddMovie";
 import Login from "./pages/Login";
 // import Register from "./pages/Register";
+import Private from "./components/Private";
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Home />,
+    element: (
+      <Private>
+        <Home />
+      </Private>
+    ),
   },
   {
     path: "/login",
@@ -22,27 +26,51 @@ const router = createBrowserRouter([
   },
   {
     path: "/movie/:id",
-    element: <MovieDetail />,
+    element: (
+      <Private>
+        <MovieDetail />
+      </Private>
+    ),
   },
   {
     path: "/order",
-    element: <Order />,
+    element: (
+      <Private>
+        <Order />
+      </Private>
+    ),
   },
   {
     path: "/payment",
-    element: <Payment />,
+    element: (
+      <Private>
+        <Payment />
+      </Private>
+    ),
   },
   {
     path: "/ticketresult",
-    element: <TicketResult />,
+    element: (
+      <Private>
+        <TicketResult />
+      </Private>
+    ),
   },
   {
     path: "/profile",
-    element: <Profile />,
+    element: (
+      <Private>
+        <Profile />
+      </Private>
+    ),
   },
   {
     path: "/orderhistory",
-    element: <OrderHistory />,
+    element: (
+      <Private>
+        <OrderHistory />
+      </Private>
+    ),
   },
 ]);
 

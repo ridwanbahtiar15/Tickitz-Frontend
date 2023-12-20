@@ -2,10 +2,31 @@
 // import React from "react";
 import { Link } from "react-router-dom";
 import getImageUrl from "../utils/imageGetter";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { useState } from "react";
+import { userAction } from "../redux/slices/user";
+import { useNavigate } from "react-router-dom";
 
 function Navbar(props) {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
   const userAvailable = useSelector((state) => state.user.isUserAvailable);
+  const [arrow, setArrow] = useState(false);
+  const user = useSelector((state) => state.user);
+  const token = user.userInfo.token;
+
+  const onLogOutHandler = () => {
+    const { logoutThunk } = userAction;
+    dispatch(
+      logoutThunk({
+        token,
+        cb: () => {
+          navigate("/login");
+        },
+      })
+    );
+  };
+
   return (
     <nav className="w-full flex justify-between py-4 px-5 items-center font-montserrat bg-light md:px-11 lg:px-11 xl:px-[130px] border-b border-[#E8E8E8] font-mulish">
       <div className="nav-start">
@@ -60,6 +81,25 @@ function Navbar(props) {
               className="rounded-full w-[56px] h-[56px] cursor-pointer"
             />
           </Link>
+          <img
+            src={getImageUrl("Forward", "svg")}
+            alt="icon"
+            className="cursor-pointer"
+            onClick={() => setArrow((state) => !state)}
+          />
+        </div>
+      )}
+      {userAvailable && (
+        <div
+          className={`absolute text-dark bg-light text-sm font-normal py-2 px-6 top-24 right-[8rem] rounded-md drop-shadow-md ${
+            arrow ? "" : "hidden"
+          }`}
+        >
+          <ul className="flex flex-col gap-y-2">
+            <li className="p-1">
+              <button onClick={onLogOutHandler}>Logout</button>
+            </li>
+          </ul>
         </div>
       )}
       <button className="lg:hidden" onClick={() => props.isClick()}>
