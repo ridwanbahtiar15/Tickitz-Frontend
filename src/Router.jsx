@@ -5,42 +5,72 @@ import MovieDetail from "./pages/MovieDetail";
 import Order from "./pages/Order";
 import Payment from "./pages/Payment";
 import TicketResult from "./pages/TicketResult";
-import AddMovie from "./pages/AddMovie";
+import Profile from "./pages/Profile";
+import OrderHistory from "./pages/OrderHistory";
 import Login from "./pages/Login";
-import Register from "./pages/Register";
+// import Register from "./pages/Register";
+import Private from "./components/Private";
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Home />,
+    element: (
+      <Private>
+        <Home />
+      </Private>
+    ),
   },
   {
     path: "/login",
     element: <Login />,
   },
   {
-    path: "/register",
-    element: <Register />,
-  },
-  {
     path: "/movie/:id",
-    element: <MovieDetail />,
+    element: (
+      <Private>
+        <MovieDetail />
+      </Private>
+    ),
   },
   {
     path: "/order",
-    element: <Order />,
+    element: (
+      <Private>
+        <Order />
+      </Private>
+    ),
   },
   {
     path: "/payment",
-    element: <Payment />,
+    element: (
+      <Private>
+        <Payment />
+      </Private>
+    ),
   },
   {
     path: "/ticketresult",
-    element: <TicketResult />,
+    element: (
+      <Private>
+        <TicketResult />
+      </Private>
+    ),
   },
   {
-    path: "/addmovie",
-    element: <AddMovie />,
+    path: "/profile",
+    element: (
+      <Private>
+        <Profile />
+      </Private>
+    ),
+  },
+  {
+    path: "/orderhistory",
+    element: (
+      <Private>
+        <OrderHistory />
+      </Private>
+    ),
   },
 ]);
 

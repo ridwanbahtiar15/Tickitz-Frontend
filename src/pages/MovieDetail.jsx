@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { getMovieDetail } from "../utils/https/movieDetail";
-import {useNavigate, useParams} from "react-router-dom"
+import { useParams } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 
 import "../styles/main.css";
@@ -12,7 +12,6 @@ import DropdownMobile from "../components/DropdownMobile";
 
 import { addOrder,cleanOrder } from "../redux/slices/order";
 
-
 function MovieDetail() {
   let { id } = useParams();
   const dispatch = useDispatch();
@@ -22,9 +21,9 @@ function MovieDetail() {
 
 
   const [isDropdownShown, setIsDropdownShow] = useState(false);
-  const [dataMovie, setDataMovie] = useState([])
+  const [dataMovie, setDataMovie] = useState([]);
   const [dataSchedule, setDataSchedule] = useState([]);
-  const [cinemaPage, setCinemaPage] = useState(0)
+  const [cinemaPage] = useState(0);
 
   const [isDate, setIsDate] = useState(false);
   const [dateMovie, setDate] = useState("Set Date");
@@ -40,15 +39,15 @@ function MovieDetail() {
     dispatch(cleanOrder())
     const getMovieDetailUrl = import.meta.env.VITE_BACKEND_HOST + "/movie/movie/" + id
     getMovieDetail(getMovieDetailUrl, token)
-    .then((res) => {
-      setDataMovie(res.data.data.movie)
-      setDataSchedule(res.data.data.schedule)
-      // console.log(res)
-    })
-    .catch((err) => {
-      console.log(err)
-    })
-  }, [])
+      .then((res) => {
+        setDataMovie(res.data.data.movie);
+        setDataSchedule(res.data.data.schedule);
+        // console.log(res)
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
 
   const setSchedule = (id) => {
     dispatch(addOrder(id))
@@ -64,17 +63,24 @@ function MovieDetail() {
     }
     navigate("/order")
   }
+
   return (
     <>
       <Navbar isClick={() => setIsDropdownShow(true)} />
-      <header className="hidden lg:block w-full h-[415px] font-mulish text-light bg-[url('https://res.cloudinary.com/dhxdnljzm/image/upload/v1702660673/hero2_o5dgxn.png')] relative bg-cover bg-center">
+      <header className="hidden lg:block w-full h-[300px] font-mulish text-light bg-[url('https://res.cloudinary.com/dhxdnljzm/image/upload/v1702660673/hero2_o5dgxn.png')] relative bg-cover bg-center">
         <div className="w-full h-full  px-11 xl:px-[130px] absolute bg-black bg-opacity-40"></div>
       </header>
-      <section className="px-5 md:px-11 xl:px-[130px] font-mulish lg:-top-40 lg:relative flex flex-col gap-y-7 mt-10">
+      <section className="px-5 md:px-11 xl:px-[130px] font-mulish lg:-top-40 flex flex-col gap-y-7 mt-10">
         <div className="flex flex-col gap-y-4 md:flex-row md:gap-x-5">
-          {dataMovie && dataMovie[0] ? <img src={dataMovie[0].movie_photo} alt="movie" /> : <img src={getImageUrl("movie4", "png")} alt="movie" />}
-          <div className="flex flex-col gap-y-4 justify-center lg:justify-end">
-            <p className="text-[2rem] text-dark font-bold">{dataMovie && dataMovie[0] && dataMovie[0].movie_name}</p>
+          {dataMovie && dataMovie[0] ? (
+            <img src={dataMovie[0].movie_photo} alt="movie" />
+          ) : (
+            <img src={getImageUrl("movie4", "png")} alt="movie" />
+          )}
+          <div className="flex flex-col gap-y-4 justify-center">
+            <p className="text-[2rem] text-dark font-bold">
+              {dataMovie && dataMovie[0] && dataMovie[0].movie_name}
+            </p>
             <div className="flex flex-row gap-x-2">
               <p className="text-[#A0A3BD] px-5 py-2 bg-[#A0A3BD1A] rounded-[20px]">
                 Action
@@ -86,20 +92,26 @@ function MovieDetail() {
             <div className="grid grid-cols-3 gap-4">
               <div className="flex flex-col gap-y-2">
                 <p className="text-sm text-[#8692A6]">Release Date</p>
-                <p className="text-[#ac7979]">{dataMovie && dataMovie[0] && dataMovie[0].release_date}</p>
+                <p className="text-[#ac7979]">
+                  {dataMovie && dataMovie[0] && dataMovie[0].release_date}
+                </p>
               </div>
               <div className="flex flex-col gap-y-2 col-span-2">
                 <p className="text-sm text-[#8692A6]">Directed By</p>
-                <p className="text-[#121212]">{dataMovie && dataMovie[0] && dataMovie[0].director}</p>
+                <p className="text-[#121212]">
+                  {dataMovie && dataMovie[0] && dataMovie[0].director}
+                </p>
               </div>
               <div className="flex flex-col gap-y-2">
                 <p className="text-sm text-[#8692A6]">Duration</p>
-                <p className="text-[#121212]">{dataMovie && dataMovie[0] && dataMovie[0].duration}</p>
+                <p className="text-[#121212]">
+                  {dataMovie && dataMovie[0] && dataMovie[0].duration}
+                </p>
               </div>
               <div className="flex flex-col gap-y-2 col-span-2">
                 <p className="text-sm text-[#8692A6]">Casts</p>
                 <p className="text-[#121212]">
-                {dataMovie && dataMovie[0] && dataMovie[0].cast}
+                  {dataMovie && dataMovie[0] && dataMovie[0].cast}
                 </p>
               </div>
             </div>
@@ -161,17 +173,21 @@ function MovieDetail() {
                         24/07/23
                       </p>
                     </div> */}
-                    {dataSchedule && dataSchedule.map((date, index) => (
-                      <div className="flex gap-x-4" key={index}
-                      onClick={() => {
-                        setDate(date.date);
-                        setIsDate((state) => !state);
-                            }}>
-                        <p className="text-xs lg:text-base text-secondary font-semibold">
-                          {date.date}
-                        </p>
-                      </div>
-                    ))}
+                    {dataSchedule &&
+                      dataSchedule.map((date, index) => (
+                        <div
+                          className="flex gap-x-4"
+                          key={index}
+                          onClick={() => {
+                            setDate(date.date);
+                            setIsDate((state) => !state);
+                          }}
+                        >
+                          <p className="text-xs lg:text-base text-secondary font-semibold">
+                            {date.date}
+                          </p>
+                        </div>
+                      ))}
                   </div>
                 </div>
               )}
@@ -217,26 +233,27 @@ function MovieDetail() {
                         19:30 PM
                       </p>
                     </div> */}
-                    {dataSchedule && dataSchedule.map((date, index) => {
-                      if (date.date === dateMovie) {
-                        return (
-                          <div
-                            className="flex gap-x-4"
-                            key={index}
-                            onClick={() => {
-                              setTime(date.time);
-                              setIsTime((state) => !state);
-                            }}
-                          >
-                            <p className="text-xs lg:text-base text-secondary font-semibold">
-                              {date.time}
-                            </p>
-                          </div>
-                        );
-                      } else {
-                        return null;
-                      }
-                    })}
+                    {dataSchedule &&
+                      dataSchedule.map((date, index) => {
+                        if (date.date === dateMovie) {
+                          return (
+                            <div
+                              className="flex gap-x-4"
+                              key={index}
+                              onClick={() => {
+                                setTime(date.time);
+                                setIsTime((state) => !state);
+                              }}
+                            >
+                              <p className="text-xs lg:text-base text-secondary font-semibold">
+                                {date.time}
+                              </p>
+                            </div>
+                          );
+                        } else {
+                          return null;
+                        }
+                      })}
                   </div>
                 </div>
               )}
@@ -320,24 +337,43 @@ function MovieDetail() {
                     return (
                       <div
                         key={index}
-                        onClick={() => {setSchedule(date.ID)}}
-                        className={`p-7 ${idSchedule === date.ID ? "bg-primary" : "bg-gray-400" }  border-2 border-[#DEDEDE] rounded-md md:w-1/4 flex justify-center items-center`}
+                        onClick={() => {
+                          setSchedule(date.ID);
+                        }}
+                        className={`p-7 ${
+                          idSchedule === date.ID ? "bg-primary" : "bg-gray-400"
+                        }  border-2 border-[#DEDEDE] rounded-md md:w-1/4 flex justify-center items-center`}
                       >
-                        {date.cinema === "ebu.id" && 
-                        <img src={getImageUrl("ebv.id", "svg")} alt="cinema" />
-                        }
-                        {date.cinema === "hiflix" && 
-                        <img src={getImageUrl("hiflix3", "svg")} alt="cinema" />
-                        }
-                        {date.cinema === "XX1" && 
-                        <img src={getImageUrl("hiflix3", "svg")} alt="cinema" />
-                        }
-                        {date.cinema === "Cineplex" && 
-                        <img src={getImageUrl("CineOne", "svg")} alt="cinema" />
-                        }
-                        {date.cinema === "CineOne21" && 
-                        <img src={getImageUrl("CineOne", "svg")} alt="cinema" />
-                        }
+                        {date.cinema === "ebu.id" && (
+                          <img
+                            src={getImageUrl("ebv.id", "svg")}
+                            alt="cinema"
+                          />
+                        )}
+                        {date.cinema === "hiflix" && (
+                          <img
+                            src={getImageUrl("hiflix3", "svg")}
+                            alt="cinema"
+                          />
+                        )}
+                        {date.cinema === "XX1" && (
+                          <img
+                            src={getImageUrl("hiflix3", "svg")}
+                            alt="cinema"
+                          />
+                        )}
+                        {date.cinema === "Cineplex" && (
+                          <img
+                            src={getImageUrl("CineOne", "svg")}
+                            alt="cinema"
+                          />
+                        )}
+                        {date.cinema === "CineOne21" && (
+                          <img
+                            src={getImageUrl("CineOne", "svg")}
+                            alt="cinema"
+                          />
+                        )}
                         {/* <img src={date.cinema === "ebu.id" && getImageUrl("ebv.id", "svg") || date.cinema === "hiflix" || "XX1" && getImageUrl("hiflix3", "svg") || date.cinema === "Cineplex" || "CineOne21" && getImageUrl("CineOne", "svg")} alt="cinema" /> */}
                       </div>
                     );

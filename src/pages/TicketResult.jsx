@@ -86,14 +86,14 @@ function TicketResult() {
           <div className="flex flex-col gap-y-2 items-center">
             <button
               to="/order"
-              className="font-bold text-primary bg-none border border-primary py-4 px-24 rounded-md focus:ring-2 flex justify-center gap-x-4 w-[80%]"
+              className="font-bold text-primary bg-none border border-primary py-4 px-24 rounded-md focus:ring-2 flex justify-center gap-x-4 w-full"
             >
               <img src={getImageUrl("download", "png")} alt="icon" />
               Download
             </button>
             <button
               to="/order"
-              className="font-bold text-light bg-primary border border-primary py-4 px-24 rounded-md focus:ring-2 w-[80%]"
+              className="font-bold text-light bg-primary border border-primary py-4 px-24 rounded-md focus:ring-2 w-full"
             >
               Done
             </button>
