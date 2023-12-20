@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+// import { Link } from "react-router-dom";
 
 import "../styles/main.css";
 import Navbar from "../components/Navbar";
@@ -13,61 +13,67 @@ import { movieCard } from "../components/MovieCard";
 
 function Home() {
   const [isDropdownShown, setIsDropdownShow] = useState(false);
-  const [genre, setGenre] = useState("")
-  const [movie, setDataMovie] = useState([])
-  const token = useSelector(state => state.user.userInfo.token)
-  const [searchParams, setSearchParams] = useSearchParams({});
-  const getMovieUrl = import.meta.env.VITE_BACKEND_HOST + "/movie"
+  const [genre, setGenre] = useState("");
+  const [movie, setDataMovie] = useState([]);
+  const token = useSelector((state) => state.user.userInfo.token);
+  const [, setSearchParams] = useSearchParams({});
+  const getMovieUrl = import.meta.env.VITE_BACKEND_HOST + "/movie";
   useEffect(() => {
     getAllMovie(token, getMovieUrl)
-    .then((res) => {
-      // console.log(res)
-      setDataMovie(res.data.data)
-    })
-    .catch((err) => {
-      console.log(err)
-    })
-  }, [])
+      .then((res) => {
+        // console.log(res)
+        setDataMovie(res.data.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
   const search = (e) => {
-    e.preventDefault()
-    const url = import.meta.env.VITE_BACKEND_HOST + "/movie?movie_name=" + e.target.search_movie.value
+    e.preventDefault();
+    const url =
+      import.meta.env.VITE_BACKEND_HOST +
+      "/movie?movie_name=" +
+      e.target.search_movie.value;
     setSearchParams({
-      movie_name : e.target.search_movie.value
-    })
-    setGenre("")
+      movie_name: e.target.search_movie.value,
+    });
+    setGenre("");
     if (!e.target.search_movie.value) {
-      setSearchParams({})
+      setSearchParams({});
     }
     getAllMovie(token, url)
-    .then((res) => {
-      // console.log(res)
-      setDataMovie(res.data.data)
-    })
-    .catch((err) => {
-      console.log(err)
-      setDataMovie([])
-    })
-  }
+      .then((res) => {
+        // console.log(res)
+        setDataMovie(res.data.data);
+      })
+      .catch((err) => {
+        console.log(err);
+        setDataMovie([]);
+      });
+  };
   const submitGenre = (e) => {
-    e.preventDefault()
-    setGenre(e.target.value)
+    e.preventDefault();
+    setGenre(e.target.value);
     setSearchParams((prev) => {
       return {
         ...prev,
-        movie_genre: e.target.value,    
-      }
-    })
-    const genreUrl = import.meta.env.VITE_BACKEND_HOST + "/movie?movie_genre=" + e.target.value
+        movie_genre: e.target.value,
+      };
+    });
+    const genreUrl =
+      import.meta.env.VITE_BACKEND_HOST +
+      "/movie?movie_genre=" +
+      e.target.value;
     getAllMovie(token, genreUrl)
-    .then((res) => {
-      console.log(res)
-      setDataMovie(res.data.data)
-    })
-    .catch((err) => {
-      console.log(err)
-      setDataMovie([])
-    })
-  }
+      .then((res) => {
+        console.log(res);
+        setDataMovie(res.data.data);
+      })
+      .catch((err) => {
+        console.log(err);
+        setDataMovie([]);
+      });
+  };
   return (
     <>
       <Navbar isClick={() => setIsDropdownShow(true)} />
@@ -108,38 +114,82 @@ function Home() {
           <div className="flex flex-col gap-y-4 lg:gap-y-7">
             <p className="text-secondary font-semibold">Filter</p>
             <div className="flex flex-col md:flex-row md:gap-x-8 md:items-center text-sm font-nunito font-semibold">
-              <button value="Thriller" className={`py-2 px-4 ${genre === "Thriller" ? "bg-primary text-light" : "text-secondary "} rounded-[10px] cursor-pointer`} onClick={submitGenre}>
+              <button
+                value="Thriller"
+                className={`py-2 px-4 ${
+                  genre === "Thriller"
+                    ? "bg-primary text-light"
+                    : "text-secondary "
+                } rounded-[10px] cursor-pointer`}
+                onClick={submitGenre}
+              >
                 Thriller
               </button>
-              <button value="Horror" className={`py-2 px-4 ${genre === "Horror" ? "bg-primary text-light" : "text-secondary "} rounded-[10px] cursor-pointer`} onClick={submitGenre}>Horror</button>
-              <button value="Romantic" className={`py-2 px-4 ${genre === "Romantic" ? "bg-primary text-light" : "text-secondary "} rounded-[10px] cursor-pointer`} onClick={submitGenre}>
+              <button
+                value="Horror"
+                className={`py-2 px-4 ${
+                  genre === "Horror"
+                    ? "bg-primary text-light"
+                    : "text-secondary "
+                } rounded-[10px] cursor-pointer`}
+                onClick={submitGenre}
+              >
+                Horror
+              </button>
+              <button
+                value="Romantic"
+                className={`py-2 px-4 ${
+                  genre === "Romantic"
+                    ? "bg-primary text-light"
+                    : "text-secondary "
+                } rounded-[10px] cursor-pointer`}
+                onClick={submitGenre}
+              >
                 Romantic
               </button>
-              <button value="Adventure" className={`py-2 px-4 ${genre === "Adventure" ? "bg-primary text-light" : "text-secondary "} rounded-[10px] cursor-pointer`} onClick={submitGenre}>
+              <button
+                value="Adventure"
+                className={`py-2 px-4 ${
+                  genre === "Adventure"
+                    ? "bg-primary text-light"
+                    : "text-secondary "
+                } rounded-[10px] cursor-pointer`}
+                onClick={submitGenre}
+              >
                 Adventure
               </button>
-              <button value="Sci fi" className={`py-2 px-4 ${genre === "Sci fi" ? "bg-primary text-light" : "text-secondary "} rounded-[10px] cursor-pointer`} onClick={submitGenre}>Sci-Fi</button>
+              <button
+                value="Sci fi"
+                className={`py-2 px-4 ${
+                  genre === "Sci fi"
+                    ? "bg-primary text-light"
+                    : "text-secondary "
+                } rounded-[10px] cursor-pointer`}
+                onClick={submitGenre}
+              >
+                Sci-Fi
+              </button>
             </div>
           </div>
         </div>
       </section>
       <section className="pb-[63px] px-5 md:px-11 xl:px-[130px] font-mulish">
         <div className="grid md:grid-cols-3 lg:grid-cols-4 md:gap-5">
-        {movie ? (
-          movie.map((product, index) => (
-            <div key={index}>
-              {movieCard({
+          {movie ? (
+            movie.map((product, index) => (
+              <div key={index}>
+                {movieCard({
                   id: product.Id,
                   movie_cover: product.movie_photo,
                   movie_name: product.movie_name,
                 })}
-                </div>
-                ))
-              ) : (
-              <div className='absolute text-xl md:text-2xl lg:text-4xl justify-center font-semibold text-input_border'>
-            No product information available.
-          </div>
-        )}
+              </div>
+            ))
+          ) : (
+            <div className="absolute text-xl md:text-2xl lg:text-4xl justify-center font-semibold text-input_border">
+              No product information available.
+            </div>
+          )}
         </div>
       </section>
       <section className="pb-[63px] flex gap-x-5 justify-center font-nunito font-medium">

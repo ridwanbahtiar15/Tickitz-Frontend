@@ -1,13 +1,12 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import getImageUrl from "../utils/imageGetter";
 import { useNavigate } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import { userAction } from "../redux/slices/user";
 
 function Login() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const statement = useSelector((state) => state.user);
   const [isPwdShown, setIsPwdShown] = useState(false);
   const showPwdHandler = () => {
     setIsPwdShown((state) => !state);
@@ -50,7 +49,7 @@ function Login() {
   };
   return (
     <>
-      <main className="w-full h-screen bg-[url('https://res.cloudinary.com/dhxdnljzm/image/upload/v1702915021/background_wqv5hp.png')] bg-cover bg-center bg-no-repeat">
+      <main className="w-full h-full bg-[url('https://res.cloudinary.com/dhxdnljzm/image/upload/v1702915021/background_wqv5hp.png')] bg-cover bg-center bg-no-repeat">
         <div className="w-full h-full bg-[#00000099] flex items-center justify-center px-4 py-5">
           <div id="White_box" className="font-mulish pb-10">
             <div className="flex justify-center">
@@ -64,8 +63,10 @@ function Login() {
               onSubmit={submitHandler}
               className="bg-white flex flex-col gap-4 px-14 py-14 rounded-md text-sm"
             >
-              <p className="text-[2rem] font-bold">Welcome Back👋</p>
-              <p className="text-[#A0A3BD] text-[18px]">
+              <p className="text-2xl md:text-[2rem] font-bold">
+                Welcome Back👋
+              </p>
+              <p className="text-base text-[#A0A3BD] md:text-[18px]">
                 Sign in with your data that you entered during your registration
               </p>
               <div id="Email">
