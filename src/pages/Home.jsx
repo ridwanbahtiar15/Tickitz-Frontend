@@ -14,6 +14,7 @@ import { movieCard } from "../components/MovieCard";
 function Home() {
   const [isDropdownShown, setIsDropdownShow] = useState(false);
   const [genre, setGenre] = useState("");
+  const [isGenre, setIsGenre] = useState(false);
   const [movie, setDataMovie] = useState([]);
   const token = useSelector((state) => state.user.userInfo.token);
   const [, setSearchParams] = useSearchParams({});
@@ -21,11 +22,10 @@ function Home() {
   useEffect(() => {
     getAllMovie(token, getMovieUrl)
       .then((res) => {
-        // console.log(res)
         setDataMovie(res.data.data);
       })
-      .catch((err) => {
-        console.log(err);
+      .catch(() => {
+        setDataMovie([]);
       });
   }, []);
   const search = (e) => {
@@ -43,34 +43,27 @@ function Home() {
     }
     getAllMovie(token, url)
       .then((res) => {
-        // console.log(res)
         setDataMovie(res.data.data);
       })
-      .catch((err) => {
-        console.log(err);
+      .catch(() => {
         setDataMovie([]);
       });
   };
-  const submitGenre = (e) => {
-    e.preventDefault();
-    setGenre(e.target.value);
+  const submitGenre = (value) => {
+    setGenre(value);
     setSearchParams((prev) => {
       return {
         ...prev,
-        movie_genre: e.target.value,
+        movie_genre: value,
       };
     });
     const genreUrl =
-      import.meta.env.VITE_BACKEND_HOST +
-      "/movie?movie_genre=" +
-      e.target.value;
+      import.meta.env.VITE_BACKEND_HOST + "/movie?movie_genre=" + value;
     getAllMovie(token, genreUrl)
       .then((res) => {
-        console.log(res);
         setDataMovie(res.data.data);
       })
-      .catch((err) => {
-        console.log(err);
+      .catch(() => {
         setDataMovie([]);
       });
   };
@@ -111,71 +104,144 @@ function Home() {
               </button>
             </form>
           </div>
-          <div className="flex flex-col gap-y-4 lg:gap-y-7">
+          <div className="hidden md:flex flex-col gap-y-4 lg:gap-y-7">
             <p className="text-secondary font-semibold">Filter</p>
             <div className="flex flex-col md:flex-row md:gap-x-8 md:items-center text-sm font-nunito font-semibold">
               <button
-                value="Thriller"
                 className={`py-2 px-4 ${
                   genre === "Thriller"
                     ? "bg-primary text-light"
                     : "text-secondary "
                 } rounded-[10px] cursor-pointer`}
-                onClick={submitGenre}
+                onClick={() => submitGenre("Thriller")}
               >
                 Thriller
               </button>
               <button
-                value="Horror"
                 className={`py-2 px-4 ${
                   genre === "Horror"
                     ? "bg-primary text-light"
                     : "text-secondary "
                 } rounded-[10px] cursor-pointer`}
-                onClick={submitGenre}
+                onClick={() => submitGenre("Horror")}
               >
                 Horror
               </button>
               <button
-                value="Romantic"
                 className={`py-2 px-4 ${
                   genre === "Romantic"
                     ? "bg-primary text-light"
                     : "text-secondary "
                 } rounded-[10px] cursor-pointer`}
-                onClick={submitGenre}
+                onClick={() => submitGenre("Romantic")}
               >
                 Romantic
               </button>
               <button
-                value="Adventure"
                 className={`py-2 px-4 ${
                   genre === "Adventure"
                     ? "bg-primary text-light"
                     : "text-secondary "
                 } rounded-[10px] cursor-pointer`}
-                onClick={submitGenre}
+                onClick={() => submitGenre("Adventure")}
               >
                 Adventure
               </button>
               <button
-                value="Sci fi"
                 className={`py-2 px-4 ${
                   genre === "Sci fi"
                     ? "bg-primary text-light"
                     : "text-secondary "
                 } rounded-[10px] cursor-pointer`}
-                onClick={submitGenre}
+                onClick={() => submitGenre("Sci fi")}
               >
                 Sci-Fi
               </button>
             </div>
           </div>
+          <div className="flex flex-col gap-y-4 md:w-1/4 relative z-10">
+            <p className="md:text-[20px] font-semibold text-black">Filter</p>
+            <div
+              className="flex justify-between items-center p-4 px-6 bg-[#EFF0F6] rounded-md cursor-pointer w-full"
+              onClick={() => setIsGenre((state) => !state)}
+            >
+              <p className="text-xs lg:text-base text-secondary font-semibold">
+                {genre}
+              </p>
+              <img src={getImageUrl("Forward", "svg")} alt="icon" />
+            </div>
+            {isGenre && (
+              <div className="flex justify-between items-center p-4 px-6 bg-[#EFF0F6] rounded-md cursor-pointer w-full absolute top-24 drop-shadow-xl">
+                <div className="flex flex-col gap-y-5">
+                  <button
+                    className="flex gap-x-4"
+                    onClick={() => {
+                      submitGenre("Thriller");
+                      setGenre("Thriller");
+                      setIsGenre((state) => !state);
+                    }}
+                  >
+                    <p className="text-xs lg:text-base text-secondary font-semibold">
+                      Thriller
+                    </p>
+                  </button>
+                  <button
+                    className="flex gap-x-4"
+                    onClick={() => {
+                      submitGenre("Horror");
+                      setGenre("Horror");
+                      setIsGenre((state) => !state);
+                    }}
+                  >
+                    <p className="text-xs lg:text-base text-secondary font-semibold">
+                      Horror
+                    </p>
+                  </button>
+                  <button
+                    className="flex gap-x-4"
+                    onClick={() => {
+                      submitGenre("Romantic");
+                      setGenre("Romantic");
+                      setIsGenre((state) => !state);
+                    }}
+                  >
+                    <p className="text-xs lg:text-base text-secondary font-semibold">
+                      Romantic
+                    </p>
+                  </button>
+                  <button
+                    className="flex gap-x-4"
+                    onClick={() => {
+                      submitGenre("Adventure");
+                      setGenre("Adventure");
+                      setIsGenre((state) => !state);
+                    }}
+                  >
+                    <p className="text-xs lg:text-base text-secondary font-semibold">
+                      Adventure
+                    </p>
+                  </button>
+                  <button
+                    className="flex gap-x-4"
+                    onClick={() => {
+                      submitGenre("Sci-Fi");
+                      setGenre("Sci-Fi");
+                      setIsGenre((state) => !state);
+                    }}
+                  >
+                    <p className="text-xs lg:text-base text-secondary font-semibold">
+                      Sci-Fi
+                    </p>
+                  </button>
+                </div>
+              </div>
+            )}
+          </div>
         </div>
       </section>
       <section className="pb-[63px] px-5 md:px-11 xl:px-[130px] font-mulish">
-        <div className="grid md:grid-cols-3 lg:grid-cols-4 md:gap-5">
-          {movie ? (
+        <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4 md:gap-5">
+          {movie.length > 0 ? (
             movie.map((product, index) => (
               <div key={index}>
                 {movieCard({
@@ -186,8 +252,8 @@ function Home() {
               </div>
             ))
           ) : (
-            <div className="absolute text-xl md:text-2xl lg:text-4xl justify-center font-semibold text-input_border">
-              No product information available.
+            <div className="text-dark text-xl font-bold col-span-2 md:col-span-3 lg:col-span-4 text-center">
+              Movie Not Found!
             </div>
           )}
         </div>
