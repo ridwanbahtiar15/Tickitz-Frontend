@@ -1,15 +1,56 @@
-import { useState } from "react";
-
+import { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
 import "../styles/main.css";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import getImageUrl from "../utils/imageGetter";
 import DropdownMobile from "../components/DropdownMobile";
 import ModalInfo from "../components/ModalInfo";
+import AuthModal from "../components/AuthModal";
+import { getScheduleDetail, createOrder } from "../utils/https/order";
 
 function Payment() {
   const [isDropdownShown, setIsDropdownShow] = useState(false);
+  const [payment, setPayment] = useState("bca")
+  const scheduleId = useSelector(state => state.order.scheduleInfo)
+  const seat = useSelector(state => state.order.chooseSeat)
+  const token = useSelector(state => state.user.userInfo.token)
+  const [dataSchedule, setDataSchedule] = useState({})
   const [isModalInfoShown, setisModalInfoShown] = useState(false);
+  // const [redirectUrl, setRedirectUrl] = useState("")
+  const [vaNumbers, setVANumbers] = useState("")
+
+  useEffect(() => {
+    getScheduleDetail(scheduleId, token)
+    .then((res) => {
+      setDataSchedule(res.data.data[0])
+      console.log(res)
+    })
+    .catch((err) => {
+      console.log(err)
+    })
+  }, [])
+
+  const submit = () => {
+    setisModalInfoShown(true)
+    const body = {
+      schedules: scheduleId,
+      seats: seat.join(", "),
+      total_ticket: seat.length,
+      total_purchase: seat.length * dataSchedule.price,
+      active_until: "2023-12-30",
+      payment: payment
+    }
+    console.log(body)
+    createOrder(body, token)
+    .then((res) => {
+      console.log(res)
+      // setRedirectUrl(res.data.data)
+    })
+    .catch((err) => {
+      console.log(err)
+    })
+  }
   return (
     <>
       <Navbar isClick={() => setIsDropdownShow(true)} />
@@ -57,25 +98,25 @@ function Payment() {
                 <div className="flex flex-col gap-y-3">
                   <p className="text-sm text-[#8692A6]">MOVIE & TITLE</p>
                   <p className="text-sm md:text-base text-black">
-                    Spider-Man: Homecoming
+                    {dataSchedule && dataSchedule.movie_name}
                   </p>
                   <div className="border border-[#E6E6E6]"></div>
                 </div>
                 <div className="flex flex-col gap-y-3">
                   <p className="text-sm text-[#8692A6]">CINEMA NAME</p>
                   <p className="text-sm md:text-base text-black">
-                    CineOne21 Cinema
+                  {dataSchedule && dataSchedule.cinema}
                   </p>
                   <div className="border border-[#E6E6E6]"></div>
                 </div>
                 <div className="flex flex-col gap-y-3">
                   <p className="text-sm text-[#8692A6]">NUMBER OF TICKETS</p>
-                  <p className="text-sm md:text-base text-black">3 pieces</p>
+                  <p className="text-sm md:text-base text-black">{seat.length} pieces</p>
                   <div className="border border-[#E6E6E6]"></div>
                 </div>
                 <div className="flex flex-col gap-y-3">
                   <p className="text-sm text-[#8692A6]">TOTAL PAYMENT</p>
-                  <p className="font-bold text-primary">$30,00</p>
+                  <p className="font-bold text-primary">IDR {dataSchedule && seat.length * dataSchedule.price}</p>
                   <div className="border border-[#E6E6E6]"></div>
                 </div>
               </div>
@@ -142,18 +183,19 @@ function Payment() {
             </div>
             <button
               className="w-full py-4 px-4 font-bold text-light bg-primary rounded-md mt-10 text-center drop-shadow-xl focus:ring-2"
-              onClick={() => setisModalInfoShown(true)}
+              onClick={submit}
             >
               Pay Your Order
             </button>
           </div>
         </section>
       </section>
+      <AuthModal/>
       <Footer />
       {isDropdownShown && (
         <DropdownMobile isClick={() => setIsDropdownShow(false)} />
       )}
-      {isModalInfoShown && <ModalInfo />}
+      {isModalInfoShown && <ModalInfo vaNumbers={vaNumbers} />}
     </>
   );
 }

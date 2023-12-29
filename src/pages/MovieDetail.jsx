@@ -9,6 +9,8 @@ import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import getImageUrl from "../utils/imageGetter";
 import DropdownMobile from "../components/DropdownMobile";
+import AuthModal from "../components/AuthModal";
+import { useNavigate } from "react-router-dom";
 
 import { addOrder,cleanOrder } from "../redux/slices/order";
 
@@ -409,6 +411,7 @@ function MovieDetail() {
           </div>
         </div>
       </section>
+      <AuthModal/>
       <Footer />
       {isDropdownShown && (
         <DropdownMobile isClick={() => setIsDropdownShow(false)} />

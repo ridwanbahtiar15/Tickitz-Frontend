@@ -10,6 +10,8 @@ import { getAllMovie } from "../utils/https/home";
 import { useSearchParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { movieCard } from "../components/MovieCard";
+import AuthModal from "../components/AuthModal";
+
 
 function Home() {
   const [isDropdownShown, setIsDropdownShow] = useState(false);
@@ -235,6 +237,7 @@ function Home() {
         </div>
       </section>
       <Footer />
+      <AuthModal/>
       {isDropdownShown && (
         <DropdownMobile isClick={() => setIsDropdownShow(false)} />
       )}

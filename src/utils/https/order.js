@@ -8,3 +8,12 @@ export const getScheduleDetail = (id, jwt) => {
         },
     })
 }
+
+export const createOrder = (body, jwt) => {
+    const createOrderUrl = import.meta.env.VITE_BACKEND_HOST + "/order"
+    return axios.post(createOrderUrl, body, {
+        headers: {
+            'Authorization': 'Bearer ' + jwt,
+        },
+    })
+}

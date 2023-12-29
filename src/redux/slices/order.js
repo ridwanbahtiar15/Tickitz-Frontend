@@ -55,8 +55,17 @@ const orderSlice = createSlice({
                 chooseSeat: [...state.chooseSeat, payload],
             };
         },
+        delSeat(state, {payload}) {
+            const orderSeatInfo = state.chooseSeat.filter(
+                (seat, index) => seat !== payload
+            );
+            return {
+                ...state,
+                chooseSeat: orderSeatInfo
+            }
+        }
     },
 });
 
-export const { addOrder, cleanOrder, addOrderTransaction, addSeat } = orderSlice.actions;
+export const { addOrder, cleanOrder, addOrderTransaction, addSeat, delSeat } = orderSlice.actions;
 export default orderSlice.reducer;
