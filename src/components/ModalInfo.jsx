@@ -30,7 +30,7 @@ function ModalInfo(props) {
                 <input
                   className="text-base md:text-[18px] text-dark font-bold disabled w-[86%] md:w-[60%]"
                   ref={noVirtualRef}
-                  value="12321328913829724"
+                  value={props.vaNumbers}
                   disabled
                 />
                 <button
@@ -54,11 +54,11 @@ function ModalInfo(props) {
               </p>
             </div>
             <div className="flex flex-col gap-y-4 items-center">
-              <button
+              <Link to="/orderhistory"
                 className="w-full py-4 px-4 font-bold text-light bg-primary rounded-md mt-6 text-center drop-shadow-xl focus:ring-2"
               >
                 Check Payment
-              </button>
+              </Link>
               <Link to="/" className="font-bold text-primary">
                 Pay Later
               </Link>

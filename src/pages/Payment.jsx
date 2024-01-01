@@ -45,7 +45,7 @@ function Payment() {
     createOrder(body, token)
     .then((res) => {
       console.log(res)
-      // setRedirectUrl(res.data.data)
+      setVANumbers(res.data.data[0].va_number)
     })
     .catch((err) => {
       console.log(err)

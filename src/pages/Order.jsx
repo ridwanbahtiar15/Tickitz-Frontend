@@ -38,7 +38,7 @@ function Order() {
   }, [])
 
   const dataSeats = "A1, A2, C2, C3, C4, F9, F10, F11"
-  let seatsArray
+  let seatsArray = "Z1, Z2"
   if (dataSeats) {
     seatsArray = dataSeats.replace(/\s/g, '').split(',');
   }

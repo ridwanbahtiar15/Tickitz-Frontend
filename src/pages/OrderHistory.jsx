@@ -1,14 +1,19 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Link } from "react-router-dom";
-
+import AuthModal from "../components/AuthModal";
 import "../styles/main.css";
 import Navbar from "../components/Navbar";
 import getImageUrl from "../utils/imageGetter";
 import DropdownMobile from "../components/DropdownMobile";
+import { getOrderHistory } from "../utils/https/orderHistory";
+import { useSelector } from "react-redux";
 
 function OrderHistory() {
   const [isDropdownShown, setIsDropdownShow] = useState(false);
   const [copySuccess, setCopySuccess] = useState("Copy");
+  const token = useSelector(state => state.user.userInfo.token);
+  const [dataOrder, setDataOrder] = useState([])
+
   const noVirtualRef = useRef(null);
   const copyToClipboard = (e) => {
     noVirtualRef.current.select();
@@ -16,6 +21,17 @@ function OrderHistory() {
     e.target.focus();
     setCopySuccess("Copied!");
   };
+
+  useEffect(() => {
+    getOrderHistory("", token)
+    .then((res) => {
+      console.log(res)
+      setDataOrder(res.data.data)
+    })
+    .catch((err) => {
+      console.log(err)
+    })
+  }, []);
 
   <Navbar isClick={() => setIsDropdownShow(true)} />;
   return (
@@ -294,6 +310,7 @@ function OrderHistory() {
           </div>
         </section>
       </section>
+      <AuthModal/>
       {isDropdownShown && (
         <DropdownMobile isClick={() => setIsDropdownShow(false)} />
       )}

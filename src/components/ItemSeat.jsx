@@ -7,7 +7,12 @@ function ItemSeat(props) {
   const dispatch = useDispatch();
   const scheduleId = useSelector(state => state.order.scheduleInfo)
   const selectedSeat = useSelector(state => state.order.chooseSeat)
-  const checkSeat = (seat) => props.seats.includes(seat)
+  const checkSeat = (seat) => {
+    if (props.seat !== "No data") {
+      return props.seats.includes(seat)
+    }
+    return false
+  }
   // const seatHandler = (e, seat) => {
   //   if (!checkSeat(seat)) {
   //     const target = e.target;
