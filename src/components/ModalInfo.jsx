@@ -1,7 +1,7 @@
 import { useState, useRef } from "react";
 import { Link } from "react-router-dom";
 
-function ModalInfo() {
+function ModalInfo(props) {
   const [copySuccess, setCopySuccess] = useState("Copy");
   const noVirtualRef = useRef(null);
   const copyToClipboard = (e) => {
@@ -11,6 +11,11 @@ function ModalInfo() {
     setCopySuccess("Copied!");
   };
 
+  // const payClick = () => {
+  //   const targetURL = props.url
+  //   window.open(targetURL, '_blank');
+  // }
+  
   return (
     <div className="bg-gray-200 justify-center items-center h-screen opacity-100 absolute z-10 font-mulish">
       <div className="fixed left-0 top-0 bg-black bg-opacity-50 w-screen h-screen flex justify-center items-center px-[10px] md:px-0">
@@ -25,7 +30,7 @@ function ModalInfo() {
                 <input
                   className="text-base md:text-[18px] text-dark font-bold disabled w-[86%] md:w-[60%]"
                   ref={noVirtualRef}
-                  value="12321328913829724"
+                  value={props.vaNumbers}
                   disabled
                 />
                 <button
@@ -49,8 +54,7 @@ function ModalInfo() {
               </p>
             </div>
             <div className="flex flex-col gap-y-4 items-center">
-              <Link
-                to="/ticketresult"
+              <Link to="/orderhistory"
                 className="w-full py-4 px-4 font-bold text-light bg-primary rounded-md mt-6 text-center drop-shadow-xl focus:ring-2"
               >
                 Check Payment

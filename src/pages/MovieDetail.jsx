@@ -9,6 +9,8 @@ import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import getImageUrl from "../utils/imageGetter";
 import DropdownMobile from "../components/DropdownMobile";
+import AuthModal from "../components/AuthModal";
+import { useNavigate } from "react-router-dom";
 
 import { addOrder,cleanOrder } from "../redux/slices/order";
 
@@ -29,12 +31,14 @@ function MovieDetail() {
   const [dateMovie, setDate] = useState("Set Date");
   const [isTime, setIsTime] = useState(false);
   const [time, setTime] = useState("Set time");
+  const [dateList, setDateList] = useState([])
 
   const [isLocation, setIsLocation] = useState(false);
   const [location, setLocation] = useState({
     name: "Purwokerto",
     id: null,
   });
+
   useEffect(() => {
     dispatch(cleanOrder())
     const getMovieDetailUrl = import.meta.env.VITE_BACKEND_HOST + "/movie/movie/" + id
@@ -63,6 +67,18 @@ function MovieDetail() {
     }
     navigate("/order")
   }
+
+//   if (dataSchedule.date) {
+//     let uniqueObj = {};
+//     let result = arr.filter((item) => {
+//       if (!uniqueObj[item]) {
+//           uniqueObj[item] = true;
+//           return true;
+//       }
+//       return false;
+//   });
+//   return result;
+// }
 
   return (
     <>
@@ -130,7 +146,7 @@ function MovieDetail() {
           <div className="flex flex-col gap-y-4 md:flex-row md:items-end md:gap-x-4 lg:gap-x-[30px]">
             <div className="flex flex-col gap-y-4 md:w-1/4 relative">
               <p className="md:text-[20px] font-semibold text-black">
-                Chose Date
+                Choose Date
               </p>
               <div
                 className="flex justify-between items-center p-4 px-6 bg-[#EFF0F6] rounded-md cursor-pointer w-full"
@@ -151,28 +167,6 @@ function MovieDetail() {
               {isDate && (
                 <div className="flex justify-between items-center p-4 px-6 bg-[#EFF0F6] rounded-md cursor-pointer w-full absolute top-28 drop-shadow-xl">
                   <div className="flex flex-col gap-y-5">
-                    {/* <div
-                      className="flex gap-x-4"
-                      onClick={() => {
-                        setDate({ name: "22/07/23", id: 1 });
-                        setIsDate((state) => !state);
-                      }}
-                    >
-                      <p className="text-xs lg:text-base text-secondary font-semibold">
-                        22/07/23
-                      </p>
-                    </div>
-                    <div
-                      className="flex gap-x-4"
-                      onClick={() => {
-                        setDate({ name: "24/07/23", id: 1 });
-                        setIsDate((state) => !state);
-                      }}
-                    >
-                      <p className="text-xs lg:text-base text-secondary font-semibold">
-                        24/07/23
-                      </p>
-                    </div> */}
                     {dataSchedule &&
                       dataSchedule.map((date, index) => (
                         <div
@@ -194,7 +188,7 @@ function MovieDetail() {
             </div>
             <div className="flex flex-col gap-y-4 md:w-1/4 relative">
               <p className="md:text-[20px] font-semibold text-black">
-                Chose Time
+                Choose Time
               </p>
               <div
                 className="flex justify-between items-center p-4 px-6 bg-[#EFF0F6] rounded-md cursor-pointer w-full"
@@ -211,28 +205,6 @@ function MovieDetail() {
               {isTime && (
                 <div className="flex justify-between items-center p-4 px-6 bg-[#EFF0F6] rounded-md cursor-pointer w-full absolute top-28 drop-shadow-xl">
                   <div className="flex flex-col gap-y-5">
-                    {/* <div
-                      className="flex gap-x-4"
-                      onClick={() => {
-                        setTime({ name: "15:30 PM", id: 1 });
-                        setIsTime((state) => !state);
-                      }}
-                    >
-                      <p className="text-xs lg:text-base text-secondary font-semibold">
-                        15:30 PM
-                      </p>
-                    </div>
-                    <div
-                      className="flex gap-x-4"
-                      onClick={() => {
-                        setTime({ name: "19:30 PM", id: 1 });
-                        setIsTime((state) => !state);
-                      }}
-                    >
-                      <p className="text-xs lg:text-base text-secondary font-semibold">
-                        19:30 PM
-                      </p>
-                    </div> */}
                     {dataSchedule &&
                       dataSchedule.map((date, index) => {
                         if (date.date === dateMovie) {
@@ -260,7 +232,7 @@ function MovieDetail() {
             </div>
             <div className="flex flex-col gap-y-4 md:w-1/4 relative">
               <p className="md:text-[20px] font-semibold text-black">
-                Chose Location
+                Choose Location
               </p>
               <div
                 className="flex justify-between items-center p-4 px-6 bg-[#EFF0F6] rounded-md cursor-pointer w-full"
@@ -409,6 +381,7 @@ function MovieDetail() {
           </div>
         </div>
       </section>
+      <AuthModal/>
       <Footer />
       {isDropdownShown && (
         <DropdownMobile isClick={() => setIsDropdownShow(false)} />

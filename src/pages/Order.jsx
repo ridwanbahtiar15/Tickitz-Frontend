@@ -10,6 +10,7 @@ import ItemSeat from "../components/ItemSeat";
 
 import { getScheduleDetail } from "../utils/https/order";
 import { useSelector } from "react-redux";
+import AuthModal from "../components/AuthModal";
 
 function Order() {
   const [isDropdownShown, setIsDropdownShow] = useState(false);
@@ -18,6 +19,12 @@ function Order() {
   const seat = orderRedux.chooseSeat
 
   const token = useSelector(state => state.user.userInfo.token)
+  const [dataSeat, setDataSeat] = useState("")
+
+  useEffect(() => {
+    const data = seat.join(',');
+    setDataSeat(data)
+  }, [seat])
   const [dataSchedule, setDataSchedule] = useState({})
   useEffect(() => {
     getScheduleDetail(scheduleId, token)
@@ -29,18 +36,13 @@ function Order() {
       console.log(err)
     })
   }, [])
-  const dataOrder = {
-    schedules: scheduleId,
-    seats: seat.join(','),
-    total_ticket: 10000,
-    total_purchase: 10000,
-    payment: "Gopay"
-  }
-  const dataSeats = "A1, A2"
-  let seatsArray
+
+  const dataSeats = "A1, A2, C2, C3, C4, F9, F10, F11"
+  let seatsArray = "Z1, Z2"
   if (dataSeats) {
     seatsArray = dataSeats.replace(/\s/g, '').split(',');
   }
+  
   return (
     <>
       <Navbar isClick={() => setIsDropdownShow(true)} />
@@ -99,7 +101,7 @@ function Order() {
               </Link>
             </div>
             <div className="mt-7">
-              <p className="text-2xl font-bold">Chose Your Seet</p>
+              <p className="text-2xl font-bold">Choose Your Seet</p>
               <div className="px-4 overflow-auto w-full">
                 <div className="mb-20"></div>
                 <ItemSeat seats={seatsArray}/>
@@ -167,11 +169,11 @@ function Order() {
                 </div>
                 <div className="flex justify-between">
                   <p className="text-[#6B6B6B]">One ticket price</p>
-                  <p className="font-semibold">IDR {dataSchedule && dataSchedule.price}</p>
+                  <p className="font-semibold">IDR {dataSchedule && dataSchedule.price || 0}</p>
                 </div>
                 <div className="flex justify-between">
                   <p className="text-[#6B6B6B]">Seat choosed</p>
-                  <p className="font-semibold">C4, C5, C6</p>
+                  <p className="font-semibold">{dataSeat}</p>
                 </div>
               </div>
               <div className="w-full border border-[#E6E6E6] mt-8"></div>
@@ -180,7 +182,7 @@ function Order() {
                   <p className="text-[#000] text-[18px] font-semibold">
                     Total Payment
                   </p>
-                  <p className="text-primary text-2xl font-bold">$30</p>
+                  <p className="text-primary text-2xl font-bold">IDR {dataSchedule && dataSchedule.price * seat.length || 0}</p>
                 </div>
               </div>
             </div>
@@ -195,6 +197,7 @@ function Order() {
           </div>
         </section>
       </section>
+      <AuthModal/>
       <Footer />
       {isDropdownShown && (
         <DropdownMobile isClick={() => setIsDropdownShow(false)} />

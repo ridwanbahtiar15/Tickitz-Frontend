@@ -1,33 +1,39 @@
 import { useState, useEffect } from "react";
 // import { Link } from "react-router-dom";
-
 import "../styles/main.css";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import getImageUrl from "../utils/imageGetter";
 import DropdownMobile from "../components/DropdownMobile";
 import { getAllMovie } from "../utils/https/home";
-import { useSearchParams } from "react-router-dom";
+import { useSearchParams, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { movieCard } from "../components/MovieCard";
+import AuthModal from "../components/AuthModal";
+
 
 function Home() {
   const [isDropdownShown, setIsDropdownShow] = useState(false);
   const [genre, setGenre] = useState("");
+  const navigate = useNavigate()
   const [isGenre, setIsGenre] = useState(false);
   const [movie, setDataMovie] = useState([]);
+  const [metaMovie, setMetaMovie] = useState([]);
   const token = useSelector((state) => state.user.userInfo.token);
-  const [, setSearchParams] = useSearchParams({});
-  const getMovieUrl = import.meta.env.VITE_BACKEND_HOST + "/movie";
+  const [searchParams, setSearchParams] = useSearchParams({});
+  const getMovieUrl = import.meta.env.VITE_BACKEND_HOST + "/movie?" + searchParams.toString();
+
   useEffect(() => {
     getAllMovie(token, getMovieUrl)
       .then((res) => {
         setDataMovie(res.data.data);
+        setMetaMovie(res.data.meta)
       })
       .catch(() => {
         setDataMovie([]);
       });
-  }, []);
+  }, [searchParams]);
+
   const search = (e) => {
     e.preventDefault();
     const url =
@@ -49,6 +55,7 @@ function Home() {
         setDataMovie([]);
       });
   };
+
   const submitGenre = (value) => {
     setGenre(value);
     setSearchParams((prev) => {
@@ -67,6 +74,24 @@ function Home() {
         setDataMovie([]);
       });
   };
+
+  const pagination = (page) => {
+    if (page !== metaMovie.page) {
+      const params = (searchParams.toString()).slice(0, 1) + page
+      // const url = import.meta.env.VITE_BACKEND_HOST + "/movie?" + params.slice(0, 1) + page;
+      navigate("/?page=" + page)
+    }
+  }
+
+  const renderButtons = () => {
+    return Array.from({ length: metaMovie.total_page }, (_, index) => (
+      <button onClick={() => {pagination(index + 1)}}
+        key={index}
+        className={`h-10 w-10 ${index + 1 === metaMovie.page ? "bg-primary text-white" : "bg-order text-black"} rounded-full flex justify-center items-center`}
+      >{index + 1}</button>
+    ));
+  };
+
   return (
     <>
       <Navbar isClick={() => setIsDropdownShow(true)} />
@@ -259,7 +284,10 @@ function Home() {
         </div>
       </section>
       <section className="pb-[63px] flex gap-x-5 justify-center font-nunito font-medium">
-        <p className="text-light bg-primary rounded-full w-[40px] h-[40px] flex justify-center items-center">
+        <p className="bg-primary rounded-full w-[40px] h-[40px] flex justify-center items-center">
+          <ion-icon name="chevron-back-outline"></ion-icon>
+        </p>
+        {/* <p className="text-light bg-primary rounded-full w-[40px] h-[40px] flex justify-center items-center">
           1
         </p>
         <p className="text-[#A0A3BD] bg-[#F9FAFB] rounded-full w-[40px] h-[40px] flex justify-center items-center">
@@ -270,9 +298,10 @@ function Home() {
         </p>
         <p className="text-[#A0A3BD] bg-[#F9FAFB] rounded-full w-[40px] h-[40px] flex justify-center items-center">
           4
-        </p>
+        </p> */}
+        {renderButtons()}
         <p className="bg-primary rounded-full w-[40px] h-[40px] flex justify-center items-center">
-          <img src={getImageUrl("arrow-right", "svg")} alt="arrow" />
+          <ion-icon name="chevron-forward-outline"></ion-icon>
         </p>
       </section>
       <section className="pb-[63px] px-5 md:px-11 xl:px-[130px] font-mulish">
@@ -301,6 +330,7 @@ function Home() {
         </div>
       </section>
       <Footer />
+      <AuthModal/>
       {isDropdownShown && (
         <DropdownMobile isClick={() => setIsDropdownShow(false)} />
       )}

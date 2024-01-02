@@ -270,12 +270,12 @@ function Profile() {
                     >
                       Last Password
                     </label>
-                    <input
+                    {/* <input
                       type={isPassShown ? "text" : "password"}
                       className="py-4 px-6 rounded-2xl outline-none border text-secondary w-full text-sm md:text-base"
                       placeholder="Write your last password"
                       id="lastPassword"
-                    />
+                    /> */}
                     <img
                       src={getImageUrl("eye", "svg")}
                       alt="icon"
@@ -290,12 +290,12 @@ function Profile() {
                     >
                       New Password
                     </label>
-                    <input
+                    {/* <input
                       type={isPassShown2 ? "text" : "password"}
                       className="py-4 px-6 rounded-2xl outline-none border text-secondary w-full text-sm md:text-base"
                       placeholder="Create new password"
                       id="newPassword"
-                    />
+                    /> */}
                     <img
                       src={getImageUrl("eye", "svg")}
                       alt="icon"
