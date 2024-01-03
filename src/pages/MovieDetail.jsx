@@ -46,7 +46,7 @@ function MovieDetail() {
       .then((res) => {
         setDataMovie(res.data.data.movie);
         setDataSchedule(res.data.data.schedule);
-        // console.log(res)
+        console.log(res)
       })
       .catch((err) => {
         console.log(err);
@@ -68,17 +68,35 @@ function MovieDetail() {
     navigate("/order")
   }
 
-//   if (dataSchedule.date) {
-//     let uniqueObj = {};
-//     let result = arr.filter((item) => {
-//       if (!uniqueObj[item]) {
-//           uniqueObj[item] = true;
-//           return true;
-//       }
-//       return false;
-//   });
-//   return result;
-// }
+  const renderDate = () => {
+    let uniqueObj = {};
+    const jsxArray = dataSchedule.map((item, index) => {
+        if (!uniqueObj[item.date]) {
+            uniqueObj[item.date] = true;
+            return (
+                <div
+                    className="flex gap-x-4"
+                    key={index}
+                    onClick={() => {
+                        setDate(item.date);
+                        setIsDate((state) => !state);
+                        setIsTime(false)
+                    }}>
+                    <p className="text-xs lg:text-base text-secondary font-semibold">
+                        {item.date}
+                    </p>
+                </div>
+            );
+        }
+        return null;
+    });
+    return jsxArray;
+};
+
+
+  const renderCinema = () => {
+
+  }
 
   return (
     <>
@@ -167,7 +185,7 @@ function MovieDetail() {
               {isDate && (
                 <div className="flex justify-between items-center p-4 px-6 bg-[#EFF0F6] rounded-md cursor-pointer w-full absolute top-28 drop-shadow-xl">
                   <div className="flex flex-col gap-y-5">
-                    {dataSchedule &&
+                    {/* {dataSchedule &&
                       dataSchedule.map((date, index) => (
                         <div
                           className="flex gap-x-4"
@@ -181,7 +199,8 @@ function MovieDetail() {
                             {date.date}
                           </p>
                         </div>
-                      ))}
+                      ))} */}
+                      {dataSchedule && renderDate()}
                   </div>
                 </div>
               )}
@@ -316,37 +335,10 @@ function MovieDetail() {
                           idSchedule === date.ID ? "bg-primary" : "bg-gray-400"
                         }  border-2 border-[#DEDEDE] rounded-md md:w-1/4 flex justify-center items-center`}
                       >
-                        {date.cinema === "ebu.id" && (
                           <img
-                            src={getImageUrl("ebv.id", "svg")}
+                            src={date.cinema_logo}
                             alt="cinema"
                           />
-                        )}
-                        {date.cinema === "hiflix" && (
-                          <img
-                            src={getImageUrl("hiflix3", "svg")}
-                            alt="cinema"
-                          />
-                        )}
-                        {date.cinema === "XX1" && (
-                          <img
-                            src={getImageUrl("hiflix3", "svg")}
-                            alt="cinema"
-                          />
-                        )}
-                        {date.cinema === "Cineplex" && (
-                          <img
-                            src={getImageUrl("CineOne", "svg")}
-                            alt="cinema"
-                          />
-                        )}
-                        {date.cinema === "CineOne21" && (
-                          <img
-                            src={getImageUrl("CineOne", "svg")}
-                            alt="cinema"
-                          />
-                        )}
-                        {/* <img src={date.cinema === "ebu.id" && getImageUrl("ebv.id", "svg") || date.cinema === "hiflix" || "XX1" && getImageUrl("hiflix3", "svg") || date.cinema === "Cineplex" || "CineOne21" && getImageUrl("CineOne", "svg")} alt="cinema" /> */}
                       </div>
                     );
                   } else {

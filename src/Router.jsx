@@ -10,6 +10,7 @@ import OrderHistory from "./pages/OrderHistory";
 import Login from "./pages/Login";
 // import Register from "./pages/Register";
 import Private from "./components/Private";
+import AddMovie from "./pages/AddMovie";
 
 const router = createBrowserRouter([
   {
@@ -69,6 +70,14 @@ const router = createBrowserRouter([
     element: (
       <Private>
         <OrderHistory />
+      </Private>
+    ),
+  },
+  {
+    path: "/addmovie",
+    element: (
+      <Private>
+        <AddMovie />
       </Private>
     ),
   },

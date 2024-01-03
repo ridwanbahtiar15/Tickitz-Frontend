@@ -37,10 +37,10 @@ function Order() {
     })
   }, [])
 
-  const dataSeats = "A1, A2, C2, C3, C4, F9, F10, F11"
   let seatsArray = "Z1, Z2"
-  if (dataSeats) {
-    seatsArray = dataSeats.replace(/\s/g, '').split(',');
+  const soldSeat = dataSchedule.seats
+  if (dataSchedule.seats && dataSchedule.seats !== "No data") {
+    seatsArray = soldSeat.replace(/\s/g, '').split(',');
   }
   
   return (
@@ -138,8 +138,8 @@ function Order() {
           <div className="w-full lg:w-2/6 flex flex-col items-stretch">
             <div className="bg-light rounded-md drop-shadow-xl mb-8">
               <div className="flex flex-col items-center justify-center gap-y-2 py-8 px-5">
-                {/* <img src={getImageUrl("CineOne", "svg")} alt="cinema" /> */}
-                {dataSchedule.cinema === "ebu.id" && 
+              <img src={dataSchedule && dataSchedule.cinema_logo} alt="cinema" />
+                {/* {dataSchedule.cinema === "ebu.id" && 
                   <img src={getImageUrl("ebv.id", "svg")} alt="cinema" />
                   }
                   {dataSchedule.cinema === "hiflix" && 
@@ -153,7 +153,7 @@ function Order() {
                   }
                   {dataSchedule.cinema === "CineOne21" && 
                   <img src={getImageUrl("CineOne", "svg")} alt="cinema" />
-                  }
+                  } */}
                 <p className="text-2xl tex-dark font-semibold">
                 {dataSchedule && dataSchedule.cinema}
                 </p>

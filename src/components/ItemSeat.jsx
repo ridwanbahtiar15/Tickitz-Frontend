@@ -13,16 +13,7 @@ function ItemSeat(props) {
     }
     return false
   }
-  // const seatHandler = (e, seat) => {
-  //   if (!checkSeat(seat)) {
-  //     const target = e.target;
-  //     target.classList.toggle("bg-primary");
-  //     dispatch(addSeat(seat))
-  //     if (selectedSeat.includes(seat)) {
-  //       dispatch(delSeat(seat))
-  //     }
-  //   }
-  // };
+
   const seatHandler = (e, seat) => {
       if (!checkSeat(seat)) {
         const target = e.target;
