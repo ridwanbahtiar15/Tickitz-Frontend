@@ -11,8 +11,8 @@ import { useSelector } from "react-redux";
 function OrderHistory() {
   const [isDropdownShown, setIsDropdownShow] = useState(false);
   const [copySuccess, setCopySuccess] = useState("Copy");
-  const token = useSelector(state => state.user.userInfo.token);
-  const [dataOrder, setDataOrder] = useState([])
+  const token = useSelector((state) => state.user.userInfo.token);
+  const [dataOrder, setDataOrder] = useState([]);
 
   const noVirtualRef = useRef(null);
   const copyToClipboard = (e) => {
@@ -24,16 +24,18 @@ function OrderHistory() {
 
   useEffect(() => {
     getOrderHistory("", token)
-    .then((res) => {
-      console.log(res)
-      setDataOrder(res.data.data)
-    })
-    .catch((err) => {
-      console.log(err)
-    })
+      .then((res) => {
+        console.log(res.data.data);
+        setDataOrder(res.data.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }, []);
 
-  <Navbar isClick={() => setIsDropdownShow(true)} />;
+  console.log(dataOrder.length);
+
+  // <Navbar isClick={() => setIsDropdownShow(true)} />;
   return (
     <>
       <Navbar isClick={() => setIsDropdownShow(true)} />
@@ -125,89 +127,101 @@ function OrderHistory() {
               </Link>
             </div>
             <div className="flex flex-col gap-y-8">
-              <div className="bg-light rounded-3xl h-full px-12 py-10">
-                <div className="flex flex-col gap-y-4 md:flex-row md:justify-between md:items-center">
-                  <div>
-                    <p className="text-sm text-[#AAA] mb-4">
-                      Tuesday, 07 July 2020 - 04:30pm
-                    </p>
-                    <p className="text-2xl text-black">
-                      Spider-Man: Homecoming
-                    </p>
-                  </div>
-                  <img src={getImageUrl("CineOne", "svg")} alt="cinema" />
-                </div>
-                <div className="w-full h-[1px] bg-[#DEDEDE] my-8"></div>
-                <div className="flex flex-col">
-                  <div className="flex flex-col gap-y-4 md:flex-row md:gap-x-4">
-                    <div className="py-3 px-10 bg-[#00BA8833] text-[#00BA88] text-sm font-bold rounded-lg text-center">
-                      Ticket in active
-                    </div>
-                    <div className="py-3 px-10 bg-[#E82C2C33] text-[#E82C2C] text-sm font-bold rounded-lg text-center">
-                      Not Paid
-                    </div>
-                  </div>
-                  <details className="collapse bg-light">
-                    <summary className="collapse-title text-xl font-medium px-0 ">
-                      <div className="flex gap-x-4 justify-end absolute left-0 z-99">
-                        <p className="text-[18px] text-[#AAA]">Show Details</p>
-                        <img src={getImageUrl("Forward", "svg")} alt="icon" />
-                      </div>
-                    </summary>
-                    <div className="collapse-content">
-                      <div className="flex flex-col gap-y-4 mt-6">
-                        <p className="text-[18px] text-dark">
-                          Ticket Information
+              {dataOrder.length > 0 ? (
+                dataOrder.map((result, i) => (
+                  <div
+                    className="bg-light rounded-3xl h-full px-12 py-10"
+                    key={i}
+                  >
+                    <div className="flex flex-col gap-y-4 md:flex-row md:justify-between md:items-center">
+                      <div>
+                        <p className="text-sm text-[#AAA] mb-4">
+                          {result.date}
                         </p>
-                        <div className="flex flex-col md:flex-row md:justify-between w-full md:items-center">
-                          <p className="text-sm text-[#8692A6]">
-                            No. Rekening Virtual:
-                          </p>
-                          <div className="flex flex-col gap-y-4 md:flex-row md:gap-x-5 md:items-center md:justify-end">
-                            <input
-                              className="text-base md:text-[18px] text-dark font-bold disabled md:w-[60%]"
-                              ref={noVirtualRef}
-                              value="12321328913829724"
-                              disabled
+                        <p className="text-2xl text-black">{result.movie}</p>
+                      </div>
+                      <img src={getImageUrl("CineOne", "svg")} alt="cinema" />
+                    </div>
+                    <div className="w-full h-[1px] bg-[#DEDEDE] my-8"></div>
+                    <div className="flex flex-col">
+                      <div className="flex flex-col gap-y-4 md:flex-row md:gap-x-4">
+                        <div className="py-3 px-10 bg-[#00BA8833] text-[#00BA88] text-sm font-bold rounded-lg text-center">
+                          Ticket in active
+                        </div>
+                        <div className="py-3 px-10 bg-[#E82C2C33] text-[#E82C2C] text-sm font-bold rounded-lg text-center">
+                          Not Paid
+                        </div>
+                      </div>
+                      <details className="collapse bg-light">
+                        <summary className="collapse-title text-xl font-medium px-0 ">
+                          <div className="flex gap-x-4 justify-end absolute left-0 z-99">
+                            <p className="text-[18px] text-[#AAA]">
+                              Show Details
+                            </p>
+                            <img
+                              src={getImageUrl("Forward", "svg")}
+                              alt="icon"
                             />
-                            <button
-                              className="py-3 px-4 text-sm text-primary border-primary border rounded-md cursor-pointer"
-                              onClick={copyToClipboard}
+                          </div>
+                        </summary>
+                        <div className="collapse-content">
+                          <div className="flex flex-col gap-y-4 mt-6">
+                            <p className="text-[18px] text-dark">
+                              Ticket Information
+                            </p>
+                            <div className="flex flex-col md:flex-row md:justify-between w-full md:items-center">
+                              <p className="text-sm text-[#8692A6]">
+                                No. Rekening Virtual:
+                              </p>
+                              <div className="flex flex-col gap-y-4 md:flex-row md:gap-x-5 md:items-center md:justify-end">
+                                <input
+                                  className="text-base md:text-[18px] text-dark font-bold disabled md:w-[60%]"
+                                  ref={noVirtualRef}
+                                  value="12321328913829724"
+                                  disabled
+                                />
+                                <button
+                                  className="py-3 px-4 text-sm text-primary border-primary border rounded-md cursor-pointer"
+                                  onClick={copyToClipboard}
+                                >
+                                  {copySuccess}
+                                </button>
+                              </div>
+                            </div>
+                            <div className="flex justify-between w-full items-center">
+                              <p className="text-sm text-[#8692A6]">
+                                Total Payment:
+                              </p>
+                              <p className="text-[18px] font-bold text-primary">
+                                $30
+                              </p>
+                            </div>
+                            <div>
+                              <p className="text-[#A0A3BD] leading-8">
+                                Pay this payment bill before it is due, on,{" "}
+                                <span className="text-danger">
+                                  on June 23, 2023
+                                </span>
+                                . If the bill has not been paid by the specified
+                                time, it will be forfeited
+                              </p>
+                            </div>
+                            <Link
+                              to="/ticketresult"
+                              className="text-sm py-4 px-10 font-bold text-light bg-primary rounded-md mt-6 text-center drop-shadow-xl focus:ring-2 md:self-start"
                             >
-                              {copySuccess}
-                            </button>
+                              Cek Pembayaran
+                            </Link>
                           </div>
                         </div>
-                        <div className="flex justify-between w-full items-center">
-                          <p className="text-sm text-[#8692A6]">
-                            Total Payment:
-                          </p>
-                          <p className="text-[18px] font-bold text-primary">
-                            $30
-                          </p>
-                        </div>
-                        <div>
-                          <p className="text-[#A0A3BD] leading-8">
-                            Pay this payment bill before it is due, on,{" "}
-                            <span className="text-danger">
-                              on June 23, 2023
-                            </span>
-                            . If the bill has not been paid by the specified
-                            time, it will be forfeited
-                          </p>
-                        </div>
-                        <Link
-                          to="/ticketresult"
-                          className="text-sm py-4 px-10 font-bold text-light bg-primary rounded-md mt-6 text-center drop-shadow-xl focus:ring-2 md:self-start"
-                        >
-                          Cek Pembayaran
-                        </Link>
-                      </div>
+                      </details>
                     </div>
-                  </details>
-                </div>
-              </div>
-              <div className="bg-light rounded-3xl h-full px-12 py-10">
+                  </div>
+                ))
+              ) : (
+                <div> </div>
+              )}
+              {/* <div className="bg-light rounded-3xl h-full px-12 py-10">
                 <div className="flex flex-col gap-y-4 md:flex-row md:justify-between md:items-center">
                   <div>
                     <p className="text-sm text-[#AAA] mb-4">
@@ -305,12 +319,12 @@ function OrderHistory() {
                     </div>
                   </details>
                 </div>
-              </div>
+              </div> */}
             </div>
           </div>
         </section>
       </section>
-      <AuthModal/>
+      <AuthModal />
       {isDropdownShown && (
         <DropdownMobile isClick={() => setIsDropdownShow(false)} />
       )}

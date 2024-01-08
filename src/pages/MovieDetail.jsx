@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
 import { getMovieDetail } from "../utils/https/movieDetail";
 import { useParams } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
@@ -12,15 +11,14 @@ import DropdownMobile from "../components/DropdownMobile";
 import AuthModal from "../components/AuthModal";
 import { useNavigate } from "react-router-dom";
 
-import { addOrder,cleanOrder } from "../redux/slices/order";
+import { addOrder, cleanOrder } from "../redux/slices/order";
 
 function MovieDetail() {
   let { id } = useParams();
   const dispatch = useDispatch();
-  const navigate = useNavigate()
-  const token = useSelector(state => state.user.userInfo.token)
-  const [idSchedule, setIdSchedule] = useState(0)
-
+  const navigate = useNavigate();
+  const token = useSelector((state) => state.user.userInfo.token);
+  const [idSchedule, setIdSchedule] = useState(0);
 
   const [isDropdownShown, setIsDropdownShow] = useState(false);
   const [dataMovie, setDataMovie] = useState([]);
@@ -31,7 +29,7 @@ function MovieDetail() {
   const [dateMovie, setDate] = useState("Set Date");
   const [isTime, setIsTime] = useState(false);
   const [time, setTime] = useState("Set time");
-  const [dateList, setDateList] = useState([])
+  // const [dateList, setDateList] = useState([]);
 
   const [isLocation, setIsLocation] = useState(false);
   const [location, setLocation] = useState({
@@ -40,13 +38,14 @@ function MovieDetail() {
   });
 
   useEffect(() => {
-    dispatch(cleanOrder())
-    const getMovieDetailUrl = import.meta.env.VITE_BACKEND_HOST + "/movie/movie/" + id
+    dispatch(cleanOrder());
+    const getMovieDetailUrl =
+      import.meta.env.VITE_BACKEND_HOST + "/movie/movie/" + id;
     getMovieDetail(getMovieDetailUrl, token)
       .then((res) => {
         setDataMovie(res.data.data.movie);
         setDataSchedule(res.data.data.schedule);
-        console.log(res)
+        console.log(res);
       })
       .catch((err) => {
         console.log(err);
@@ -54,49 +53,47 @@ function MovieDetail() {
   }, []);
 
   const setSchedule = (id) => {
-    dispatch(addOrder(id))
-    setIdSchedule(id)
-  }
-  
-  const scheduleInfo = useSelector(state => state.order.scheduleInfo)
-  const [wrongMsg, setWrongMsg] = useState(false)
+    dispatch(addOrder(id));
+    setIdSchedule(id);
+  };
+
+  const scheduleInfo = useSelector((state) => state.order.scheduleInfo);
+  const [wrongMsg, setWrongMsg] = useState(false);
   const bookNow = () => {
-    setWrongMsg(false)
+    setWrongMsg(false);
     if (scheduleInfo === 0) {
-      return setWrongMsg(true)
+      return setWrongMsg(true);
     }
-    navigate("/order")
-  }
+    navigate("/order");
+  };
 
   const renderDate = () => {
     let uniqueObj = {};
     const jsxArray = dataSchedule.map((item, index) => {
-        if (!uniqueObj[item.date]) {
-            uniqueObj[item.date] = true;
-            return (
-                <div
-                    className="flex gap-x-4"
-                    key={index}
-                    onClick={() => {
-                        setDate(item.date);
-                        setIsDate((state) => !state);
-                        setIsTime(false)
-                    }}>
-                    <p className="text-xs lg:text-base text-secondary font-semibold">
-                        {item.date}
-                    </p>
-                </div>
-            );
-        }
-        return null;
+      if (!uniqueObj[item.date]) {
+        uniqueObj[item.date] = true;
+        return (
+          <div
+            className="flex gap-x-4"
+            key={index}
+            onClick={() => {
+              setDate(item.date);
+              setIsDate((state) => !state);
+              setIsTime(false);
+            }}
+          >
+            <p className="text-xs lg:text-base text-secondary font-semibold">
+              {item.date}
+            </p>
+          </div>
+        );
+      }
+      return null;
     });
     return jsxArray;
-};
+  };
 
-
-  const renderCinema = () => {
-
-  }
+  // const renderCinema = () => {};
 
   return (
     <>
@@ -200,7 +197,7 @@ function MovieDetail() {
                           </p>
                         </div>
                       ))} */}
-                      {dataSchedule && renderDate()}
+                    {dataSchedule && renderDate()}
                   </div>
                 </div>
               )}
@@ -335,10 +332,7 @@ function MovieDetail() {
                           idSchedule === date.ID ? "bg-primary" : "bg-gray-400"
                         }  border-2 border-[#DEDEDE] rounded-md md:w-1/4 flex justify-center items-center`}
                       >
-                          <img
-                            src={date.cinema_logo}
-                            alt="cinema"
-                          />
+                        <img src={date.cinema_logo} alt="cinema" />
                       </div>
                     );
                   } else {
@@ -363,7 +357,11 @@ function MovieDetail() {
             </p>
           </div>
           <div>
-            {wrongMsg && <p className="text-red-500 mb-8 flex justify-center">Must select cinema</p>}
+            {wrongMsg && (
+              <p className="text-red-500 mb-8 flex justify-center">
+                Must select cinema
+              </p>
+            )}
             <div
               onClick={bookNow}
               className="text-sm text-light bg-primary py-5 px-16 justify-self: center rounded-md focus:ring-2"
@@ -373,7 +371,7 @@ function MovieDetail() {
           </div>
         </div>
       </section>
-      <AuthModal/>
+      <AuthModal />
       <Footer />
       {isDropdownShown && (
         <DropdownMobile isClick={() => setIsDropdownShow(false)} />
