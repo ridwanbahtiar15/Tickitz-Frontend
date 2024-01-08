@@ -39,19 +39,22 @@ function Profile() {
     lastname: "",
     email: "",
     phone: "",
-    password: "",
+    points: 0,
+    user_photo: "",
   });
 
   useEffect(() => {
     authAxios
       .get("/user/profile")
       .then((res) => {
+        console.log(res.data.data[0]);
         setUser({
           firstname: res.data.data[0].firstname,
           lastname: res.data.data[0].lastname,
           email: res.data.data[0].email,
           phone: res.data.data[0].phone,
-          password: res.data.data[0].passoword,
+          points: res.data.data[0].points,
+          user_photo: res.data.data[0].user_photo,
         });
       })
       .catch((err) => console.log(err));
@@ -63,25 +66,22 @@ function Profile() {
     setUser(dataClone);
   };
 
+  const [image, setImage] = useState("");
+  const changeImageHandler = (e) => {
+    setImage(e.target.files[0]);
+  };
+
   const submitHandler = (e) => {
     e.preventDefault();
 
-    // if (e.target.password.value && e.target.confirmPass.value) {
-    //   if (e.target.password.value != e.target.confirmPass.value) {
-    //     console.log("password not match");
-    //     return;
-    //   }
-    // }
-
     const formData = new FormData();
-    // formData.append("users_image", image);
+    formData.append("user_photo", image);
     formData.append("firstname", e.target.firstname.value);
     formData.append("lastname", e.target.lastname.value);
     formData.append("email", e.target.email.value);
     formData.append("phone", e.target.phone.value);
     formData.append("last_password", e.target.lastPassword.value);
     formData.append("new_password", e.target.newPassword.value);
-    // console.log();
 
     authAxios
       .patch("/user", formData)
@@ -93,21 +93,59 @@ function Profile() {
       });
   };
 
-  <Navbar isClick={() => setIsDropdownShow(true)} />;
+  const [isDotHandler, setIsDotHandler] = useState(false);
+
   return (
     <>
       <Navbar isClick={() => setIsDropdownShow(true)} />
       <section className="bg-[#A0A3BD33] py-10 font-mulish">
-        <section className="px-5 md:px-11 xl:px-[130px] font-mulish flex flex-col gap-y-4 lg:flex-row lg:gap-x-6">
+        <form
+          className="px-5 md:px-11 xl:px-[130px] font-mulish flex flex-col gap-y-4 lg:flex-row lg:gap-x-6"
+          onSubmit={submitHandler}
+          encType="multipart/form-data"
+        >
           <div className="lg:w-2/6 bg-light h-full rounded-3xl flex flex-col gap-y-7 p-[40px]">
-            <div className="flex justify-between ">
-              <p>INFO</p>
-              <img src={getImageUrl("dot", "svg")} alt="icon" />
+            <div className="flex justify-between">
+              <p className="w-1/2 lg:w-1/3">INFO</p>
+              <div className="flex flex-col items-end relative w-1/2 lg:w-2/3">
+                <img
+                  src={getImageUrl("dot", "svg")}
+                  alt="icon"
+                  onClick={() => setIsDotHandler((state) => !state)}
+                  className="cursor-pointer"
+                />
+                <input
+                  type="file"
+                  className="hidden"
+                  id="image"
+                  name="image"
+                  onChange={changeImageHandler}
+                />
+                <label
+                  htmlFor="image"
+                  className={`bg-light shadow-md py-3 px-4 rounded-md cursor-pointer absolute top-6 ${
+                    isDotHandler ? "" : "hidden"
+                  }`}
+                >
+                  Change Image
+                </label>
+              </div>
             </div>
             <div className="flex flex-col items-center justify-center">
-              <img src={getImageUrl("image", "png")} alt="image" />
+              {image ? (
+                <img
+                  src={URL.createObjectURL(image)}
+                  className="w-40 h-40 rounded-full"
+                ></img>
+              ) : (
+                <img
+                  src={user.user_photo}
+                  alt="image"
+                  className="w-40 h-40 rounded-full"
+                />
+              )}
               <p className="text-[20px] text-dark font-semibold">
-                Jonas El Rodriguez
+                {user.firstname} {user.lastname}
               </p>
               <p className="text-sm text-secondary">Moviegoers</p>
             </div>
@@ -117,7 +155,7 @@ function Profile() {
               <div className="w-full bg-primary rounded-2xl p-4 flex flex-col gap-y-16">
                 <p className="text-[18px] font-bold text-light">Moviegoers</p>
                 <div className="text-light flex gap-x-1 items-end">
-                  <p className="text-2xl">320</p>
+                  <p className="text-2xl">{user.points}</p>
                   <p className="text-[10px]">points</p>
                 </div>
                 <div className="p-20 bg-[#FFFFFF4D] self-baseline rounded-full absolute top-2 -right-12"></div>
@@ -184,11 +222,7 @@ function Profile() {
                 </p>
               </Link>
             </div>
-            <form
-              onSubmit={submitHandler}
-              encType="multipart/form-data"
-              className="flex flex-col gap-y-7"
-            >
+            <div className="flex flex-col gap-y-7">
               <div className="bg-light rounded-3xl h-full px-6 md:px-12 py-10">
                 <p className="text-dark mb-4">Details Information</p>
                 <div className="w-full h-[1px] bg-[#DEDEDE] mb-8"></div>
@@ -205,7 +239,7 @@ function Profile() {
                       name="firstname"
                       id="firstname"
                       className="py-4 px-6 rounded-2xl outline-none border text-secondary w-full text-sm md:text-base"
-                      value={user.firstname}
+                      value={user.firstname ? user.firstname : ""}
                       onChange={handleChange}
                     />
                   </div>
@@ -221,7 +255,7 @@ function Profile() {
                       name="lastname"
                       id="lastname"
                       className="py-4 px-6 rounded-2xl outline-none border text-secondary w-full text-sm md:text-base"
-                      value={user.lastname}
+                      value={user.lastname ? user.lastname : ""}
                       onChange={handleChange}
                     />
                   </div>
@@ -237,7 +271,7 @@ function Profile() {
                       name="email"
                       id="email"
                       className="py-4 px-6 rounded-2xl outline-none border text-secondary w-full text-sm md:text-base"
-                      value={user.email}
+                      value={user.email ? user.email : ""}
                       onChange={handleChange}
                     />
                   </div>
@@ -253,7 +287,7 @@ function Profile() {
                       name="phone"
                       id="phone"
                       className="py-4 px-6 rounded-2xl outline-none border text-secondary w-full text-sm md:text-base"
-                      value={user.phone}
+                      value={user.phone ? user.phone : ""}
                       onChange={handleChange}
                     />
                   </div>
@@ -270,12 +304,12 @@ function Profile() {
                     >
                       Last Password
                     </label>
-                    {/* <input
+                    <input
                       type={isPassShown ? "text" : "password"}
                       className="py-4 px-6 rounded-2xl outline-none border text-secondary w-full text-sm md:text-base"
                       placeholder="Write your last password"
                       id="lastPassword"
-                    /> */}
+                    />
                     <img
                       src={getImageUrl("eye", "svg")}
                       alt="icon"
@@ -290,12 +324,12 @@ function Profile() {
                     >
                       New Password
                     </label>
-                    {/* <input
+                    <input
                       type={isPassShown2 ? "text" : "password"}
                       className="py-4 px-6 rounded-2xl outline-none border text-secondary w-full text-sm md:text-base"
                       placeholder="Create new password"
                       id="newPassword"
-                    /> */}
+                    />
                     <img
                       src={getImageUrl("eye", "svg")}
                       alt="icon"
@@ -313,9 +347,9 @@ function Profile() {
                   Update Changes
                 </button>
               </div>
-            </form>
+            </div>
           </div>
-        </section>
+        </form>
       </section>
       {isDropdownShown && (
         <DropdownMobile isClick={() => setIsDropdownShow(false)} />

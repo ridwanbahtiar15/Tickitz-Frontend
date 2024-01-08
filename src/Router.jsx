@@ -11,13 +11,14 @@ import Login from "./pages/Login";
 // import Register from "./pages/Register";
 import Private from "./components/Private";
 import AddMovie from "./pages/AddMovie";
+import Dashboard from "./pages/Dashboard";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: (
       <Private>
-          <Home />
+        <Home />
       </Private>
     ),
   },
@@ -78,6 +79,14 @@ const router = createBrowserRouter([
     element: (
       <Private>
         <AddMovie />
+      </Private>
+    ),
+  },
+  {
+    path: "/admin/dashboard",
+    element: (
+      <Private>
+        <Dashboard />
       </Private>
     ),
   },
