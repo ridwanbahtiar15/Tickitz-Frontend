@@ -1,29 +1,45 @@
 import React, { useState } from 'react'
 import Navbar from "../components/Navbar";
 import DropdownMobile from "../components/DropdownMobile";
+import { addMovie } from '../utils/https/addMovie';
+import { useSelector } from 'react-redux';
 
 function AddMovie() {
 const [isDropdownShown, setIsDropdownShow] = useState(false);
 const [schedule, setSchedule] = useState([]);
+const [dateTimeList, setDateTimeList] = useState([]);
+const token = useSelector(state => state.user.userInfo.token)
+
+
 const [image, setImage] = useState("");
   const changeImageHandler = (e) => {
     setImage(e.target.files[0]);
 };
+
+const dataSchedule = [{"date": "2024-1-6",  "ticket_price": 25000, "cinema": 2, "time": "10-35-00"}, {"date" : "2024-1-6",  "ticket_price": 25000, "cinema": 1, "time": "16-35-00"}, {"date" : "2024-1-7",  "ticket_price": 25000, "cinema": 4, "time": "16-35-00"}, {"date" : "2024-1-7",  "ticket_price": 25000, "cinema": 5, "time": "16-35-00"}, {"date" : "2024-1-7",  "ticket_price": 25000, "cinema": 5, "time": "16-35-00"}, {"date" : "2024-1-8",  "ticket_price": 25000, "cinema": 1, "time": "16-35-00"}, {"date" : "2024-1-9",  "ticket_price": 25000, "cinema": 3, "time": "16-35-00"}]
 const submitHandler = (e) => {
     e.preventDefault();
     const formData = new FormData();
     formData.append("movie_cover", image);
-    formData.append("movie_name", e.target.fullname.value);
-    formData.append("genre", e.target.email.value);
-    formData.append("release_date", e.target.phone.value);
-    formData.append("duration", e.target.password.value);
-    formData.append("cast", e.target.address.value);
-    formData.append("category", e.target.address.value);
-    formData.append("sinopsis", e.target.address.value);
-    formData.append("schedules", e.target.address.value);
+    formData.append("movie_name", e.target.movie.value);
+    formData.append("genre", "Adventure");
+    formData.append("release_date", e.target.date.value);
+    formData.append("director", e.target.director.value);
+    formData.append("duration", e.target.hour.value + " hour " + e.target.minutes.value + " minutes");
+    formData.append("cast", e.target.cast.value);
+    formData.append("category", e.target.category.value);
+    formData.append("sinopsis", e.target.synopsis.value);
+    formData.append("schedules", dataSchedule);
+    // console.log(dateTimeList)
+    addMovie(formData, token)
+    .then((res) => {
+        console.log(res)
+    })
+    .catch((err) => {
+        console.log(err)
+    })
 }
 
-const [dateTimeList, setDateTimeList] = useState([]);
 const [selectedDate, setSelectedDate] = useState('');
 const [selectedTime, setSelectedTime] = useState('');
 
@@ -40,8 +56,10 @@ const handleTimeChange = (event) => {
   const handleTimeAdd = () => {
     if (selectedDate && selectedTime) {
       const newDateTime = {
-        date: selectedDate,
-        time: selectedTime,
+        "date": selectedDate,
+        "time": selectedTime,
+        "ticket_price": 25000,
+        "cinema": 2
       };
 
       setDateTimeList([...dateTimeList, newDateTime]);
@@ -55,14 +73,14 @@ const consol = () => {
         <Navbar isClick={() => setIsDropdownShow(true)} />
         <main className='bg-backgorund_gray px-4 py-5 w-screen flex justify-center'>
             <section className='bg-white w-full h-full px-2 py-2'>
-                <div className='text-sm flex flex-col gap-4'>
+                <form onSubmit={submitHandler} className='text-sm flex flex-col gap-4'>
                     <p className='text-xl font-semibold'>Add New Movie</p>
                     <div id='Upload_Image' className='flex flex-col gap-4'>
                         {image ? (
                         <img
                             src={URL.createObjectURL(image)}
                             alt="user-image"
-                            className="w-20 h-20 rounded-md"
+                            className="w-24 h-40 rounded-md"
                             name="users_image"
                         />
                         ) : (
@@ -84,36 +102,36 @@ const consol = () => {
                     </div>
                     <div id='Movie_Name' onClick={consol}>
                         <p>Movie Name</p>
-                        <input type="text" className='bg-input_bg w-full px-3 py-3 outline-none border border-solid border-input_border rounded-md' placeholder='Add movie name'/>
+                        <input type="text" name='movie' className='bg-input_bg w-full px-3 py-3 outline-none border border-solid border-input_border rounded-md' placeholder='Add movie name'/>
                     </div>
                     <div id='Category'>
                         <p>Category</p>
-                        <input type="text" className='bg-input_bg w-full px-3 py-3 outline-none border border-solid border-input_border rounded-md' placeholder='Add movie category'/>
+                        <input type="text" name='category' className='bg-input_bg w-full px-3 py-3 outline-none border border-solid border-input_border rounded-md' placeholder='Add movie category'/>
                     </div>
                     <div className='flex flex-col gap-4 md:flex-row'>
                         <div id='Release_date' className='md:flex-1'>
                             <p>Release date</p>
-                            <input type="text" className='bg-input_bg w-full px-3 py-3 outline-none border border-solid border-input_border rounded-md' placeholder='YYYY/MM/DD'/>
+                            <input type="text" name='date' className='bg-input_bg w-full px-3 py-3 outline-none border border-solid border-input_border rounded-md' placeholder='YYYY/MM/DD'/>
                         </div>
                         <div id='Duration'>
                             <p>Duration (hour/minutes)</p>
                             <div className='flex gap-3'>
-                                <input type="text" className='bg-input_bg px-3 py-3 w-1/2 outline-none border border-solid border-input_border rounded-md' placeholder='H'/>
-                                <input type="text" className='bg-input_bg px-3 py-3 w-1/2  outline-none border border-solid border-input_border rounded-md' placeholder='M'/>
+                                <input type="text" name='hour' className='bg-input_bg px-3 py-3 w-1/2 outline-none border border-solid border-input_border rounded-md' placeholder='H'/>
+                                <input type="text" name='minutes' className='bg-input_bg px-3 py-3 w-1/2  outline-none border border-solid border-input_border rounded-md' placeholder='M'/>
                             </div>
                         </div>
                     </div>
                     <div id='Director_Name'>
                         <p>Director Name</p>
-                        <input type="text" className='bg-input_bg w-full px-3 py-3 outline-none border border-solid border-input_border rounded-md' placeholder='Add director name'/>
+                        <input type="text" name='director' className='bg-input_bg w-full px-3 py-3 outline-none border border-solid border-input_border rounded-md' placeholder='Add director name'/>
                     </div>
                     <div id='Cast'>
                         <p>Cast</p>
-                        <input type="text" className='bg-input_bg w-full px-3 py-3 outline-none border border-solid border-input_border rounded-md' placeholder='Add movie cast'/>
+                        <input type="text" name='cast' className='bg-input_bg w-full px-3 py-3 outline-none border border-solid border-input_border rounded-md' placeholder='Add movie cast'/>
                     </div>
                     <div id='Synopsis'>
                         <p>Synopsis</p>
-                        <input type="text" className='bg-input_bg w-full px-3 py-3 outline-none border border-solid border-input_border rounded-md' placeholder='Add movie synopsis'/>
+                        <input type="text" name='synopsis' className='bg-input_bg w-full px-3 py-3 outline-none border border-solid border-input_border rounded-md' placeholder='Add movie synopsis'/>
                     </div>
                     <div id='Location'>
                         <p>Add Location</p>
@@ -177,10 +195,10 @@ const consol = () => {
                             </ul>
                         </div>
                         </div>
-                    <button className='bg-primary w-full outline-none flex px-2 py-2 justify-center text-white rounded-md'>
+                    <button type='submit' className='bg-primary w-full outline-none flex px-2 py-2 justify-center text-white rounded-md'>
                         Save Movie
                     </button>
-                </div>
+                </form>
             </section>
         </main>
         {isDropdownShown && (

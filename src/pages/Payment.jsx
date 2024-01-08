@@ -8,6 +8,7 @@ import DropdownMobile from "../components/DropdownMobile";
 import ModalInfo from "../components/ModalInfo";
 import AuthModal from "../components/AuthModal";
 import { getScheduleDetail, createOrder } from "../utils/https/order";
+import { getProfile } from "../utils/https/profile";
 
 function Payment() {
   const [isDropdownShown, setIsDropdownShow] = useState(false);
@@ -19,12 +20,21 @@ function Payment() {
   const [isModalInfoShown, setisModalInfoShown] = useState(false);
   // const [redirectUrl, setRedirectUrl] = useState("")
   const [vaNumbers, setVANumbers] = useState("")
+  const [dataUser, setDataUser] = useState({})
 
   useEffect(() => {
     getScheduleDetail(scheduleId, token)
     .then((res) => {
       setDataSchedule(res.data.data[0])
-      console.log(res)
+      // console.log(res)
+    })
+    .catch((err) => {
+      console.log(err)
+    })
+    getProfile(token)
+    .then((res) => {
+      // console.log(res)
+      setDataUser(res.data.data[0])
     })
     .catch((err) => {
       console.log(err)
@@ -41,10 +51,10 @@ function Payment() {
       active_until: "2023-12-30",
       payment: payment
     }
-    console.log(body)
+    // console.log(body)
     createOrder(body, token)
     .then((res) => {
-      console.log(res)
+      // console.log(res)
       setVANumbers(res.data.data[0].va_number)
     })
     .catch((err) => {
@@ -131,13 +141,13 @@ function Payment() {
                     Full Name
                   </p>
                   <div className="text-sm md:text-base p-4 px-8 border rounded-sm">
-                    Jonas El Rodriguez
+                    {dataUser && dataUser.full_name}
                   </div>
                 </div>
                 <div className="flex flex-col gap-y-3">
                   <p className="text-sm md:text-base text-[#696F79]">Email</p>
                   <div className="text-sm md:text-base p-4 px-8 border rounded-sm">
-                    jonasrodri123@gmail.com
+                  {dataUser && dataUser.email}
                   </div>
                 </div>
                 <div className="flex flex-col gap-y-3">
@@ -145,7 +155,7 @@ function Payment() {
                     Phone Number
                   </p>
                   <div className="text-sm md:text-base p-4 px-8 border rounded-sm">
-                    +6281445687121
+                  +{dataUser && dataUser.phone}
                   </div>
                 </div>
               </div>
