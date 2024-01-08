@@ -1,79 +1,104 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import Navbar from "../components/Navbar";
 import DropdownMobile from "../components/DropdownMobile";
-import { addMovie } from '../utils/https/addMovie';
+import { editMovie } from '../utils/https/editMovie';
+import { getMovieDetail } from '../utils/https/movieDetail';
 import { useSelector } from 'react-redux';
+import { useParams } from 'react-router-dom';
 import AuthModal from '../components/AuthModal';
 
-function AddMovie() {
+function EditMovie() {
 const [isDropdownShown, setIsDropdownShow] = useState(false);
+let { id } = useParams();
+const [dataMovie, setDataMovie] = useState()
 const [dateTimeList, setDateTimeList] = useState([]);
 const token = useSelector(state => state.user.userInfo.token)
 
-
 const [image, setImage] = useState("");
-  const changeImageHandler = (e) => {
-    setImage(e.target.files[0]);
+const changeImageHandler = (e) => {
+  setImage(e.target.files[0]);
 };
 
-const dataSchedule = [{"date": "2024-1-6",  "ticket_price": 25000, "cinema": 2, "time": "10-35-00"}, {"date" : "2024-1-6",  "ticket_price": 25000, "cinema": 1, "time": "16-35-00"}, {"date" : "2024-1-7",  "ticket_price": 25000, "cinema": 4, "time": "16-35-00"}, {"date" : "2024-1-7",  "ticket_price": 25000, "cinema": 5, "time": "16-35-00"}, {"date" : "2024-1-7",  "ticket_price": 25000, "cinema": 5, "time": "16-35-00"}, {"date" : "2024-1-8",  "ticket_price": 25000, "cinema": 1, "time": "16-35-00"}, {"date" : "2024-1-9",  "ticket_price": 25000, "cinema": 3, "time": "16-35-00"}]
-const submitHandler = (e) => {
-    e.preventDefault();
-    const formData = new FormData();
-    formData.append("movie_cover", image);
-    formData.append("movie_name", e.target.movie.value);
-    formData.append("genre", e.target.genre.value);
-    formData.append("release_date", e.target.date.value);
-    formData.append("director", e.target.director.value);
-    formData.append("duration", e.target.hour.value + " hour " + e.target.minutes.value + " minutes");
-    formData.append("cast", e.target.cast.value);
-    formData.append("category", e.target.category.value);
-    formData.append("sinopsis", e.target.synopsis.value);
-    // formData.append("schedules", JSON.stringify(dataSchedule));
-    formData.append("schedules", JSON.stringify(dateTimeList));
-    // console.log(dateTimeList)
-    addMovie(formData, token)
-    .then((res) => {
+useEffect(() => {
+  const getMovieDetailUrl = import.meta.env.VITE_BACKEND_HOST + "/movie/movie/" + id
+    getMovieDetail(getMovieDetailUrl, token)
+      .then((res) => {
         console.log(res)
-    })
-    .catch((err) => {
-        console.log(err)
-    })
-    // console.log(formData.entries())
-}
+        setDataMovie(res.data.data.movie[0]);
+      })
+      .catch((err) => {
+        console.log(err);
+    });
+}, [])
 
 const [selectedDate, setSelectedDate] = useState('');
 const [selectedTime, setSelectedTime] = useState('');
 const handleDateChange = (event) => {
-    const newDate = event.target.value;
-    setSelectedDate(newDate);
+  const newDate = event.target.value;
+  setSelectedDate(newDate);
 };
 const handleTimeChange = (event) => {
-    const newTime = event.target.value;
-    setSelectedTime(newTime);
+  const newTime = event.target.value;
+  setSelectedTime(newTime);
 };
 const handleTimeAdd = () => {
-    if (selectedDate && selectedTime) {
-      const newDateTime = {
-        "date": selectedDate,
-        "time": selectedTime + "-00",
-        "ticket_price": 25000,
-        "cinema": 2
-      };
-      setDateTimeList([...dateTimeList, newDateTime]);
+  if (selectedDate && selectedTime) {
+    const newDateTime = {
+      "date": selectedDate,
+      "time": selectedTime + "-00",
+      "ticket_price": 25000,
+      "cinema": 2
+    };
+    setDateTimeList([...dateTimeList, newDateTime]);
     }
   };
 
-const consol = () => {
-    console.log(dateTimeList)
-}
+  let dataOnchange = []
+  const onChangeHandler = (e) => {
+    e.preventDefault()
+    const dataClone = { ...dataMovie };
+    dataClone[e.target.name] = e.target.value;
+    dataOnchange.push(e.target.name)
+    setDataMovie(dataClone);
+  }
+  const onSubmit = (e) => {
+    e.preventDefault();
+    const formData = new FormData();
+    // for (let i = 0; i < dataOnchange.length; i ++) {
+    //   formData.append(dataOnchange[i], e.target[dataOnchange[i]].value)
+    //   console.log(e.target[dataOnchange[i]].value)
+    // }
+    if (image) {
+      formData.append("movie_cover", image);
+    }
+    formData.append("movie_name", e.target.movie_name.value);
+    formData.append("genre", e.target.genre.value);
+    formData.append("release_date", e.target.release_date.value);
+    formData.append("director", e.target.director.value);
+    formData.append("cast", e.target.cast.value);
+    formData.append("category", e.target.category.value);
+    formData.append("sinopsis", e.target.synopsis.value);
+    // console.log(formData.entries())
+    editMovie(formData, token, id)
+    .then((res) => {
+      console.log(res)
+    })
+    .catch((err) => {
+      console.log(err)
+    })
+  }
+  const consol = () => {
+      console.log(dateTimeList)
+  }
+
+
   return (
     <>
-        <Navbar isClick={() => setIsDropdownShow(true)} />
+      <Navbar isClick={() => setIsDropdownShow(true)} />
         <main className='bg-backgorund_gray px-4 py-5 w-screen flex justify-center'>
             <section className='bg-white w-full h-full px-2 py-2'>
-                <form onSubmit={submitHandler} className='text-sm flex flex-col gap-4'>
-                    <p className='text-xl font-semibold'>Add New Movie</p>
+                <form onSubmit={onSubmit} className='text-sm flex flex-col gap-4'>
+                    <p className='text-xl font-semibold'>Edit Movie</p>
                     <div id='Upload_Image' className='flex flex-col gap-4'>
                         {image ? (
                         <img
@@ -83,7 +108,12 @@ const consol = () => {
                             name="users_image"
                         />
                         ) : (
-                        <p>Upload Image</p>
+                          <img
+                          src={dataMovie && dataMovie.movie_photo}
+                          alt="user-image"
+                          className="w-24 h-40 rounded-md"
+                          name="users_image"
+                      />
                         )}
                         <input
                         type="file"
@@ -101,20 +131,20 @@ const consol = () => {
                     </div>
                     <div id='Movie_Name' onClick={consol}>
                         <p>Movie Name</p>
-                        <input type="text" name='movie' className='bg-input_bg w-full px-3 py-3 outline-none border border-solid border-input_border rounded-md' placeholder='Add movie name'/>
+                        <input type="text" value={dataMovie && dataMovie.movie_name} name='movie_name' onChange={onChangeHandler} className='bg-input_bg w-full px-3 py-3 outline-none border border-solid border-input_border rounded-md' placeholder='Add movie name'/>
                     </div>
                     <div id='Category'>
                         <p>Category</p>
-                        <input type="text" name='category' className='bg-input_bg w-full px-3 py-3 outline-none border border-solid border-input_border rounded-md' placeholder='Add movie category'/>
+                        <input type="text" value={dataMovie && dataMovie.category} name='category' onChange={onChangeHandler} className='bg-input_bg w-full px-3 py-3 outline-none border border-solid border-input_border rounded-md' placeholder='Add movie category'/>
                     </div>
                     <div id='Genre'>
                         <p>Genre</p>
-                        <input type="text" name='genre' className='bg-input_bg w-full px-3 py-3 outline-none border border-solid border-input_border rounded-md' placeholder='Add movie category'/>
+                        <input type="text" value={dataMovie && dataMovie.genre} name='genre' onChange={onChangeHandler} className='bg-input_bg w-full px-3 py-3 outline-none border border-solid border-input_border rounded-md' placeholder='Add movie category'/>
                     </div>
                     <div className='flex flex-col gap-4 md:flex-row'>
                         <div id='Release_date' className='md:flex-1'>
                             <p>Release date</p>
-                            <input type="text" name='date' className='bg-input_bg w-full px-3 py-3 outline-none border border-solid border-input_border rounded-md' placeholder='YYYY/MM/DD'/>
+                            <input type="text" name='release_date' value={dataMovie && dataMovie.release_date} onChange={onChangeHandler} className='bg-input_bg w-full px-3 py-3 outline-none border border-solid border-input_border rounded-md' placeholder='YYYY/MM/DD'/>
                         </div>
                         <div id='Duration'>
                             <p>Duration (hour/minutes)</p>
@@ -126,37 +156,20 @@ const consol = () => {
                     </div>
                     <div id='Director_Name'>
                         <p>Director Name</p>
-                        <input type="text" name='director' className='bg-input_bg w-full px-3 py-3 outline-none border border-solid border-input_border rounded-md' placeholder='Add director name'/>
+                        <input type="text" value={dataMovie && dataMovie.director} name='director' onChange={onChangeHandler} className='bg-input_bg w-full px-3 py-3 outline-none border border-solid border-input_border rounded-md' placeholder='Add director name'/>
                     </div>
                     <div id='Cast'>
                         <p>Cast</p>
-                        <input type="text" name='cast' className='bg-input_bg w-full px-3 py-3 outline-none border border-solid border-input_border rounded-md' placeholder='Add movie cast'/>
+                        <input type="text" value={dataMovie && dataMovie.cast} name='cast' onChange={onChangeHandler} className='bg-input_bg w-full px-3 py-3 outline-none border border-solid border-input_border rounded-md' placeholder='Add movie cast'/>
                     </div>
                     <div id='Synopsis'>
                         <p>Synopsis</p>
-                        <input type="text" name='synopsis' className='bg-input_bg w-full px-3 py-3 outline-none border border-solid border-input_border rounded-md' placeholder='Add movie synopsis'/>
+                        <input type="text" value={dataMovie && dataMovie.sinopsis} name='sinopsis' onChange={onChangeHandler} className='bg-input_bg w-full px-3 py-3 outline-none border border-solid border-input_border rounded-md' placeholder='Add movie synopsis'/>
                     </div>
                     <div id='Location'>
                         <p>Add Location</p>
-                        <input type="text" className='bg-input_bg w-full px-3 py-3 outline-none border border-solid border-input_border rounded-md' placeholder='Add location'/>
+                        <input type="text" value={"All"} readOnly className='bg-input_bg w-full px-3 py-3 outline-none border border-solid border-input_border rounded-md' placeholder='Add location'/>
                     </div>
-                    {/* <div id='Date_Time'>
-                        <p>Set Date & Time</p>
-                        <div id='Date_and_time' className='flex flex-col gap-4'>
-                            <input type="date" className='bg-backgorund_gray px-2 py-2 rounded-md' name="" id="" placeholder='add date'/>
-                            <div className='flex items-center gap-3 font-semibold'>
-                                <div className='border border-solid border-purple_border px-2 w-fit rounded-md cursor-pointer'>
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 30 30" fill="none">
-                                    <path fill-rule="evenodd" clip-rule="evenodd" d="M15 6.5625C15.2486 6.5625 15.4871 6.66127 15.6629 6.83709C15.8387 7.0129 15.9375 7.25136 15.9375 7.5V15C15.9375 15.2486 15.8387 15.4871 15.6629 15.6629C15.4871 15.8387 15.2486 15.9375 15 15.9375H7.5C7.25136 15.9375 7.0129 15.8387 6.83709 15.6629C6.66127 15.4871 6.5625 15.2486 6.5625 15C6.5625 14.7514 6.66127 14.5129 6.83709 14.3371C7.0129 14.1613 7.25136 14.0625 7.5 14.0625H14.0625V7.5C14.0625 7.25136 14.1613 7.0129 14.3371 6.83709C14.5129 6.66127 14.7514 6.5625 15 6.5625Z" fill="#5F2EEA"/>
-                                    <path fill-rule="evenodd" clip-rule="evenodd" d="M14.0625 15C14.0625 14.7514 14.1613 14.5129 14.3371 14.3371C14.5129 14.1613 14.7514 14.0625 15 14.0625H22.5C22.7486 14.0625 22.9871 14.1613 23.1629 14.3371C23.3387 14.5129 23.4375 14.7514 23.4375 15C23.4375 15.2486 23.3387 15.4871 23.1629 15.6629C22.9871 15.8387 22.7486 15.9375 22.5 15.9375H15.9375V22.5C15.9375 22.7486 15.8387 22.9871 15.6629 23.1629C15.4871 23.3387 15.2486 23.4375 15 23.4375C14.7514 23.4375 14.5129 23.3387 14.3371 23.1629C14.1613 22.9871 14.0625 22.7486 14.0625 22.5V15Z" fill="#5F2EEA"/>
-                                    </svg>
-                                </div>
-                                <p>12:35</p>
-                                <p>12:35</p>
-                                <p>12:35</p>
-                            </div>
-                        </div>
-                    </div> */}
                     <div id='Date_Time' className='flex flex-col gap-3'>
                         <p>Set Date & Time</p>
                         <div id='Date_and_time' className='flex flex-col gap-4'>
@@ -212,4 +225,4 @@ const consol = () => {
   )
 }
 
-export default AddMovie
+export default EditMovie
