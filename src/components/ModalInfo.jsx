@@ -27,12 +27,16 @@ function ModalInfo(props) {
             <div className="flex justify-between w-full md:items-center">
               <p className="text-sm text-[#8692A6]">No. Rekening Virtual:</p>
               <div className="flex flex-col gap-y-4 items-end md:flex-row md:gap-x-5 md:items-center justify-end">
-                <input
+                {/* <input
                   className="text-base md:text-[18px] text-dark font-bold disabled w-[86%] md:w-[60%]"
                   ref={noVirtualRef}
                   value={props.vaNumbers}
                   disabled
-                />
+                /> */}
+                <p ref={noVirtualRef} 
+                className="text-base md:text-[18px] text-dark font-bold disabled w-[86%] md:w-[60%]">
+                  {props.vaNumbers}
+                </p>
                 <button
                   className="py-3 px-4 text-sm text-primary border-primary border rounded-md cursor-pointer"
                   onClick={copyToClipboard}

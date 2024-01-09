@@ -7,13 +7,16 @@ import getImageUrl from "../utils/imageGetter";
 import DropdownMobile from "../components/DropdownMobile";
 import { getOrderHistory } from "../utils/https/orderHistory";
 import { useSelector } from "react-redux";
+import { useSearchParams } from "react-router-dom";
 
 function OrderHistory() {
   const [isDropdownShown, setIsDropdownShow] = useState(false);
   const [copySuccess, setCopySuccess] = useState("Copy");
   const token = useSelector((state) => state.user.userInfo.token);
   const [dataOrder, setDataOrder] = useState([]);
-
+  const [searchParams, setSearchParams] = useSearchParams({
+    page: 1
+  })
   const noVirtualRef = useRef(null);
   const copyToClipboard = (e) => {
     noVirtualRef.current.select();
@@ -23,7 +26,7 @@ function OrderHistory() {
   };
 
   useEffect(() => {
-    getOrderHistory("", token)
+    getOrderHistory(searchParams.toString(), token)
       .then((res) => {
         console.log(res.data.data);
         setDataOrder(res.data.data);

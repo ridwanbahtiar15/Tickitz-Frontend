@@ -20,7 +20,9 @@ function Home() {
   const [movie, setDataMovie] = useState([]);
   const [metaMovie, setMetaMovie] = useState([]);
   const token = useSelector((state) => state.user.userInfo.token);
-  const [searchParams, setSearchParams] = useSearchParams({});
+  const [searchParams, setSearchParams] = useSearchParams({
+    page: 1
+  });
   const getMovieUrl = import.meta.env.VITE_BACKEND_HOST + "/movie?" + searchParams.toString();
 
   useEffect(() => {
@@ -29,7 +31,7 @@ function Home() {
       .then((res) => {
         setDataMovie(res.data.data);
         setMetaMovie(res.data.meta)
-        console.log(res)
+        // console.log(res)
       })
       .catch(() => {
         setDataMovie([]);
@@ -80,9 +82,6 @@ function Home() {
   const pagination = (page, url) => {
     if (page !== "") {
       if (page !== metaMovie.page) {
-        // const params = searchParams.has("page")
-        //   ? `${(searchParams.toString()).slice(0, 1)}${page}`
-        //   : `${searchParams.toString()}&page=${page}`;
         const params = metaMovie && metaMovie.next !== "null"
           ? `${(metaMovie.next).slice(0, -1)}${page}`
           : `${(metaMovie.prev).slice(0, -1)}${page}`;
@@ -104,6 +103,20 @@ function Home() {
       >{index + 1}</button>
     ));
   };
+
+  const nextPage = () => {
+    if (metaMovie.next !== "null") {
+      navigate("/?" + metaMovie.next);
+      setSearchParams(metaMovie.next)
+    }
+  }
+
+  const prevPage = () => {
+    if (metaMovie.prev !== "null") {
+      navigate("/?" + metaMovie.prev);
+      setSearchParams(metaMovie.prev)
+    }
+  }
 
   return (
     <>
@@ -297,11 +310,11 @@ function Home() {
         </div>
       </section>
       <section className="pb-[63px] flex gap-x-5 justify-center font-nunito font-medium">
-        <p onClick={metaMovie && metaMovie.prev !== "null" && pagination(metaMovie.prev)} className="bg-primary rounded-full w-[40px] h-[40px] flex justify-center items-center">
+        <p onClick={nextPage} className="bg-primary rounded-full w-[40px] h-[40px] flex justify-center items-center">
           <ion-icon name="chevron-back-outline"></ion-icon>
         </p>
         {renderButtons()}
-        <p onClick={metaMovie && metaMovie.next !== "null" && pagination(metaMovie.next)} className="bg-primary rounded-full w-[40px] h-[40px] flex justify-center items-center">
+        <p onClick={prevPage} className="bg-primary rounded-full w-[40px] h-[40px] flex justify-center items-center">
           <ion-icon name="chevron-forward-outline"></ion-icon>
         </p>
       </section>
