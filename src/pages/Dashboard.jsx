@@ -110,7 +110,6 @@ function Dashboard() {
           </div>
         </section>
       </main>
-      <section></section>
       {isDropdownShown && (
         <DropdownMobile isClick={() => setIsDropdownShow(false)} />
       )}

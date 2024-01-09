@@ -11,23 +11,23 @@ import { useSelector } from "react-redux";
 import { movieCard } from "../components/MovieCard";
 import AuthModal from "../components/AuthModal";
 
-
 function Home() {
   const [isDropdownShown, setIsDropdownShow] = useState(false);
   const [genre, setGenre] = useState("");
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const [isGenre, setIsGenre] = useState(false);
   const [movie, setDataMovie] = useState([]);
   const [metaMovie, setMetaMovie] = useState([]);
   const token = useSelector((state) => state.user.userInfo.token);
   const [searchParams, setSearchParams] = useSearchParams({});
-  const getMovieUrl = import.meta.env.VITE_BACKEND_HOST + "/movie?" + searchParams.toString();
+  const getMovieUrl =
+    import.meta.env.VITE_BACKEND_HOST + "/movie?" + searchParams.toString();
 
   useEffect(() => {
     getAllMovie(token, getMovieUrl)
       .then((res) => {
         setDataMovie(res.data.data);
-        setMetaMovie(res.data.meta)
+        setMetaMovie(res.data.meta);
       })
       .catch(() => {
         setDataMovie([]);
@@ -77,18 +77,27 @@ function Home() {
 
   const pagination = (page) => {
     if (page !== metaMovie.page) {
-      const params = (searchParams.toString()).slice(0, 1) + page
+      // const params = searchParams.toString().slice(0, 1) + page;
       // const url = import.meta.env.VITE_BACKEND_HOST + "/movie?" + params.slice(0, 1) + page;
-      navigate("/?page=" + page)
+      navigate("/?page=" + page);
     }
-  }
+  };
 
   const renderButtons = () => {
     return Array.from({ length: metaMovie.total_page }, (_, index) => (
-      <button onClick={() => {pagination(index + 1)}}
+      <button
+        onClick={() => {
+          pagination(index + 1);
+        }}
         key={index}
-        className={`h-10 w-10 ${index + 1 === metaMovie.page ? "bg-primary text-white" : "bg-order text-black"} rounded-full flex justify-center items-center`}
-      >{index + 1}</button>
+        className={`h-10 w-10 ${
+          index + 1 === metaMovie.page
+            ? "bg-primary text-white"
+            : "bg-order text-black"
+        } rounded-full flex justify-center items-center`}
+      >
+        {index + 1}
+      </button>
     ));
   };
 
@@ -330,7 +339,7 @@ function Home() {
         </div>
       </section>
       <Footer />
-      <AuthModal/>
+      <AuthModal />
       {isDropdownShown && (
         <DropdownMobile isClick={() => setIsDropdownShow(false)} />
       )}

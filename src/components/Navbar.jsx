@@ -74,7 +74,7 @@ function Navbar(props) {
           </div>
           <Link to="/profile">
             <img
-              src={getImageUrl("spiderman", "png")}
+              src={user.userInfo.photo_profile}
               alt=""
               height="56px"
               width="56px"
