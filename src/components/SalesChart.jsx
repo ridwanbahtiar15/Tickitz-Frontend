@@ -8,18 +8,22 @@ Chart.defaults.font.size = 13;
 Chart.defaults.font.weight = 500;
 Chart.defaults.font.family = "mulish";
 
-function SalesChart() {
-  const dateArr = ["Jan", "Feb", "Mar", "Apr", "May", "Jun"];
-  const salesArr = [300, 400, 800, 500, 200, 450];
+function SalesChart(props) {
+  let dateArr
+  let salesArr
+  if (props.dataStatistic) {
+    dateArr = props.dataStatistic.map((item) => item.date);
+    salesArr = props.dataStatistic.map((item) => item.total);
+  }
 
   return (
     <Line
       data={{
-        labels: dateArr,
+        labels: props.dataStatistic && dateArr,
         datasets: [
           {
             label: "# of votes",
-            data: salesArr,
+            data: props.dataStatistic && salesArr,
             backgroundColor: "#1D4ED887",
             borderColor: "#1D4ED8",
             borderWidth: 2,
@@ -41,7 +45,7 @@ function SalesChart() {
           },
           y: {
             ticks: {
-              callback: (value) => "$" + value,
+              callback: (value) =>  value,
               stepSize: 200,
             },
             beginAtZero: true,
