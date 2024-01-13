@@ -7,6 +7,7 @@ import getImageUrl from "../utils/imageGetter";
 import DropdownMobile from "../components/DropdownMobile";
 import { getOrderHistory } from "../utils/https/orderHistory";
 import { useSelector } from "react-redux";
+import axios from "axios";
 import { useSearchParams } from "react-router-dom";
 
 function OrderHistory() {
@@ -28,7 +29,6 @@ function OrderHistory() {
   useEffect(() => {
     getOrderHistory(searchParams.toString(), token)
       .then((res) => {
-        console.log(res.data.data);
         setDataOrder(res.data.data);
       })
       .catch((err) => {
@@ -36,7 +36,33 @@ function OrderHistory() {
       });
   }, []);
 
-  console.log(dataOrder.length);
+  const [user, setUser] = useState({
+    firstname: "",
+    lastname: "",
+    points: 0,
+    user_photo: "",
+  });
+
+  const url = import.meta.env.VITE_BACKEND_HOST;
+  const authAxios = axios.create({
+    baseURL: url,
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  useEffect(() => {
+    authAxios
+      .get("/user/profile")
+      .then((res) => {
+        setUser({
+          firstname: res.data.data[0].firstname,
+          lastname: res.data.data[0].lastname,
+          points: res.data.data[0].points,
+          user_photo: res.data.data[0].user_photo,
+        });
+      })
+      .catch((err) => console.log(err));
+  }, []);
 
   // <Navbar isClick={() => setIsDropdownShow(true)} />;
   return (
@@ -50,9 +76,13 @@ function OrderHistory() {
               <img src={getImageUrl("dot", "svg")} alt="icon" />
             </div>
             <div className="flex flex-col items-center justify-center">
-              <img src={getImageUrl("image", "png")} alt="image" />
+              <img
+                src={user.user_photo}
+                alt="image"
+                className="w-40 h-40 rounded-full"
+              />
               <p className="text-[20px] text-dark font-semibold">
-                Jonas El Rodriguez
+                {user.firstname} {user.lastname}
               </p>
               <p className="text-sm text-secondary">Moviegoers</p>
             </div>
@@ -62,7 +92,7 @@ function OrderHistory() {
               <div className="w-full bg-primary rounded-2xl p-4 flex flex-col gap-y-16">
                 <p className="text-[18px] font-bold text-light">Moviegoers</p>
                 <div className="text-light flex gap-x-1 items-end">
-                  <p className="text-2xl">320</p>
+                  <p className="text-2xl">{user.points}</p>
                   <p className="text-[10px]">points</p>
                 </div>
                 <div className="p-20 bg-[#FFFFFF4D] self-baseline rounded-full absolute top-2 -right-12"></div>
@@ -131,198 +161,213 @@ function OrderHistory() {
             </div>
             <div className="flex flex-col gap-y-8">
               {dataOrder.length > 0 ? (
-                dataOrder.map((result, i) => (
-                  <div
-                    className="bg-light rounded-3xl h-full px-12 py-10"
-                    key={i}
-                  >
-                    <div className="flex flex-col gap-y-4 md:flex-row md:justify-between md:items-center">
-                      <div>
-                        <p className="text-sm text-[#AAA] mb-4">
-                          {result.date}
-                        </p>
-                        <p className="text-2xl text-black">{result.movie}</p>
-                      </div>
-                      <img src={getImageUrl("CineOne", "svg")} alt="cinema" />
-                    </div>
-                    <div className="w-full h-[1px] bg-[#DEDEDE] my-8"></div>
-                    <div className="flex flex-col">
-                      <div className="flex flex-col gap-y-4 md:flex-row md:gap-x-4">
-                        <div className="py-3 px-10 bg-[#00BA8833] text-[#00BA88] text-sm font-bold rounded-lg text-center">
-                          Ticket in active
+                dataOrder.map((result, i) =>
+                  result.status == "Cancelled" ? (
+                    <div
+                      className="bg-light rounded-3xl h-full px-12 py-10"
+                      key={i}
+                    >
+                      <div className="flex flex-col gap-y-4 md:flex-row md:justify-between md:items-center">
+                        <div>
+                          <p className="text-sm text-[#AAA] mb-4">
+                            {result.date}
+                          </p>
+                          <p className="text-2xl text-black">{result.movie}</p>
                         </div>
-                        <div className="py-3 px-10 bg-[#E82C2C33] text-[#E82C2C] text-sm font-bold rounded-lg text-center">
-                          Not Paid
-                        </div>
+                        <img src={result.cinema_logo} alt="cinema" />
                       </div>
-                      <details className="collapse bg-light">
-                        <summary className="collapse-title text-xl font-medium px-0 ">
-                          <div className="flex gap-x-4 justify-end absolute left-0 z-99">
-                            <p className="text-[18px] text-[#AAA]">
-                              Show Details
-                            </p>
-                            <img
-                              src={getImageUrl("Forward", "svg")}
-                              alt="icon"
-                            />
+                      <div className="w-full h-[1px] bg-[#DEDEDE] my-8"></div>
+                      <div className="flex flex-col">
+                        <div className="flex flex-col gap-y-4 md:flex-row md:gap-x-4">
+                          <div className="py-3 px-10 bg-[#00BA8833] text-[#00BA88] text-sm font-bold rounded-lg text-center">
+                            Ticket in active
                           </div>
-                        </summary>
-                        <div className="collapse-content">
-                          <div className="flex flex-col gap-y-4 mt-6">
-                            <p className="text-[18px] text-dark">
-                              Ticket Information
-                            </p>
-                            <div className="flex flex-col md:flex-row md:justify-between w-full md:items-center">
-                              <p className="text-sm text-[#8692A6]">
-                                No. Rekening Virtual:
+                          <div className="py-3 px-10 bg-[#E82C2C33] text-[#E82C2C] text-sm font-bold rounded-lg text-center">
+                            Not Paid
+                          </div>
+                        </div>
+                        <details className="collapse bg-light">
+                          <summary className="collapse-title text-xl font-medium px-0 ">
+                            <div className="flex gap-x-4 justify-end absolute left-0 z-99">
+                              <p className="text-[18px] text-[#AAA]">
+                                Show Details
                               </p>
-                              <div className="flex flex-col gap-y-4 md:flex-row md:gap-x-5 md:items-center md:justify-end">
-                                <input
-                                  className="text-base md:text-[18px] text-dark font-bold disabled md:w-[60%]"
-                                  ref={noVirtualRef}
-                                  value="12321328913829724"
-                                  disabled
+                              <img
+                                src={getImageUrl("Forward", "svg")}
+                                alt="icon"
+                              />
+                            </div>
+                          </summary>
+                          <div className="collapse-content">
+                            <div className="flex flex-col gap-y-4 mt-6">
+                              <p className="text-[18px] text-dark">
+                                Ticket Information
+                              </p>
+                              <div className="flex flex-col md:flex-row md:justify-between w-full md:items-center">
+                                <p className="text-sm text-[#8692A6]">
+                                  No. Rekening Virtual:
+                                </p>
+                                <div className="flex flex-col gap-y-4 md:flex-row md:gap-x-5 md:items-center md:justify-end">
+                                  <input
+                                    className="text-base md:text-[18px] text-dark font-bold disabled md:w-[40%]"
+                                    ref={noVirtualRef}
+                                    value={result.va_number}
+                                    disabled
+                                  />
+                                  <button
+                                    className="py-3 px-4 text-sm text-primary border-primary border rounded-md cursor-pointer"
+                                    onClick={copyToClipboard}
+                                  >
+                                    {copySuccess}
+                                  </button>
+                                </div>
+                              </div>
+                              <div className="flex justify-between w-full items-center">
+                                <p className="text-sm text-[#8692A6]">
+                                  Total Payment:
+                                </p>
+                                <p className="text-[18px] font-bold text-primary">
+                                  Rp. {result.total_purchase}
+                                </p>
+                              </div>
+                              <div>
+                                <p className="text-[#A0A3BD] leading-8">
+                                  Pay this payment bill before it is due, on,{" "}
+                                  <span className="text-danger">
+                                    on {result.date} {result.time}
+                                  </span>
+                                  . If the bill has not been paid by the
+                                  specified time, it will be forfeited
+                                </p>
+                              </div>
+                              <Link
+                                to="/ticketresult"
+                                className="text-sm py-4 px-10 font-bold text-light bg-primary rounded-md mt-6 text-center drop-shadow-xl focus:ring-2 md:self-start"
+                              >
+                                Cek Pembayaran
+                              </Link>
+                            </div>
+                          </div>
+                        </details>
+                      </div>
+                    </div>
+                  ) : (
+                    <div
+                      className="bg-light rounded-3xl h-full px-12 py-10"
+                      key={i}
+                    >
+                      <div className="flex flex-col gap-y-4 md:flex-row md:justify-between md:items-center">
+                        <div>
+                          <p className="text-sm text-[#AAA] mb-4">
+                            {result.date}
+                          </p>
+                          <p className="text-2xl text-black">
+                            Avengers: End Game
+                          </p>
+                        </div>
+                        <img src={result.cinema_logo} alt="cinema" />
+                      </div>
+                      <div className="w-full h-[1px] bg-[#DEDEDE] my-8"></div>
+                      <div className="">
+                        <div className="flex flex-col gap-y-4 md:flex-row gap-x-4">
+                          <div className="py-3 px-10 bg-[#6E719133] text-[#6E7191] text-sm font-bold rounded-lg text-center">
+                            Ticket used
+                          </div>
+                          <div className="py-3 px-10 bg-[#1D4ED833] text-[#1D4ED8] text-sm font-bold rounded-lg text-center">
+                            Paid
+                          </div>
+                        </div>
+                        <details className="collapse bg-light">
+                          <summary className="collapse-title text-xl font-medium px-0 ">
+                            <div className="flex gap-x-4 justify-end absolute left-0 z-99">
+                              <p className="text-[18px] text-[#AAA]">
+                                Show Details
+                              </p>
+                              <img
+                                src={getImageUrl("Forward", "svg")}
+                                alt="icon"
+                              />
+                            </div>
+                          </summary>
+                          <div className="collapse-content">
+                            <div className="flex-col mt-6">
+                              <p className="text-[18px] text-dark">
+                                Ticket Information
+                              </p>
+                              <div className="flex flex-col gap-y-4 sm:flex-row md:gap-x-8 sm:items-center">
+                                <img
+                                  src={getImageUrl("qrcode", "png")}
+                                  alt="qrcode"
                                 />
-                                <button
-                                  className="py-3 px-4 text-sm text-primary border-primary border rounded-md cursor-pointer"
-                                  onClick={copyToClipboard}
-                                >
-                                  {copySuccess}
-                                </button>
+                                <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
+                                  <div className="flex flex-col gap-y-2">
+                                    <p className="text-xs text-[#AAA] font-semibold">
+                                      Category
+                                    </p>
+                                    <p className="text-sm text-black font-semibold">
+                                      PG-13
+                                    </p>
+                                  </div>
+                                  <div className="flex flex-col gap-y-2">
+                                    <p className="text-xs text-[#AAA] font-semibold">
+                                      Time
+                                    </p>
+                                    <p className="text-sm text-black font-semibold">
+                                      {result.time}
+                                    </p>
+                                  </div>
+                                  <div className="flex flex-col gap-y-2">
+                                    <p className="text-xs text-[#AAA] font-semibold">
+                                      Seats
+                                    </p>
+                                    <p className="text-sm text-black font-semibold">
+                                      {result.seats}
+                                    </p>
+                                  </div>
+                                  <div className="flex flex-col gap-y-2">
+                                    <p className="text-xs text-[#AAA] font-semibold">
+                                      Movie
+                                    </p>
+                                    <p className="text-sm text-black font-semibold">
+                                      {result.movie}
+                                    </p>
+                                  </div>
+                                  <div className="flex flex-col gap-y-2">
+                                    <p className="text-xs text-[#AAA] font-semibold">
+                                      Date
+                                    </p>
+                                    <p className="text-sm text-black font-semibold">
+                                      {result.date}
+                                    </p>
+                                  </div>
+                                  <div className="flex flex-col gap-y-2">
+                                    <p className="text-xs text-[#AAA] font-semibold">
+                                      Count
+                                    </p>
+                                    <p className="text-sm text-black font-semibold">
+                                      {result.total_ticket} pcs
+                                    </p>
+                                  </div>
+                                </div>
+                                <div className="flex flex-col gap-y-2">
+                                  <p className="text-[#AAA] font-semibold">
+                                    Total
+                                  </p>
+                                  <p className="text-2xl text-black font-semibold">
+                                    Rp. {result.total_purchase}
+                                  </p>
+                                </div>
                               </div>
                             </div>
-                            <div className="flex justify-between w-full items-center">
-                              <p className="text-sm text-[#8692A6]">
-                                Total Payment:
-                              </p>
-                              <p className="text-[18px] font-bold text-primary">
-                                $30
-                              </p>
-                            </div>
-                            <div>
-                              <p className="text-[#A0A3BD] leading-8">
-                                Pay this payment bill before it is due, on,{" "}
-                                <span className="text-danger">
-                                  on June 23, 2023
-                                </span>
-                                . If the bill has not been paid by the specified
-                                time, it will be forfeited
-                              </p>
-                            </div>
-                            <Link
-                              to="/ticketresult"
-                              className="text-sm py-4 px-10 font-bold text-light bg-primary rounded-md mt-6 text-center drop-shadow-xl focus:ring-2 md:self-start"
-                            >
-                              Cek Pembayaran
-                            </Link>
                           </div>
-                        </div>
-                      </details>
+                        </details>
+                      </div>
                     </div>
-                  </div>
-                ))
+                  )
+                )
               ) : (
-                <div> </div>
+                <div></div>
               )}
-              {/* <div className="bg-light rounded-3xl h-full px-12 py-10">
-                <div className="flex flex-col gap-y-4 md:flex-row md:justify-between md:items-center">
-                  <div>
-                    <p className="text-sm text-[#AAA] mb-4">
-                      Monday, 14 June 2020 - 02:00pm
-                    </p>
-                    <p className="text-2xl text-black">Avengers: End Game</p>
-                  </div>
-                  <img src={getImageUrl("ebv.id", "svg")} alt="cinema" />
-                </div>
-                <div className="w-full h-[1px] bg-[#DEDEDE] my-8"></div>
-                <div className="">
-                  <div className="flex flex-col gap-y-4 md:flex-row gap-x-4">
-                    <div className="py-3 px-10 bg-[#6E719133] text-[#6E7191] text-sm font-bold rounded-lg text-center">
-                      Ticket used
-                    </div>
-                    <div className="py-3 px-10 bg-[#1D4ED833] text-[#1D4ED8] text-sm font-bold rounded-lg text-center">
-                      Paid
-                    </div>
-                  </div>
-                  <details className="collapse bg-light">
-                    <summary className="collapse-title text-xl font-medium px-0 ">
-                      <div className="flex gap-x-4 justify-end absolute left-0 z-99">
-                        <p className="text-[18px] text-[#AAA]">Show Details</p>
-                        <img src={getImageUrl("Forward", "svg")} alt="icon" />
-                      </div>
-                    </summary>
-                    <div className="collapse-content">
-                      <div className="flex-col mt-6">
-                        <p className="text-[18px] text-dark">
-                          Ticket Information
-                        </p>
-                        <div className="flex flex-col gap-y-4 sm:flex-row md:gap-x-8 sm:items-center">
-                          <img
-                            src={getImageUrl("qrcode", "png")}
-                            alt="qrcode"
-                          />
-                          <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
-                            <div className="flex flex-col gap-y-2">
-                              <p className="text-xs text-[#AAA] font-semibold">
-                                Category
-                              </p>
-                              <p className="text-sm text-black font-semibold">
-                                PG-13
-                              </p>
-                            </div>
-                            <div className="flex flex-col gap-y-2">
-                              <p className="text-xs text-[#AAA] font-semibold">
-                                Time
-                              </p>
-                              <p className="text-sm text-black font-semibold">
-                                2:00pm
-                              </p>
-                            </div>
-                            <div className="flex flex-col gap-y-2">
-                              <p className="text-xs text-[#AAA] font-semibold">
-                                Seats
-                              </p>
-                              <p className="text-sm text-black font-semibold">
-                                C4, C5, C6
-                              </p>
-                            </div>
-                            <div className="flex flex-col gap-y-2">
-                              <p className="text-xs text-[#AAA] font-semibold">
-                                Movie
-                              </p>
-                              <p className="text-sm text-black font-semibold">
-                                Spiderman
-                              </p>
-                            </div>
-                            <div className="flex flex-col gap-y-2">
-                              <p className="text-xs text-[#AAA] font-semibold">
-                                Date
-                              </p>
-                              <p className="text-sm text-black font-semibold">
-                                07 Jul
-                              </p>
-                            </div>
-                            <div className="flex flex-col gap-y-2">
-                              <p className="text-xs text-[#AAA] font-semibold">
-                                Count
-                              </p>
-                              <p className="text-sm text-black font-semibold">
-                                3 pcs
-                              </p>
-                            </div>
-                          </div>
-                          <div className="flex flex-col gap-y-2">
-                            <p className="text-[#AAA] font-semibold">Total</p>
-                            <p className="text-2xl text-black font-semibold">
-                              $30
-                            </p>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </details>
-                </div>
-              </div> */}
             </div>
           </div>
         </section>

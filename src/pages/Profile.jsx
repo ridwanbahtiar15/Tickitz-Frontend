@@ -47,7 +47,6 @@ function Profile() {
     authAxios
       .get("/user/profile")
       .then((res) => {
-        console.log(res.data.data[0]);
         setUser({
           firstname: res.data.data[0].firstname,
           lastname: res.data.data[0].lastname,

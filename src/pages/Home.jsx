@@ -11,11 +11,10 @@ import { useSelector } from "react-redux";
 import { movieCard } from "../components/MovieCard";
 import AuthModal from "../components/AuthModal";
 
-
 function Home() {
   const [isDropdownShown, setIsDropdownShow] = useState(false);
   const [genre, setGenre] = useState("");
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const [isGenre, setIsGenre] = useState(false);
   const [movie, setDataMovie] = useState([]);
   const [metaMovie, setMetaMovie] = useState([]);
@@ -93,14 +92,20 @@ function Home() {
       navigate("/?" + url);
       setSearchParams(url)
     }
-  }
+  };
 
   const renderButtons = () => {
     return Array.from({ length: metaMovie.total_page }, (_, index) => (
       <button onClick={() => {pagination(index + 1, "")}}
         key={index}
-        className={`h-10 w-10 ${index + 1 === metaMovie.page ? "bg-primary text-white" : "bg-order text-black"} rounded-full flex justify-center items-center`}
-      >{index + 1}</button>
+        className={`h-10 w-10 ${
+          index + 1 === metaMovie.page
+            ? "bg-primary text-white"
+            : "bg-order text-black"
+        } rounded-full flex justify-center items-center`}
+      >
+        {index + 1}
+      </button>
     ));
   };
 
@@ -344,7 +349,7 @@ function Home() {
         </div>
       </section>
       <Footer />
-      <AuthModal/>
+      <AuthModal />
       {isDropdownShown && (
         <DropdownMobile isClick={() => setIsDropdownShow(false)} />
       )}
