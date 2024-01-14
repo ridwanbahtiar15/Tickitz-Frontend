@@ -95,9 +95,9 @@ const handleTimeAdd = () => {
   return (
     <>
       <Navbar isClick={() => setIsDropdownShow(true)} />
-        <main className='bg-backgorund_gray px-4 py-5 w-screen flex justify-center'>
-            <section className='bg-white w-full h-full px-2 py-2'>
-                <form onSubmit={onSubmit} className='text-sm flex flex-col gap-4'>
+        <main className='bg-backgorund_gray px-4 py-5 w-screen flex justify-center pt-6 md:pt-10 lg:pt-14 pb-[55px] md:px-11 xl:px-[130px] font-mulish'>
+            <section className='bg-white w-full h-full px-2 py-2 md:py-10 md:px-11'>
+                <form onSubmit={onSubmit} className='text-sm flex flex-col gap-4  md:gap-8'>
                     <p className='text-xl font-semibold'>Edit Movie</p>
                     <div id='Upload_Image' className='flex flex-col gap-4'>
                         {image ? (
@@ -217,7 +217,7 @@ const handleTimeAdd = () => {
                 </form>
             </section>
         </main>
-        <AuthModal/>
+        <AuthModal role={"Admin"}/>
         {isDropdownShown && (
         <DropdownMobile isClick={() => setIsDropdownShow(false)} />
       )}

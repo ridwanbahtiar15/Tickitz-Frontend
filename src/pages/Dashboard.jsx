@@ -7,6 +7,7 @@ import SalesChart from "../components/SalesChart";
 import TicketChart from "../components/TicketChart";
 import { getDataStatusMovie } from "../utils/https/dashboard";
 import { useSelector } from "react-redux";
+import AuthModal from "../components/AuthModal";
 
 function Dashboard() {
   const [isDropdownShown, setIsDropdownShow] = useState(false);
@@ -89,6 +90,7 @@ function Dashboard() {
           </div>
         </section>
       </main>
+      <AuthModal role={"Admin"}/>
       {isDropdownShown && (
         <DropdownMobile isClick={() => setIsDropdownShow(false)} />
       )}

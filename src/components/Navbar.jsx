@@ -13,8 +13,8 @@ function Navbar(props) {
   const userAvailable = useSelector((state) => state.user.isUserAvailable);
   const [arrow, setArrow] = useState(false);
   const user = useSelector((state) => state.user);
+  const [roleUser, setRoleUser] = useState(user.userInfo.role)
   const token = user.userInfo.token;
-
   const onLogOutHandler = () => {
     const { logoutThunk } = userAction;
     dispatch(
@@ -41,7 +41,7 @@ function Navbar(props) {
         </div>
       </div>
       <div className="nav-mid text-[#0F172A] hidden lg:flex lg:gap-x-[60px]">
-        <Link to="/" className="text-sm">
+        <Link to="/?page=1" className="text-sm">
           Home
         </Link>
         <a href="#movies" className="text-sm">
@@ -99,6 +99,15 @@ function Navbar(props) {
             <li className="p-1">
               <button onClick={onLogOutHandler}>Logout</button>
             </li>
+            {roleUser === "Admin" && 
+            <>
+            <li className="p-1">
+              <button onClick={() => {navigate("/admin/dashboard")}}>Dashboard</button>
+            </li>
+            <li className="p-1">
+              <button onClick={() => {navigate("/admin/movie")}}>Movie Admin</button>
+            </li>
+            </>}
           </ul>
         </div>
       )}

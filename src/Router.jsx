@@ -77,7 +77,7 @@ const router = createBrowserRouter([
     ),
   },
   {
-    path: "/addmovie",
+    path: "/admin/addmovie",
     element: (
       <Private>
         <AddMovie />
@@ -93,19 +93,21 @@ const router = createBrowserRouter([
     ),
   },
   {
-    path: "/editmovie/:id",
+    path: "/admin/editmovie/:id",
     element: (
       <Private>
         <EditMovie />
       </Private>
     ),
+  },
+  {
     path: "/admin/movie",
     element: (
       <Private>
         <ListMovie />
       </Private>
     ),
-  },
+  }
 ]);
 
 export default router;

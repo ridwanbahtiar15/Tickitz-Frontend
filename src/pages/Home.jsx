@@ -30,7 +30,7 @@ function Home() {
       .then((res) => {
         setDataMovie(res.data.data);
         setMetaMovie(res.data.meta)
-        // console.log(res)
+        console.log(res.data.data)
       })
       .catch(() => {
         setDataMovie([]);
@@ -304,6 +304,7 @@ function Home() {
                   id: product.Id,
                   movie_cover: product.movie_photo,
                   movie_name: product.movie_name,
+                  movie_genre: product.genre
                 })}
               </div>
             ))
@@ -315,11 +316,11 @@ function Home() {
         </div>
       </section>
       <section className="pb-[63px] flex gap-x-5 justify-center font-nunito font-medium">
-        <p onClick={nextPage} className="bg-primary rounded-full w-[40px] h-[40px] flex justify-center items-center">
+        <p onClick={prevPage} className="bg-primary cursor-pointer rounded-full w-[40px] h-[40px] flex justify-center items-center">
           <ion-icon name="chevron-back-outline"></ion-icon>
         </p>
         {renderButtons()}
-        <p onClick={prevPage} className="bg-primary rounded-full w-[40px] h-[40px] flex justify-center items-center">
+        <p onClick={nextPage} className="bg-primary cursor-pointer rounded-full w-[40px] h-[40px] flex justify-center items-center">
           <ion-icon name="chevron-forward-outline"></ion-icon>
         </p>
       </section>
