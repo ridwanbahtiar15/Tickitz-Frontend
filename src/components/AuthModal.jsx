@@ -3,9 +3,12 @@ import { checkToken } from '../utils/https/checkAuth';
 import { useSelector, useDispatch } from 'react-redux';
 import { userAction } from "../redux/slices/user";
 import { useNavigate } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 
-function AuthModal() {
-    const token = useSelector((state) => state.user.userInfo.token)
+function AuthModal(props) {
+  const user = useSelector((state) => state.user.userInfo)
+    const token = user.token
+    const role = user.role
     const [accessDenied, setAccessDenied]= useState(false)
     const dispatch = useDispatch()
     const navigate = useNavigate()
@@ -37,12 +40,17 @@ function AuthModal() {
       );
     };
 
+    if (props.role === "Admin") {
+      if (role !== "Admin") {
+        return <Navigate to="/" replace={true} />;
+      }
+    }
+
   return (
     <>
     {accessDenied && <div
-          className={`flex fixed inset-0 items-center justify-center z-90 outline-none w-full h-full bg-zinc-600/80`}
-          id="myModals"
-        >
+          className={`flex fixed inset-0 items-center justify-center z-10 outline-none w-full h-full bg-zinc-600/80`}
+          id="myModals">
           <div className="flex flex-col gap-7 modal-content bg-white p-8 rounded shadow-lg w-[300px] justify-center">
             <p className="text-red-700">You are out of session, Please login again</p>
             <div className="flex justify-end items-center gap-4 text-black">

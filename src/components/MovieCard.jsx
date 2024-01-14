@@ -2,6 +2,10 @@ import { Link } from "react-router-dom";
 import getImageUrl from "../utils/imageGetter";
 
 export function movieCard(props) {
+  const dataGenre = props.movie_genre.split("")
+  // const renderedGenre = () => {
+  //   dataGenre && dataGenre.forEach()
+  // }
   return (
     <div className="flex flex-col gap-y-4">
       <div className="w-full h-full rounded-md relative">
@@ -34,11 +38,13 @@ export function movieCard(props) {
       </p>
       <div className="flex flex-row gap-x-2">
         <p className="max-sm:text-sm text-[#A0A3BD] px-5 py-2 bg-[#A0A3BD1A] rounded-[20px]">
-          Action
+          {props.movie_genre}
         </p>
-        <p className="max-sm:text-sm text-[#A0A3BD] px-5 py-2 bg-[#A0A3BD1A] rounded-[20px]">
-          Adventure
-        </p>
+        {/* {dataGenre.map((data, index) => (
+            <p key={index} className="max-sm:text-sm text-[#A0A3BD] px-5 py-2 bg-[#A0A3BD1A] rounded-[20px]">
+              {data.movie_genre}
+            </p>
+        ))} */}
       </div>
     </div>
   );

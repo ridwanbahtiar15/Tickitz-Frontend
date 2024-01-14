@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { userAction } from "../redux/slices/user";
+import { useState } from "react";
 
 function DropdownMobile(props) {
   const navigate = useNavigate();
@@ -11,6 +12,7 @@ function DropdownMobile(props) {
   const userAvailable = useSelector((state) => state.user.isUserAvailable);
   const user = useSelector((state) => state.user);
   const token = user.userInfo.token;
+  const [roleUser, setRoleUser] = useState(user.userInfo.role)
 
   const onLogOutHandler = () => {
     const { logoutThunk } = userAction;
@@ -26,7 +28,7 @@ function DropdownMobile(props) {
   return (
     <div id="dropdownMobile" className="w-screen font-mulish lg:hidden">
       <div
-        className="fixed left-0 top-0  w-screen h-screen pt-4 px-5
+        className="fixed left-0 top-0 z-10 w-screen h-screen pt-4 px-5
             md:px-11 lg:px-11 bg-light"
       >
         <div className="mb-5 flex justify-between">
@@ -65,6 +67,16 @@ function DropdownMobile(props) {
               <Link to="/profile">Profile</Link>
             </li>
           )}
+          {roleUser == "Admin" && 
+          <>
+            <li className="p-3 text-dark hover:bg-primary hover:text-light hover:font-medium rounded-md md:text-lg">
+              <Link to="/admin/dashboard">Dashboard</Link>
+            </li>
+            <li className="p-3 text-dark hover:bg-primary hover:text-light hover:font-medium rounded-md md:text-lg">
+              <Link to="/admin/movie">Movie Admin</Link>
+            </li>
+          </>
+          }
           {userAvailable && (
             <li className="p-3 text-dark hover:bg-primary hover:text-light hover:font-medium rounded-md md:text-lg">
               <button onClick={onLogOutHandler}>Logout</button>

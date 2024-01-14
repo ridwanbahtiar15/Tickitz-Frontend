@@ -30,7 +30,7 @@ function Order() {
     getScheduleDetail(scheduleId, token)
     .then((res) => {
       setDataSchedule(res.data.data[0])
-      console.log(res)
+      // console.log(res)
     })
     .catch((err) => {
       console.log(err)

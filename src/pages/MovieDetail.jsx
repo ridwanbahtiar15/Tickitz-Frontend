@@ -23,7 +23,8 @@ function MovieDetail() {
   const [isDropdownShown, setIsDropdownShow] = useState(false);
   const [dataMovie, setDataMovie] = useState([]);
   const [dataSchedule, setDataSchedule] = useState([]);
-  const [cinemaPage] = useState(0);
+  const [cinemaPage, setCinemaPage] = useState(0);
+  const [listCinema, setListCinema] = useState({})
 
   const [isDate, setIsDate] = useState(false);
   const [dateMovie, setDate] = useState("Set Date");
@@ -56,6 +57,13 @@ function MovieDetail() {
     dispatch(addOrder(id));
     setIdSchedule(id);
   };
+
+  const setCinema = () => {
+    setListCinema({
+      date: dateMovie,
+      time: time
+    })
+  }
 
   const scheduleInfo = useSelector((state) => state.order.scheduleInfo);
   const [wrongMsg, setWrongMsg] = useState(false);
@@ -182,21 +190,6 @@ function MovieDetail() {
               {isDate && (
                 <div className="flex justify-between items-center p-4 px-6 bg-[#EFF0F6] rounded-md cursor-pointer w-full absolute top-28 drop-shadow-xl">
                   <div className="flex flex-col gap-y-5">
-                    {/* {dataSchedule &&
-                      dataSchedule.map((date, index) => (
-                        <div
-                          className="flex gap-x-4"
-                          key={index}
-                          onClick={() => {
-                            setDate(date.date);
-                            setIsDate((state) => !state);
-                          }}
-                        >
-                          <p className="text-xs lg:text-base text-secondary font-semibold">
-                            {date.date}
-                          </p>
-                        </div>
-                      ))} */}
                     {dataSchedule && renderDate()}
                   </div>
                 </div>
@@ -292,7 +285,7 @@ function MovieDetail() {
               )}
             </div>
             <div className="md:w-[16%]">
-              <div className="text-sm text-light bg-primary rounded-md p-4 text-center cursor-pointer">
+              <div className="text-sm text-light bg-primary rounded-md p-4 text-center cursor-pointer" onClick={setCinema}>
                 Filter
               </div>
             </div>
@@ -318,10 +311,10 @@ function MovieDetail() {
             <div className="p-7 border-2 border-[#DEDEDE] rounded-md md:w-1/4 flex justify-center items-center">
               <img src={getImageUrl("ebv.id", "svg")} alt="cinema" />
             </div> */}
-            {dateMovie && time && (
+            {listCinema && time && (
               <>
                 {dataSchedule.slice(cinemaPage, 4).map((date, index) => {
-                  if (date.date === dateMovie && date.time === time) {
+                  if (date.date === listCinema.date && date.time === listCinema.time) {
                     return (
                       <div
                         key={index}

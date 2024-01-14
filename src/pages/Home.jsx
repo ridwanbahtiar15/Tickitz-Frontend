@@ -19,15 +19,18 @@ function Home() {
   const [movie, setDataMovie] = useState([]);
   const [metaMovie, setMetaMovie] = useState([]);
   const token = useSelector((state) => state.user.userInfo.token);
-  const [searchParams, setSearchParams] = useSearchParams({});
-  const getMovieUrl =
-    import.meta.env.VITE_BACKEND_HOST + "/movie?" + searchParams.toString();
+  const [searchParams, setSearchParams] = useSearchParams({
+    page: 1
+  });
+  const getMovieUrl = import.meta.env.VITE_BACKEND_HOST + "/movie?" + searchParams.toString();
 
   useEffect(() => {
+    window.scrollTo(0, 0)
     getAllMovie(token, getMovieUrl)
       .then((res) => {
         setDataMovie(res.data.data);
-        setMetaMovie(res.data.meta);
+        setMetaMovie(res.data.meta)
+        console.log(res.data.data)
       })
       .catch(() => {
         setDataMovie([]);
@@ -75,20 +78,25 @@ function Home() {
       });
   };
 
-  const pagination = (page) => {
-    if (page !== metaMovie.page) {
-      // const params = searchParams.toString().slice(0, 1) + page;
-      // const url = import.meta.env.VITE_BACKEND_HOST + "/movie?" + params.slice(0, 1) + page;
-      navigate("/?page=" + page);
+  const pagination = (page, url) => {
+    if (page !== "") {
+      if (page !== metaMovie.page) {
+        const params = metaMovie && metaMovie.next !== "null"
+          ? `${(metaMovie.next).slice(0, -1)}${page}`
+          : `${(metaMovie.prev).slice(0, -1)}${page}`;
+        navigate("/?" + params);
+        setSearchParams(params)
+      }
+    }
+    if (url !== "") {
+      navigate("/?" + url);
+      setSearchParams(url)
     }
   };
 
   const renderButtons = () => {
     return Array.from({ length: metaMovie.total_page }, (_, index) => (
-      <button
-        onClick={() => {
-          pagination(index + 1);
-        }}
+      <button onClick={() => {pagination(index + 1, "")}}
         key={index}
         className={`h-10 w-10 ${
           index + 1 === metaMovie.page
@@ -100,6 +108,20 @@ function Home() {
       </button>
     ));
   };
+
+  const nextPage = () => {
+    if (metaMovie.next !== "null") {
+      navigate("/?" + metaMovie.next);
+      setSearchParams(metaMovie.next)
+    }
+  }
+
+  const prevPage = () => {
+    if (metaMovie.prev !== "null") {
+      navigate("/?" + metaMovie.prev);
+      setSearchParams(metaMovie.prev)
+    }
+  }
 
   return (
     <>
@@ -282,6 +304,7 @@ function Home() {
                   id: product.Id,
                   movie_cover: product.movie_photo,
                   movie_name: product.movie_name,
+                  movie_genre: product.genre
                 })}
               </div>
             ))
@@ -293,23 +316,11 @@ function Home() {
         </div>
       </section>
       <section className="pb-[63px] flex gap-x-5 justify-center font-nunito font-medium">
-        <p className="bg-primary rounded-full w-[40px] h-[40px] flex justify-center items-center">
+        <p onClick={prevPage} className="bg-primary cursor-pointer rounded-full w-[40px] h-[40px] flex justify-center items-center">
           <ion-icon name="chevron-back-outline"></ion-icon>
         </p>
-        {/* <p className="text-light bg-primary rounded-full w-[40px] h-[40px] flex justify-center items-center">
-          1
-        </p>
-        <p className="text-[#A0A3BD] bg-[#F9FAFB] rounded-full w-[40px] h-[40px] flex justify-center items-center">
-          2
-        </p>
-        <p className="text-[#A0A3BD] bg-[#F9FAFB] rounded-full w-[40px] h-[40px] flex justify-center items-center">
-          3
-        </p>
-        <p className="text-[#A0A3BD] bg-[#F9FAFB] rounded-full w-[40px] h-[40px] flex justify-center items-center">
-          4
-        </p> */}
         {renderButtons()}
-        <p className="bg-primary rounded-full w-[40px] h-[40px] flex justify-center items-center">
+        <p onClick={nextPage} className="bg-primary cursor-pointer rounded-full w-[40px] h-[40px] flex justify-center items-center">
           <ion-icon name="chevron-forward-outline"></ion-icon>
         </p>
       </section>

@@ -3,10 +3,10 @@ import Navbar from "../components/Navbar";
 import DropdownMobile from "../components/DropdownMobile";
 import { addMovie } from '../utils/https/addMovie';
 import { useSelector } from 'react-redux';
+import AuthModal from '../components/AuthModal';
 
 function AddMovie() {
 const [isDropdownShown, setIsDropdownShow] = useState(false);
-const [schedule, setSchedule] = useState([]);
 const [dateTimeList, setDateTimeList] = useState([]);
 const token = useSelector(state => state.user.userInfo.token)
 
@@ -16,20 +16,21 @@ const [image, setImage] = useState("");
     setImage(e.target.files[0]);
 };
 
-const dataSchedule = [{"date": "2024-1-6",  "ticket_price": 25000, "cinema": 2, "time": "10-35-00"}, {"date" : "2024-1-6",  "ticket_price": 25000, "cinema": 1, "time": "16-35-00"}, {"date" : "2024-1-7",  "ticket_price": 25000, "cinema": 4, "time": "16-35-00"}, {"date" : "2024-1-7",  "ticket_price": 25000, "cinema": 5, "time": "16-35-00"}, {"date" : "2024-1-7",  "ticket_price": 25000, "cinema": 5, "time": "16-35-00"}, {"date" : "2024-1-8",  "ticket_price": 25000, "cinema": 1, "time": "16-35-00"}, {"date" : "2024-1-9",  "ticket_price": 25000, "cinema": 3, "time": "16-35-00"}]
+// const dataSchedule = [{"date": "2024-1-6",  "ticket_price": 25000, "cinema": 2, "time": "10-35-00"}, {"date" : "2024-1-6",  "ticket_price": 25000, "cinema": 1, "time": "16-35-00"}, {"date" : "2024-1-7",  "ticket_price": 25000, "cinema": 4, "time": "16-35-00"}, {"date" : "2024-1-7",  "ticket_price": 25000, "cinema": 5, "time": "16-35-00"}, {"date" : "2024-1-7",  "ticket_price": 25000, "cinema": 5, "time": "16-35-00"}, {"date" : "2024-1-8",  "ticket_price": 25000, "cinema": 1, "time": "16-35-00"}, {"date" : "2024-1-9",  "ticket_price": 25000, "cinema": 3, "time": "16-35-00"}]
 const submitHandler = (e) => {
     e.preventDefault();
     const formData = new FormData();
     formData.append("movie_cover", image);
     formData.append("movie_name", e.target.movie.value);
-    formData.append("genre", "Adventure");
+    formData.append("genre", e.target.genre.value);
     formData.append("release_date", e.target.date.value);
     formData.append("director", e.target.director.value);
     formData.append("duration", e.target.hour.value + " hour " + e.target.minutes.value + " minutes");
     formData.append("cast", e.target.cast.value);
     formData.append("category", e.target.category.value);
     formData.append("sinopsis", e.target.synopsis.value);
-    formData.append("schedules", dataSchedule);
+    // formData.append("schedules", JSON.stringify(dataSchedule));
+    formData.append("schedules", JSON.stringify(dateTimeList));
     // console.log(dateTimeList)
     addMovie(formData, token)
     .then((res) => {
@@ -38,30 +39,32 @@ const submitHandler = (e) => {
     .catch((err) => {
         console.log(err)
     })
+    // console.log(formData.entries())
 }
 
 const [selectedDate, setSelectedDate] = useState('');
 const [selectedTime, setSelectedTime] = useState('');
-
+const [selectedCinema, setSelectedCinema] = useState('');
 const handleDateChange = (event) => {
     const newDate = event.target.value;
     setSelectedDate(newDate);
 };
-
 const handleTimeChange = (event) => {
     const newTime = event.target.value;
     setSelectedTime(newTime);
-  };
-
-  const handleTimeAdd = () => {
+};
+const handleCinema = (event) => {
+    const cinemaSelected = event.target.value;
+    setSelectedCinema(cinemaSelected);
+};
+const handleTimeAdd = () => {
     if (selectedDate && selectedTime) {
       const newDateTime = {
         "date": selectedDate,
-        "time": selectedTime,
-        "ticket_price": 25000,
-        "cinema": 2
+        "time": selectedTime + "-00",
+        "ticket_price": selectedCinema === "XX1" ? 35000 : 25000,
+        "cinema": selectedCinema
       };
-
       setDateTimeList([...dateTimeList, newDateTime]);
     }
   };
@@ -71,9 +74,9 @@ const consol = () => {
   return (
     <>
         <Navbar isClick={() => setIsDropdownShow(true)} />
-        <main className='bg-backgorund_gray px-4 py-5 w-screen flex justify-center'>
-            <section className='bg-white w-full h-full px-2 py-2'>
-                <form onSubmit={submitHandler} className='text-sm flex flex-col gap-4'>
+        <main className='bg-backgorund_gray px-4 py-5 w-screen flex justify-center pt-6 md:pt-10 lg:pt-14 pb-[55px] md:px-11 xl:px-[130px] font-mulish'>
+            <section className='bg-white w-full h-full px-2 py-2 md:py-10 md:px-11'>
+                <form onSubmit={submitHandler} className='text-sm flex flex-col gap-4 md:gap-8'>
                     <p className='text-xl font-semibold'>Add New Movie</p>
                     <div id='Upload_Image' className='flex flex-col gap-4'>
                         {image ? (
@@ -107,6 +110,10 @@ const consol = () => {
                     <div id='Category'>
                         <p>Category</p>
                         <input type="text" name='category' className='bg-input_bg w-full px-3 py-3 outline-none border border-solid border-input_border rounded-md' placeholder='Add movie category'/>
+                    </div>
+                    <div id='Genre'>
+                        <p>Genre</p>
+                        <input type="text" name='genre' className='bg-input_bg w-full px-3 py-3 outline-none border border-solid border-input_border rounded-md' placeholder='Add movie category'/>
                     </div>
                     <div className='flex flex-col gap-4 md:flex-row'>
                         <div id='Release_date' className='md:flex-1'>
@@ -159,7 +166,7 @@ const consol = () => {
                         <div id='Date_and_time' className='flex flex-col gap-4'>
                             <input
                             type="date"
-                            className='bg-backgorund_gray px-2 py-2 rounded-md'
+                            className='bg-backgorund_gray px-2 py-2 rounded-md cursor-pointer'
                             placeholder='add date'
                             onChange={handleDateChange}
                             />
@@ -178,8 +185,15 @@ const consol = () => {
                                     type="time"
                                     value={selectedTime}
                                     onChange={handleTimeChange}
-                                    className='bg-background_gray px-2 py-2 rounded-md'
+                                    className='bg-background_gray px-2 py-2 rounded-md cursor-pointer'
                                 />
+                                <select onChange={handleCinema} className='cursor-pointer p-2 outline-none' name="" id="">
+                                    <option className='p-2 cursor-pointer ' value="XX1">XX1</option>
+                                    <option className='p-2 cursor-pointer ' value="Cineplex">Cineplex</option>
+                                    <option className='p-2 cursor-pointer ' value="hiflix">hiflix</option>
+                                    <option className='p-2 cursor-pointer ' value="ebu.id">ebu.id</option>
+                                    <option className='p-2 cursor-pointer ' value="Cineone">Cineone</option>
+                                </select>
                             </div>
                             )}
                         </div>
@@ -188,8 +202,8 @@ const consol = () => {
                             <h2>Stored Date and Time:</h2>
                             <ul>
                             {dateTimeList.map((item, index) => (
-                                <li key={index}>
-                                {item.date}, {item.time}
+                                <li className='bg-backgorund_gray p-2 mb-2 rounded-md w-fit' key={index}>
+                                {item.date}, {item.time}, {item.cinema}
                                 </li>
                             ))}
                             </ul>
@@ -201,6 +215,7 @@ const consol = () => {
                 </form>
             </section>
         </main>
+        <AuthModal role={"Admin"}/>
         {isDropdownShown && (
         <DropdownMobile isClick={() => setIsDropdownShow(false)} />
       )}

@@ -7,6 +7,7 @@ import Navbar from "../components/Navbar";
 import DropdownMobile from "../components/DropdownMobile";
 import getImageUrl from "../utils/imageGetter";
 import { getAllMovie } from "../utils/https/home";
+import AuthModal from "../components/AuthModal";
 
 function ListMovie() {
   const [isDropdownShown, setIsDropdownShow] = useState(false);
@@ -27,7 +28,9 @@ function ListMovie() {
     "December",
   ]);
 
-  const [searchParams] = useSearchParams({});
+  const [searchParams] = useSearchParams({
+    page: 1
+  });
   const getMovieUrl =
     import.meta.env.VITE_BACKEND_HOST + "/movie?" + searchParams.toString();
   const [dataMovie, setDataMovie] = useState([]);
@@ -124,7 +127,7 @@ function ListMovie() {
                 )}
               </div>
               <Link
-                to="/addmovie"
+                to="/admin/addmovie"
                 className="py-3 px-6 bg-primary rounded-lg text-light font-bold focus:ring-2 text-center"
               >
                 Add Movies
@@ -174,7 +177,7 @@ function ListMovie() {
                     <td className="p-4 flex gap-x-3 justify-center items-center">
                       <Link
                         className="p-2 bg-[#5D5FEF] rounded-md"
-                        to={`/editmovie/${result.Id}`}
+                        to={`/admin/editmovie/${result.Id}`}
                       >
                         <img src={getImageUrl("Edit", "svg")} alt="icon" />
                       </Link>
@@ -195,6 +198,7 @@ function ListMovie() {
           </div>
         </section>
       </main>
+      <AuthModal role={"Admin"}/>
       {isDropdownShown && (
         <DropdownMobile isClick={() => setIsDropdownShow(false)} />
       )}

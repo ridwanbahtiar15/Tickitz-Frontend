@@ -12,6 +12,7 @@ import Login from "./pages/Login";
 import Private from "./components/Private";
 import AddMovie from "./pages/AddMovie";
 import Dashboard from "./pages/Dashboard";
+import EditMovie from "./pages/EditMovie";
 import ListMovie from "./pages/ListMovie";
 
 const router = createBrowserRouter([
@@ -76,7 +77,7 @@ const router = createBrowserRouter([
     ),
   },
   {
-    path: "/addmovie",
+    path: "/admin/addmovie",
     element: (
       <Private>
         <AddMovie />
@@ -92,13 +93,21 @@ const router = createBrowserRouter([
     ),
   },
   {
+    path: "/admin/editmovie/:id",
+    element: (
+      <Private>
+        <EditMovie />
+      </Private>
+    ),
+  },
+  {
     path: "/admin/movie",
     element: (
       <Private>
         <ListMovie />
       </Private>
     ),
-  },
+  }
 ]);
 
 export default router;
