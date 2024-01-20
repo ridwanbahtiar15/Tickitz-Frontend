@@ -1,4 +1,4 @@
-# Tickitz Movie With React
+# Tickitz Movie With React JS
 
 <!-- ABOUT THE PROJECT -->
 
