@@ -59,11 +59,11 @@ https://tickitz-frontend-eight.vercel.app
 
 Clone project from github repository
 
-    $ git clone https://github.com/ridwanbahtiar15/coffe-shop.git
+    $ git clone https://github.com/ridwanbahtiar15/Tickitz-Frontend.git
 
-go to folder coffee-shop-react-vite
+go to folder Tickitz-Frontend
 
-    $ cd coffee-shop-react-vite
+    $ cd Tickitz-Frontend
 
 install dependencies
 
