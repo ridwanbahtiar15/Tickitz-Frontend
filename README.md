@@ -17,25 +17,25 @@ Home Page
 <!-- ![Home](./src/assets/ss_tickitz/1.1.png =250x) -->
 <img src="./src/assets/ss_tickitz/1.1.png" alt="image" style="width:360px;"/>
 
-<!-- Movie Detail Page
+Movie Detail Page
 
-![MovieDetail](./src/assets/ss_tickitz/2.1.png)
+<img src="./src/assets/ss_tickitz/2.1.png" alt="image" style="width:200px;"/>
 
 Movie Book seat Page
 
-![MovieBook](./src/assets/ss_tickitz/3.png)
+<img src="./src/assets/ss_tickitz/3.png" alt="image" style="width:200px;"/>
 
 Movie Order Page
 
-![MovieOrder](./src/assets/ss_tickitz/4.png)
+<img src="./src/assets/ss_tickitz/4.png" alt="image" style="width:200px;"/>
 
 Profile Page
 
-![Profile](./src/assets/ss_tickitz/6.png)
+<img src="./src/assets/ss_tickitz/6.png" alt="image" style="width:200px;"/>
 
 List Movie Page
 
-![ListMovie](./src/assets/ss_tickitz/5.png) -->
+<img src="./src/assets/ss_tickitz/5.png" alt="image" style="width:200px;"/>
 
 ## Link Deployment
 
