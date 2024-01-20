@@ -19,23 +19,23 @@ Home Page
 
 Movie Detail Page
 
-<img src="./src/assets/ss_tickitz/2.1.png" alt="image" style="width:200px;"/>
+<img src="./src/assets/ss_tickitz/2.1.png" alt="image" style="width:360px;"/>
 
 Movie Book seat Page
 
-<img src="./src/assets/ss_tickitz/3.png" alt="image" style="width:200px;"/>
+<img src="./src/assets/ss_tickitz/3.png" alt="image" style="width:360px;"/>
 
 Movie Order Page
 
-<img src="./src/assets/ss_tickitz/4.png" alt="image" style="width:200px;"/>
+<img src="./src/assets/ss_tickitz/4.png" alt="image" style="width:360px;"/>
 
 Profile Page
 
-<img src="./src/assets/ss_tickitz/6.png" alt="image" style="width:200px;"/>
+<img src="./src/assets/ss_tickitz/6.png" alt="image" style="width:360px;"/>
 
 List Movie Page
 
-<img src="./src/assets/ss_tickitz/5.png" alt="image" style="width:200px;"/>
+<img src="./src/assets/ss_tickitz/5.png" alt="image" style="width:360px;"/>
 
 ## Link Deployment
 
