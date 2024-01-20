@@ -9,19 +9,19 @@ A Front End project for ordering movie ticket and transactions online. The main 
 ## Screenshot
 
 Login Page
-![Login](./src/assets/img/page/0.png)
+![Login](./src/assets/ss_tickitz/page/0.png)
 Home Page
-![Home](./src/assets/img/page/1.1.png)
+![Home](./src/assets/ss_tickitz/page/1.1.png)
 Movie Detail Page
-![MovieDetail](./src/assets/img/page/2.1.png)
+![MovieDetail](./src/assets/ss_tickitz/page/2.1.png)
 Movie Book seat Page
-![MovieBook](./src/assets/img/page/3.png)
+![MovieBook](./src/assets/ss_tickitz/page/3.png)
 Movie Order Page
-![MovieOrder](./src/assets/img/page/4.png)
+![MovieOrder](./src/assets/ss_tickitz/page/4.png)
 Profile Page
-![Profile](./src/assets/img/page/6.png)
+![Profile](./src/assets/ss_tickitz/page/6.png)
 List Movie Page
-![ListMovie](./src/assets/img/page/5.png)
+![ListMovie](./src/assets/ss_tickitz/page/5.png)
 
 ## Link Deployment
 
@@ -70,8 +70,11 @@ according to your needs. You will need:
 
 ## Related Project
 
-[Front End With React JS](https://github.com/ridwanbahtiar15/coffee-shop-react-vite.git)
-[Back End With Express JS](https://github.com/ridwanbahtiar15/coffe-shop.git)
+[Back End With Golang](https://github.com/ridwanbahtiar15/Tickitz-Golang)
+
+## Collaborator
+
+[Gilang Rizaltin](https://github.com/GilangRizaltin)
 
 ## Credit
 
