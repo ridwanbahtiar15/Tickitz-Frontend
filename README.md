@@ -10,12 +10,12 @@ A Front End project for ordering movie ticket and transactions online. The main 
 
 Login Page
 
-![Login](./src/assets/ss_tickitz/0.png)
+<img src="./src/assets/ss_tickitz/0.png" alt="image" style="width:360px;"/>
 
 Home Page
 
 <!-- ![Home](./src/assets/ss_tickitz/1.1.png =250x) -->
-<img src="./src/assets/ss_tickitz/1.1.png" alt="image" style="width:200px;"/>
+<img src="./src/assets/ss_tickitz/1.1.png" alt="image" style="width:360px;"/>
 
 <!-- Movie Detail Page
 
