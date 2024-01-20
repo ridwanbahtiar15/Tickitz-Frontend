@@ -9,19 +9,19 @@ A Front End project for ordering movie ticket and transactions online. The main 
 ## Screenshot
 
 Login Page
-![Login](./assets/ss_tickitz/0.png)
+![Login](./src/assets/ss_tickitz/0.png)
 Home Page
-![Home](./assets/ss_tickitz/1.1.png)
+![Home](./src/assets/ss_tickitz/1.1.png)
 Movie Detail Page
-![MovieDetail](./assets/ss_tickitz/2.1.png)
+![MovieDetail](./src/assets/ss_tickitz/2.1.png)
 Movie Book seat Page
-![MovieBook](./assets/ss_tickitz/3.png)
+![MovieBook](./src/assets/ss_tickitz/3.png)
 Movie Order Page
-![MovieOrder](./assets/ss_tickitz/4.png)
+![MovieOrder](./src/assets/ss_tickitz/4.png)
 Profile Page
-![Profile](./assets/ss_tickitz/6.png)
+![Profile](./src/assets/ss_tickitz/6.png)
 List Movie Page
-![ListMovie](./assets/ss_tickitz/5.png)
+![ListMovie](./src/assets/ss_tickitz/5.png)
 
 ## Link Deployment
 
