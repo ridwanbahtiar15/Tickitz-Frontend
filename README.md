@@ -1,114 +1,120 @@
-# Tickitz Movie With React JS
+# Tickitz React JS
 
-<!-- ABOUT THE PROJECT -->
+<br>
+<br>
+<div align="center">
+  <img src="https://res.cloudinary.com/doncmmfaa/image/upload/v1705476761/samples/Tickitz_1_qjg2bh.png" alt="Logo"  width="340" height="100"/>
+</div>
+<br>
+<br>
+Welcome to an immersive cinematic experience! This website is not just a ticket-buying platform; it's your gateway to a world of movies, featuring a mesmerizing lineup of films complete with in-depth details. Dive into the magic of cinema with our primary features, where you can seamlessly book movie tickets based on your preferred time and location. With dual roles – the discerning Consumer and the behind-the-scenes Admin – every user becomes a director of their movie-watching destiny. But that's not all! Take a stroll down memory lane as you explore your booking history, and for that personal touch, users can effortlessly update their profiles, ensuring that every visit to our digital theater is a uniquely tailored experience. Get ready to embark on a cinematic journey like never before, where the show is not just on the big screen but also at your fingertips
 
-## About The Project
+## Technologies used in this project
 
-A Front End project for ordering movie ticket and transactions online. The main feature in this project is using a Single Page Application (SPA), Dynamic Web and Responsive website for mobile, tablet and laptop.
+- [Vite React JS](https://vitejs.dev/guide/) \
+  A build tool designed for web development, and when paired with React JS, it provides a fast and efficient development environment. \
 
-## Screenshot
+- [Redux](https://react-redux.js.org/introduction/getting-started) \
+  A state management library for React applications.
 
-Login Page
+- [React Router](https://reactrouter.com/en/main/start/overview) \
+  Library for handling navigation in React applications. \
 
-<img src="./src/assets/ss_tickitz/0.png" alt="image" style="width:360px;"/>
+- [Tailwind](https://tailwindcss.com/docs/installation) \
+  A utility-first CSS framework that simplifies styling in web development. \
 
-Home Page
+- [Axios](https://axios-http.com/docs/intro) \
+  A promise-based HTTP client for the browser and Node.js. \
 
-<!-- ![Home](./src/assets/ss_tickitz/1.1.png =250x) -->
-<img src="./src/assets/ss_tickitz/1.1.png" alt="image" style="width:360px;"/>
+## Environment Variables
 
-Movie Detail Page
+To run this project, you will need to add the following environment variables to your .env file
 
-<img src="./src/assets/ss_tickitz/2.1.png" alt="image" style="width:360px;"/>
+```bash
+VITE_BACKEND_HOST = "YOUR BACKEND URL"
+```
 
-Movie Book seat Page
+## Run Locally
 
-<img src="./src/assets/ss_tickitz/3.png" alt="image" style="width:360px;"/>
+1. Clone the project
 
-Movie Order Page
+```bash
+  $ git clone https://github.com/GilangRizaltin/Tickitz-Frontend-Gilang
+```
 
-<img src="./src/assets/ss_tickitz/4.png" alt="image" style="width:360px;"/>
+2. Go to the project directory
 
-Profile Page
+```bash
+  $ cd Tickitz-Frontend-Gilang
+```
 
-<img src="./src/assets/ss_tickitz/6.png" alt="image" style="width:360px;"/>
+3. Install dependencies
 
-List Movie Page
+```bash
+  $ npm install
+```
 
-<img src="./src/assets/ss_tickitz/5.png" alt="image" style="width:360px;"/>
+4. Preparing backend \
+   Don't forget to run the backend of this project: [Backend Tickitz (Golang)](https://github.com/GilangRizaltin/Tickitz-Golang)
 
-## Link Deployment
+5. Start the server
 
-https://tickitz-frontend-eight.vercel.app
+```bash
+  $ npm run dev
+```
 
-## Built With
+## Route
 
-- [![ReactJs][ReactJs-logo]][ReactJs-url]
-- [![TailwindCSS][TailwindCSS-logo]][TailwindCSS-url]
-- [![Redux][Redux-logo]][Redux-url]
-- [![ChartJs][ChartJs-logo]][ChartJs-url]
+| Route                   | Description                  |
+| :---------------------- | :--------------------------- |
+| `"/"`                   | Home page                    |
+| `"/auth/login"`         | Login page                   |
+| `"/auth/register"`      | register page                |
+| `"/movie/:id"`          | Detail of movie selected     |
+| `"/order"`              | Creating an order page       |
+| `"/order/payment"`      | Payment page                 |
+| `"/order/ticketresult"` | Ticket result page           |
+| `"/order/orderhistory"` | History of user's order page |
+| `"/profile"`            | User's profile page          |
 
-### Package
+## Deployment
 
-- [![Axios][Axios-logo]][Axios-url]
-- [![ReactDom][ReactDom-logo]][ReactDom-url]
-- [![ReactRouterDom][ReactRouterDom-logo]][ReactRouterDom-url]
-- [![ReactRedux][ReactRedux-logo]][ReactRedux-url]
+[Tickitz Front End Deployment](https://tickitz-gilang.netlify.app)
 
-## Install And Run Locally
+## Screenshots
 
-Clone project from github repository
+| Login                                                                                                               | Home                                                                                                              |
+| ------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------- |
+| ![Login Screenshot](https://res.cloudinary.com/doncmmfaa/image/upload/v1705597276/Tickitz/tickitz_login_s4w2xe.png) | ![Home Screenshot](https://res.cloudinary.com/doncmmfaa/image/upload/v1705597281/Tickitz/tickitz_home_bd8al8.png) |
 
-    $ git clone https://github.com/ridwanbahtiar15/Tickitz-Frontend.git
+<!-- Login
 
-go to folder Tickitz-Frontend
+<img src="https://res.cloudinary.com/doncmmfaa/image/upload/v1705597276/Tickitz/tickitz_login_s4w2xe.png" alt="App Screenshot" width="400" height="225" />
 
-    $ cd Tickitz-Frontend
+Home
 
-install dependencies
+<img src="https://res.cloudinary.com/doncmmfaa/image/upload/v1705597281/Tickitz/tickitz_home_bd8al8.png" alt="App Screenshot" width="400" height="225" /> -->
 
-    $ npm install
+| Profile                                                                                                         | Order Movie Ticket                                                                                                             |
+| --------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------ |
+| ![Profile Screenshot](https://res.cloudinary.com/doncmmfaa/image/upload/v1705597272/Tickitz/profile_wumkla.png) | ![Order Movie Ticket Screenshot](https://res.cloudinary.com/doncmmfaa/image/upload/v1705597273/Tickitz/order-movie_djvbab.png) |
 
-Start the server
+<!-- Profile
 
-    $ npm run dev
+<img src="https://res.cloudinary.com/doncmmfaa/image/upload/v1705597272/Tickitz/profile_wumkla.png" alt="App Screenshot" width="400" height="225" />
 
-## Configure app
+Order Movie Ticket
 
-Create file `.env` then edit it with your settings
-according to your needs. You will need:
-
-| Key               | Value                    |
-| ----------------- | ------------------------ |
-| VITE_BACKEND_HOST | Your Backend Golang Host |
+<img src="https://res.cloudinary.com/doncmmfaa/image/upload/v1705597273/Tickitz/order-movie_djvbab.png" alt="App Screenshot" width="400" height="225" /> -->
 
 ## Related Project
 
-[Back End With Golang](https://github.com/ridwanbahtiar15/Tickitz-Golang)
+[Backend (Golang)](https://github.com/GilangRizaltin/Tickitz-Golang)
 
 ## Collaborator
 
-[Gilang Rizaltin](https://github.com/GilangRizaltin)
+- [@Ridwan Bahtiar](https://github.com/ridwanbahtiar15)
 
-## Credit
+## Support
 
-[Ridwan Bahtiar](https://github.com/ridwanbahtiar15)
-
-<!-- MARKDOWN LINKS & IMAGES -->
-
-[ReactJs-url]: https://go.dev/
-[ReactJs-logo]: https://img.shields.io/badge/React%20JS-blue
-[TailwindCSS-url]: https://tailwindcss.com/
-[TailwindCSS-logo]: https://img.shields.io/badge/Tailwind%20CSS-lightskyblue
-[Axios-url]: https://www.Axios.org/
-[Axios-logo]: https://img.shields.io/badge/Axios-red
-[ReactDom-url]: https://www.npmjs.com/package/react-dom
-[ReactDom-logo]: https://img.shields.io/badge/React%20DOM-black
-[ReactRouterDom-url]: https://github.com/ReactRouterDom/ReactRouterDom-go
-[ReactRouterDom-logo]: https://img.shields.io/badge/React%20Router%20DOM-grey
-[Redux-url]: https://redux.js.org/
-[Redux-logo]: https://img.shields.io/badge/Redux-blue
-[ReactRedux-url]: https://www.npmjs.com/package/react-redux
-[ReactRedux-logo]: https://img.shields.io/badge/React%20Redux-lightskyblue
-[ChartJs-url]: https://www.chartjs.org/
-[ChartJs-logo]: https://img.shields.io/badge/Chart%20JS-red
+For support, email gilangzaltin@gmail.com
