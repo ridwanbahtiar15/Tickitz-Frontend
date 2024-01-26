@@ -1,4 +1,4 @@
-# Tickitz Movie With React
+# Tickitz Movie With React JS
 
 <img src="./src/assets/img/Tickitz.svg" width="200px" alt="logo"></img>
 
