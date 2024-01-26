@@ -54,7 +54,7 @@ according to your needs. You will need:
 
 | Profile                                                                     | List Movie                                                                  |
 | --------------------------------------------------------------------------- | --------------------------------------------------------------------------- |
-| <img src="./src/assets/ss_tickitz/5.png" alt="image" style="width:360px;"/> | <img src="./src/assets/ss_tickitz/6.png" alt="image" style="width:360px;"/> |
+| <img src="./src/assets/ss_tickitz/5.png" alt="image" style="width:360px;"/> | <img src="./src/assets/ss_tickitz/4.png" alt="image" style="width:360px;"/> |
 
 ## Related Project
 
