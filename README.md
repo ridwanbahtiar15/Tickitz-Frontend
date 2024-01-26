@@ -6,7 +6,6 @@ A Front End project for ordering movie ticket and transactions online. The main 
 
 ## Built With
 
-- [![ReactJs][ReactJs-logo]][ReactJs-url]
 - [React JS](https://go.dev/)
 - [Tailwind CSS](https://tailwindcss.com/)
 - [Redux](https://redux.js.org/)
