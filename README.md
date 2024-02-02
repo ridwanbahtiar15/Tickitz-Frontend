@@ -1,6 +1,8 @@
 # Tickitz Movie With React JS
 
-<img src="./src/assets/img/Tickitz.svg" width="200px" alt="logo"></img>
+<p align="center">
+        <img src="./src/assets/img/Tickitz.svg" width="200px" alt="logo"></img>
+</p>
 
 A Front End project for ordering movie ticket and transactions online. The main feature in this project is using a Single Page Application (SPA), Dynamic Web and Responsive website for mobile, tablet and laptop.
 
@@ -24,11 +26,11 @@ according to your needs. You will need:
 
 1.  Clone project from github repository
 
-        $ git clone https://github.com/ridwanbahtiar15/coffe-shop.git
+        $ git clone https://github.com/ridwanbahtiar15/Tickitz-Frontend
 
 2.  go to folder coffee-shop-react-vite
 
-        $ cd coffee-shop-react-vite
+        $ cd Tickitz-Frontend
 
 3.  install dependencies
 
