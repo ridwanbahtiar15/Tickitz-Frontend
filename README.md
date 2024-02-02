@@ -18,9 +18,11 @@ A Front End project for ordering movie ticket and transactions online. The main 
 Create file `.env` then edit it with your settings
 according to your needs. You will need:
 
-| Key               | Value                    |
-| ----------------- | ------------------------ |
-| VITE_BACKEND_HOST | Your Backend Golang Host |
+<pre>
+<code>
+VITE_BACKEND_HOST = Your Backend Golang Host
+</code>
+</pre>
 
 ## Install And Run Locally
 
