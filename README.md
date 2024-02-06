@@ -60,6 +60,10 @@ VITE_BACKEND_HOST = Your Backend Golang Host
 | --------------------------------------------------------------------------- | --------------------------------------------------------------------------- |
 | <img src="./src/assets/ss_tickitz/5.png" alt="image" style="width:360px;"/> | <img src="./src/assets/ss_tickitz/4.png" alt="image" style="width:360px;"/> |
 
+## Link Deployment
+
+[Tickitz](tickitz-frontend-eight.vercel.app)
+
 ## Related Project
 
 [Back End With Golang](https://github.com/ridwanbahtiar15/Tickitz-Golang)
