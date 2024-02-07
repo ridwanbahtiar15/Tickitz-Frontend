@@ -40,7 +40,7 @@ VITE_BACKEND_HOST = Your Backend Golang Host
 
 4.  Prepare Backend
 
-    prepare the backend in the following link [Back End With Golang](https://github.com/ridwanbahtiar15/Tickitz-Golang)
+    prepare the backend in the following link [Back End With Golang](#link)
 
 5.  Start the server
 
@@ -65,6 +65,7 @@ VITE_BACKEND_HOST = Your Backend Golang Host
 [Tickitz](tickitz-frontend-eight.vercel.app)
 
 ## Related Project
+<div id="link"></div>
 
 [Back End With Golang](https://github.com/ridwanbahtiar15/Tickitz-Golang)
 
